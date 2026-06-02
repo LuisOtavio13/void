@@ -1,7 +1,7 @@
 package com.DevProj.proj.auth.config;
 
-import com.DevProj.proj.models.User;
-import com.DevProj.proj.repository.UserRepo;
+import com.DevProj.proj.auth.model.User;
+import com.DevProj.proj.auth.repository.UserRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

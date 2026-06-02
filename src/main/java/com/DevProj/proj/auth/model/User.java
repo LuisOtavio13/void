@@ -1,6 +1,7 @@
-package com.DevProj.proj.models;
+package com.DevProj.proj.auth.model;
 
 import com.DevProj.proj.comments.model.Comment;
+import com.DevProj.proj.posts.model.Project;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

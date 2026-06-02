@@ -1,15 +1,15 @@
 package com.DevProj.proj.posts.serversePost;
 
-import com.DevProj.proj.models.Project;
-import com.DevProj.proj.models.Tag;
-import com.DevProj.proj.models.User;
+import com.DevProj.proj.auth.model.User;
 import com.DevProj.proj.posts.dto.request.CreatePostRequest;
 import com.DevProj.proj.posts.dto.response.ProjectsReponse;
 import com.DevProj.proj.posts.dto.response.UserResponse;
 import com.DevProj.proj.posts.exception.NotFoundException;
 import com.DevProj.proj.posts.exception.PostLenException;
-import com.DevProj.proj.repository.ProjectRepo;
-import com.DevProj.proj.repository.TagRepo;
+import com.DevProj.proj.posts.model.Project;
+import com.DevProj.proj.posts.model.Tag;
+import com.DevProj.proj.posts.repository.ProjectRepo;
+import com.DevProj.proj.posts.repository.TagRepo;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;

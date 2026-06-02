@@ -1,6 +1,6 @@
 package com.DevProj.proj.auth.config;
 
-import com.DevProj.proj.models.User;
+import com.DevProj.proj.auth.model.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;

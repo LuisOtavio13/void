@@ -1,4 +1,4 @@
-package com.DevProj.proj.models;
+package com.DevProj.proj.posts.model;
 
 import jakarta.persistence.*;
 import java.util.List;

@@ -1,6 +1,8 @@
-package com.DevProj.proj.models;
+package com.DevProj.proj.posts.model;
 
+import com.DevProj.proj.auth.model.User;
 import com.DevProj.proj.comments.model.Comment;
+import com.DevProj.proj.posts.repository.TagRepo;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

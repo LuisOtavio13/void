@@ -1,6 +1,6 @@
 package com.DevProj.proj.auth.service;
 
-import com.DevProj.proj.repository.UserRepo;
+import com.DevProj.proj.auth.repository.UserRepo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

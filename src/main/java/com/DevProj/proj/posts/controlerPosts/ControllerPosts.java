@@ -1,11 +1,11 @@
 package com.DevProj.proj.posts.controlerPosts;
 
-import com.DevProj.proj.models.Project;
-import com.DevProj.proj.models.Tag;
-import com.DevProj.proj.models.User;
+import com.DevProj.proj.auth.model.User;
 import com.DevProj.proj.posts.dto.request.CreatePostRequest;
 import com.DevProj.proj.posts.dto.response.ProjectsReponse;
 import com.DevProj.proj.posts.dto.response.UserResponse;
+import com.DevProj.proj.posts.model.Project;
+import com.DevProj.proj.posts.model.Tag;
 import com.DevProj.proj.posts.serversePost.ServicesPosts;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

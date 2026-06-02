@@ -1,12 +1,12 @@
 package com.DevProj.proj.comments.service;
 
+import com.DevProj.proj.auth.model.User;
 import com.DevProj.proj.comments.dto.request.CreateCommentRequest;
 import com.DevProj.proj.comments.model.Comment;
 import com.DevProj.proj.comments.repository.CommentsRepo;
 import com.DevProj.proj.dtosGlobal.CommentsDTO;
-import com.DevProj.proj.models.Project;
-import com.DevProj.proj.models.User;
-import com.DevProj.proj.repository.ProjectRepo;
+import com.DevProj.proj.posts.model.Project;
+import com.DevProj.proj.posts.repository.ProjectRepo;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
