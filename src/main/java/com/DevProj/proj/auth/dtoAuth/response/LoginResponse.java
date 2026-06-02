@@ -1,6 +1,6 @@
 package com.DevProj.proj.auth.dtoAuth.response;
 
-public record LoginRes(
+public record LoginResponse(
     String jwt,
     boolean isAdmin,
     String name,

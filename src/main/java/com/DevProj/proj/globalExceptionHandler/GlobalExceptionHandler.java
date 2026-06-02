@@ -1,4 +1,4 @@
-package com.DevProj.proj.GlobalExceptionHandler;
+package com.DevProj.proj.globalExceptionHandler;
 
 import com.DevProj.proj.auth.exception.EmailAlreadyExistsException;
 import com.DevProj.proj.auth.exception.InvalidLoginException;

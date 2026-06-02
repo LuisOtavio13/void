@@ -4,7 +4,6 @@ import {
   CardPost,
   CardTags,
   UserInfo,
-  UserPopover,
 } from "@/features/home/components/card-post";
 import { useCards } from "@/features/home/hooks/use-cards";
 import { useInfiniteScroll } from "@/features/home/hooks/use-infinite-scroll";
@@ -12,8 +11,16 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { CardPostDescription } from "./components/client";
-
-const cores: string[] = [
+import { CardItem } from "./types/types";
+import dynamic from "next/dynamic";
+const UserPopoverLazy = dynamic(
+  () =>
+    import("@/features/home/components/card-post").then(
+      (mod) => mod.UserPopover,
+    ),
+  { ssr: false },
+);
+const COLORS: string[] = [
   "bg-pink-700 text-white",
   "bg-blue-700 text-white",
   "bg-green-700 text-white",
@@ -21,11 +28,17 @@ const cores: string[] = [
   "bg-red-700 text-white",
   "bg-purple-700 text-white",
 ];
-
-export function HomePageIndex() {
-  const { cards, loading, loadCards, pageRef } = useCards();
-  const loadingRef = useInfiniteScroll(() => {
-    loadCards(pageRef.current);
+interface Props {
+  initialCards: CardItem[];
+  jwt: string;
+}
+export function HomePageIndex({ initialCards, jwt }: Props) {
+  const { cards, loading, loadCards, hasMore } = useCards({
+    initialCards,
+    jwt,
+  });
+  const loadingRef = useInfiniteScroll(loadCards, {
+    enabled: !loading && hasMore,
   });
 
   return (
@@ -37,7 +50,7 @@ export function HomePageIndex() {
               <div className="group relative flex items-center gap-3">
                 <UserInfo user={card.user} />
 
-                <UserPopover user={card.user} />
+                <UserPopoverLazy user={card.user} />
               </div>
 
               <CardTitle className="text-xl font-bold tracking-tight cursor-pointer hover:underline">
@@ -46,7 +59,7 @@ export function HomePageIndex() {
             </CardPost.Header>
             <CardPost.Body>
               <CardPostDescription description={card.description} />
-              <CardTags tags={card.tags} cores={cores} />
+              <CardTags tags={card.tags} cores={COLORS} />
             </CardPost.Body>
 
             <CardPost.Footer>

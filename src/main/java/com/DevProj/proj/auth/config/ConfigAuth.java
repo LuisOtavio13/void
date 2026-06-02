@@ -1,4 +1,4 @@
-package com.DevProj.proj.auth.configAuth;
+package com.DevProj.proj.auth.config;
 
 import com.DevProj.proj.auth.service.ServiceAuthConfig;
 import jakarta.servlet.DispatcherType;

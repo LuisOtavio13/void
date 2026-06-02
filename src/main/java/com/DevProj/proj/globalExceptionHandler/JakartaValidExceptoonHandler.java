@@ -1,4 +1,4 @@
-package com.DevProj.proj.GlobalExceptionHandler;
+package com.DevProj.proj.globalExceptionHandler;
 
 import java.util.List;
 import java.util.Map;

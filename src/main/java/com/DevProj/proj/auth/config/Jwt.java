@@ -1,4 +1,4 @@
-package com.DevProj.proj.auth.configAuth;
+package com.DevProj.proj.auth.config;
 
 import com.DevProj.proj.models.Users;
 import com.auth0.jwt.JWT;

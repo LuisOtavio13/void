@@ -1,9 +1,9 @@
 package com.DevProj.proj.auth.controllerAuth;
 
 import com.DevProj.proj.auth.dtoAuth.request.LoginRequest;
-import com.DevProj.proj.auth.dtoAuth.request.RegistroRequest;
-import com.DevProj.proj.auth.dtoAuth.response.LoginRes;
-import com.DevProj.proj.auth.dtoAuth.response.RegistroResponse;
+import com.DevProj.proj.auth.dtoAuth.request.RegistrationRequest;
+import com.DevProj.proj.auth.dtoAuth.response.LoginResponse;
+import com.DevProj.proj.auth.dtoAuth.response.RegistrationResponse;
 import com.DevProj.proj.auth.exception.EmailAlreadyExistsException;
 import com.DevProj.proj.auth.service.ServiceAuth;
 import com.DevProj.proj.dtosGlobal.UserDTO;
@@ -30,7 +30,7 @@ public class ControllerAuth {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginRes> login(
+    public ResponseEntity<LoginResponse> login(
         @Valid @RequestBody LoginRequest loginRequest
     ) throws Exception {
         if (
@@ -48,7 +48,7 @@ public class ControllerAuth {
         Users user = serviceAuth.findByEmail(loginRequest.email());
 
         return ResponseEntity.ok(
-            new LoginRes(
+            new LoginResponse(
                 token,
                 user.getRole().contains("ADMIN"),
                 user.getName(),
@@ -60,8 +60,8 @@ public class ControllerAuth {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegistroResponse> register(
-        @Valid @RequestBody RegistroRequest registroRequest
+    public ResponseEntity<RegistrationResponse> register(
+        @Valid @RequestBody RegistrationRequest registroRequest
     ) throws EmailAlreadyExistsException {
         Users user = serviceAuth.saveUser(
             registroRequest.username(),
@@ -69,7 +69,7 @@ public class ControllerAuth {
             registroRequest.email()
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            new RegistroResponse(user.getName(), user.getUsername())
+            new RegistrationResponse(user.getName(), user.getUsername())
         );
     }
 

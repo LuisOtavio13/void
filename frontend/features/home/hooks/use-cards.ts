@@ -1,81 +1,47 @@
-import { useUser } from "@/shared/hooks/use-user";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { CardItem } from "../types/types";
 import { fetchCards } from "../services/fetch-cards";
 
-export function useCards() {
-  const { user } = useUser();
+interface Props {
+  initialCards: CardItem[];
+  jwt: string;
+}
 
-  const [cards, setCards] = useState<CardItem[]>([]);
+export function useCards({ initialCards, jwt }: Props) {
+  const [cards, setCards] = useState<CardItem[]>(initialCards);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(initialCards.length > 0);
 
+  const pageRef = useRef(initialCards.length > 0 ? 1 : 0);
   const loadingRef = useRef(false);
-  const pageRef = useRef(0);
-  const jwt = user?.jwt;
 
-  const loadCards = useCallback(
-    async (currentPage: number) => {
-      if (!jwt || loadingRef.current) return;
+  const loadCards = useCallback(async () => {
+    if (!jwt || loadingRef.current || !hasMore) return;
 
-      loadingRef.current = true;
-      setLoading(true);
+    loadingRef.current = true;
+    setLoading(true);
 
-      try {
-        const newCards = await fetchCards(currentPage, jwt);
+    try {
+      const nextPage = pageRef.current;
+      const newCards = await fetchCards(nextPage, jwt);
 
-        if (newCards.length === 0) {
-          setCards([]);
-          const firstPage = await fetchCards(0, jwt);
-          setCards(firstPage);
-          setPage(1);
-        } else {
-          setCards((prev) => [...prev, ...newCards]);
-          setPage(currentPage + 1);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        loadingRef.current = false;
-        setLoading(false);
+      if (newCards.length === 0) {
+        setHasMore(false);
+      } else {
+        setCards((prev) => {
+          const existingIds = new Set(prev.map((c) => c.id));
+          const filtered = newCards.filter((c) => !existingIds.has(c.id));
+          return [...prev, ...filtered];
+        });
+        pageRef.current = nextPage + 1;
       }
-    },
-    [jwt],
-  );
-
-  useEffect(() => {
-    if (!jwt) return;
-    let cancelled = false;
-
-    async function init() {
-      loadingRef.current = true;
-      setLoading(true);
-
-      try {
-        const data = await fetchCards(0, jwt!);
-
-        if (!cancelled) {
-          setCards(data);
-          setPage(1);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-          loadingRef.current = false;
-        }
-      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      loadingRef.current = false;
+      setLoading(false);
     }
-    init();
-    return () => {
-      cancelled = true;
-    };
-  }, [jwt]);
+  }, [jwt, hasMore]);
 
-  useEffect(() => {
-    pageRef.current = page;
-  }, [page]);
-
-  return { cards, loading, loadCards, pageRef };
+  return { cards, loading, loadCards, hasMore };
 }

@@ -1,20 +1,40 @@
 import { useEffect, useRef } from "react";
 
-export function useInfiniteScroll(onIntersect: () => void) {
+interface UseInfiniteScrollOptions {
+  enabled?: boolean;
+  threshold?: number;
+  rootMargin?: string;
+}
+
+export function useInfiniteScroll(
+  onIntersect: () => void,
+  options: UseInfiniteScrollOptions = {},
+) {
+  const { enabled = true, threshold = 0.1, rootMargin = "100px" } = options;
+
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const callbackRef = useRef(onIntersect);
+
+  useEffect(() => {
+    callbackRef.current = onIntersect;
+  }, [onIntersect]);
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !enabled) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) onIntersect();
+        if (entry.isIntersecting) {
+          callbackRef.current();
+        }
       },
-      { threshold: 1 },
+      { threshold, rootMargin },
     );
+
     observer.observe(el);
     return () => observer.disconnect();
-  }, [onIntersect]);
+  }, [enabled, threshold, rootMargin]);
 
   return ref;
 }

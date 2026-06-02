@@ -1,6 +1,6 @@
 package com.DevProj.proj.auth.service;
 
-import com.DevProj.proj.auth.configAuth.Jwt;
+import com.DevProj.proj.auth.config.Jwt;
 import com.DevProj.proj.auth.exception.EmailAlreadyExistsException;
 import com.DevProj.proj.auth.exception.InvalidLoginException;
 import com.DevProj.proj.models.Users;
