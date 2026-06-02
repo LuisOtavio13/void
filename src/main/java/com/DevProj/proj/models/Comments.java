@@ -1,14 +1,6 @@
 package com.DevProj.proj.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "Comments")
@@ -34,6 +26,12 @@ public class Comments {
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Projects projectId;
+
+    @Column(nullable = false)
+    private int likes = 0;
+
+    @Column(nullable = false)
+    private int dislikes = 0;
 
     @PrePersist
     protected void onCreate() {
@@ -92,5 +90,21 @@ public class Comments {
 
     public void setProjectId(Projects projectId) {
         this.projectId = projectId;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
     }
 }
