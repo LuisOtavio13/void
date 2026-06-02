@@ -1,6 +1,6 @@
-package com.DevProj.proj.repository;
+package com.DevProj.proj.comments.repository;
 
-import com.DevProj.proj.models.Comment;
+import com.DevProj.proj.comments.model.Comment;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

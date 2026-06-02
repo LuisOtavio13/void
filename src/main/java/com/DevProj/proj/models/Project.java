@@ -1,5 +1,6 @@
 package com.DevProj.proj.models;
 
+import com.DevProj.proj.comments.model.Comment;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

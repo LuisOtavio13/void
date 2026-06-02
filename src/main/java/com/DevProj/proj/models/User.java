@@ -1,5 +1,6 @@
 package com.DevProj.proj.models;
 
+import com.DevProj.proj.comments.model.Comment;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
