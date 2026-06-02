@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "Comments")
-public class Comments {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class Comments {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private Users userId;
+    private User userId;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -25,7 +25,7 @@ public class Comments {
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
-    private Projects projectId;
+    private Project projectId;
 
     @Column(nullable = false)
     private int likes = 0;
@@ -60,11 +60,11 @@ public class Comments {
         this.content = content;
     }
 
-    public Users getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Users userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -84,11 +84,11 @@ public class Comments {
         this.updatedAt = updatedAt;
     }
 
-    public Projects getProjectId() {
+    public Project getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Projects projectId) {
+    public void setProjectId(Project projectId) {
         this.projectId = projectId;
     }
 

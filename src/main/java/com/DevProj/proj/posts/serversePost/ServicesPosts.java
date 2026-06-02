@@ -1,20 +1,17 @@
 package com.DevProj.proj.posts.serversePost;
 
-import com.DevProj.proj.models.Projects;
+import com.DevProj.proj.models.Project;
 import com.DevProj.proj.models.Tag;
-import com.DevProj.proj.models.Users;
+import com.DevProj.proj.models.User;
 import com.DevProj.proj.posts.dto.request.CreatePostRequest;
-import com.DevProj.proj.posts.dto.request.TagRequest;
 import com.DevProj.proj.posts.dto.response.ProjectsReponse;
 import com.DevProj.proj.posts.dto.response.UserResponse;
 import com.DevProj.proj.posts.exception.NotFoundException;
 import com.DevProj.proj.posts.exception.PostLenException;
 import com.DevProj.proj.repository.ProjectRepo;
 import com.DevProj.proj.repository.TagRepo;
-import com.DevProj.proj.repository.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,20 +23,14 @@ import org.springframework.stereotype.Service;
 public class ServicesPosts {
 
     private final ProjectRepo projectRepo;
-    private final UserRepo userRepo;
     private final TagRepo tagRepository;
 
-    public ServicesPosts(
-        ProjectRepo projectRepo,
-        UserRepo userRepo,
-        TagRepo tagRepository
-    ) {
+    public ServicesPosts(ProjectRepo projectRepo, TagRepo tagRepository) {
         this.projectRepo = projectRepo;
-        this.userRepo = userRepo;
         this.tagRepository = tagRepository;
     }
 
-    public void createPost(CreatePostRequest post, Users user)
+    public void createPost(CreatePostRequest post, User user)
         throws RuntimeException {
         validatePost(post);
         List<Tag> tags = post
@@ -52,7 +43,7 @@ public class ServicesPosts {
             )
             .toList();
 
-        Projects pojeto = new Projects(
+        Project project = new Project(
             post.name(),
             post.LinkGithub(),
             post.linkProjeto(),
@@ -63,10 +54,10 @@ public class ServicesPosts {
             tags,
             user
         );
-        projectRepo.save(pojeto);
+        projectRepo.save(project);
     }
 
-    public Page<ProjectsReponse> getAllPosts(Users user, int page, int size) {
+    public Page<ProjectsReponse> getAllPosts(User user, int page, int size) {
         Pageable pageable = PageRequest.of(
             page,
             size,
@@ -120,7 +111,7 @@ public class ServicesPosts {
         }
     }
 
-    public Projects getPostById(Long id) {
+    public Project getPostById(Long id) {
         return projectRepo
             .findById(id)
             .orElseThrow(() ->

@@ -3,7 +3,7 @@ package com.DevProj.proj.auth.service;
 import com.DevProj.proj.auth.config.Jwt;
 import com.DevProj.proj.auth.exception.EmailAlreadyExistsException;
 import com.DevProj.proj.auth.exception.InvalidLoginException;
-import com.DevProj.proj.models.Users;
+import com.DevProj.proj.models.User;
 import com.DevProj.proj.repository.UserRepo;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,19 +39,15 @@ public class ServiceAuth {
             authenticationToken
         );
 
-        Users user = (Users) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
         String token = jwt.generateToken(user);
         return token;
     }
 
-    public Users saveUser(String username, String password, String email)
+    public User saveUser(String username, String password, String email)
         throws EmailAlreadyExistsException {
-        Users user = new Users(
-            username,
-            passwordEncoder.encode(password),
-            email
-        );
+        User user = new User(username, passwordEncoder.encode(password), email);
         try {
             userRepo.save(user);
         } catch (DataIntegrityViolationException e) {
@@ -61,7 +57,7 @@ public class ServiceAuth {
         return user;
     }
 
-    public Users findByEmail(String email) {
+    public User findByEmail(String email) {
         return userRepo.findByEmail(email).orElse(null);
     }
 
@@ -73,7 +69,7 @@ public class ServiceAuth {
         return true;
     }
 
-    public Users findById(Long id) {
+    public User findById(Long id) {
         return userRepo.findById(id).orElse(null);
     }
 }

@@ -1,6 +1,6 @@
 package com.DevProj.proj.auth.config;
 
-import com.DevProj.proj.models.Users;
+import com.DevProj.proj.models.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;
@@ -11,7 +11,7 @@ public class Jwt {
 
     private final String secretKey = "aaaaaaaaaaaaaaaaaa";
 
-    public String generateToken(Users user) {
+    public String generateToken(User user) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
             .withSubject(user.getUsername())

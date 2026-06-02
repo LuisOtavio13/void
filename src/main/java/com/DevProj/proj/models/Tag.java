@@ -21,7 +21,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    private List<Projects> projects;
+    private List<Project> projects;
 
     public Long getId() {
         return id;

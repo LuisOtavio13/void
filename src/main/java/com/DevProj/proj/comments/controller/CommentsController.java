@@ -3,13 +3,13 @@ package com.DevProj.proj.comments.controller;
 import com.DevProj.proj.comments.dto.request.CreateCommentRequest;
 import com.DevProj.proj.comments.service.CommentsService;
 import com.DevProj.proj.dtosGlobal.CommentsDTO;
-import com.DevProj.proj.models.Users;
+import com.DevProj.proj.models.User;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
@@ -24,19 +24,28 @@ public class CommentsController {
     @PostMapping
     public ResponseEntity<CommentsDTO> createComment(
         @Valid @RequestBody CreateCommentRequest request,
-        @AuthenticationPrincipal Users user
+        @AuthenticationPrincipal User user
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(commentsService.createComment(request, user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            commentsService.createComment(request, user)
+        );
     }
 
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<List<CommentsDTO>> getByProject(@PathVariable Long projectId) {
-        return ResponseEntity.ok(commentsService.getCommentsByProject(projectId));
+    public ResponseEntity<List<CommentsDTO>> getByProject(
+        @PathVariable Long projectId
+    ) {
+        return ResponseEntity.ok(
+            commentsService.getCommentsByProject(projectId)
+        );
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<CommentsDTO> like(@PathVariable Long id) {
-        return ResponseEntity.ok(commentsService.likeComment(id));
+    public ResponseEntity<CommentsDTO> like(
+        @PathVariable Long id,
+        @AuthenticationPrincipal User user
+    ) {
+        return ResponseEntity.ok(commentsService.likeComment(id, user));
     }
 
     @PostMapping("/{id}/dislike")
@@ -45,7 +54,10 @@ public class CommentsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Users user) {
+    public ResponseEntity<Void> delete(
+        @PathVariable Long id,
+        @AuthenticationPrincipal User user
+    ) {
         commentsService.deleteComment(id, user);
         return ResponseEntity.noContent().build();
     }

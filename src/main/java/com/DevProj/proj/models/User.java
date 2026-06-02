@@ -16,15 +16,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity(name = "Users")
-public class Users implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Users() {}
+    public User() {}
 
-    public Users(String username, String password, String email) {
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -57,10 +57,10 @@ public class Users implements UserDetails {
     private LocalDateTime updated_at;
 
     @OneToMany(mappedBy = "owner")
-    private List<Projects> projects;
+    private List<Project> projects;
 
     @OneToMany(mappedBy = "userId")
-    private List<Comments> comments;
+    private List<Comment> comments;
 
     @PrePersist
     protected void onCreate() {

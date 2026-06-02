@@ -7,7 +7,7 @@ import com.DevProj.proj.auth.dtoAuth.response.RegistrationResponse;
 import com.DevProj.proj.auth.exception.EmailAlreadyExistsException;
 import com.DevProj.proj.auth.service.ServiceAuth;
 import com.DevProj.proj.dtosGlobal.UserDTO;
-import com.DevProj.proj.models.Users;
+import com.DevProj.proj.models.User;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +45,7 @@ public class ControllerAuth {
             loginRequest.email(),
             loginRequest.password()
         );
-        Users user = serviceAuth.findByEmail(loginRequest.email());
+        User user = serviceAuth.findByEmail(loginRequest.email());
 
         return ResponseEntity.ok(
             new LoginResponse(
@@ -63,7 +63,7 @@ public class ControllerAuth {
     public ResponseEntity<RegistrationResponse> register(
         @Valid @RequestBody RegistrationRequest registroRequest
     ) throws EmailAlreadyExistsException {
-        Users user = serviceAuth.saveUser(
+        User user = serviceAuth.saveUser(
             registroRequest.username(),
             registroRequest.password(),
             registroRequest.email()
@@ -74,7 +74,7 @@ public class ControllerAuth {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDTO> getMe(@AuthenticationPrincipal Users user) {
+    public ResponseEntity<UserDTO> getMe(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(
             new UserDTO(
                 user.getRole().equals("ADMIN"),
@@ -88,7 +88,7 @@ public class ControllerAuth {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        Users foundUser = serviceAuth.findById(id);
+        User foundUser = serviceAuth.findById(id);
         if (foundUser == null) {
             return ResponseEntity.notFound().build();
         }

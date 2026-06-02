@@ -1,6 +1,6 @@
 package com.DevProj.proj.auth.config;
 
-import com.DevProj.proj.models.Users;
+import com.DevProj.proj.models.User;
 import com.DevProj.proj.repository.UserRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
             email != null &&
             SecurityContextHolder.getContext().getAuthentication() == null
         ) {
-            Users user = userRepo.findByEmail(email).orElse(null);
+            User user = userRepo.findByEmail(email).orElse(null);
             if (user != null) {
                 UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(

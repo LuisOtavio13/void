@@ -1,8 +1,8 @@
 package com.DevProj.proj.posts.controlerPosts;
 
-import com.DevProj.proj.models.Projects;
+import com.DevProj.proj.models.Project;
 import com.DevProj.proj.models.Tag;
-import com.DevProj.proj.models.Users;
+import com.DevProj.proj.models.User;
 import com.DevProj.proj.posts.dto.request.CreatePostRequest;
 import com.DevProj.proj.posts.dto.response.ProjectsReponse;
 import com.DevProj.proj.posts.dto.response.UserResponse;
@@ -32,14 +32,14 @@ public class ControllerPosts {
     @PostMapping("/new")
     public void createPost(
         @Valid @RequestBody CreatePostRequest post,
-        @AuthenticationPrincipal Users user
+        @AuthenticationPrincipal User user
     ) throws RuntimeException {
         servicesPosts.createPost(post, user);
     }
 
     @GetMapping
     public Page<ProjectsReponse> getAllPosts(
-        @AuthenticationPrincipal Users user,
+        @AuthenticationPrincipal User user,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
@@ -54,9 +54,9 @@ public class ControllerPosts {
     @GetMapping("/{id}")
     public ProjectsReponse getPostById(
         @PathVariable Long id,
-        @AuthenticationPrincipal Users user
+        @AuthenticationPrincipal User user
     ) {
-        final Projects post = servicesPosts.getPostById(id);
+        final Project post = servicesPosts.getPostById(id);
         boolean isOwner = false;
         if (user != null) {
             isOwner = post.getOwner().getId().equals(user.getId());

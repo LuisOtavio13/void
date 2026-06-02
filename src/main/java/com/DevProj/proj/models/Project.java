@@ -5,11 +5,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "Projects")
-public class Projects {
+@Table(name = "Projects")
+public class Project {
 
-    public Projects() {}
+    public Project() {}
 
-    public Projects(
+    public Project(
         String name,
         String github_url,
         String link_url,
@@ -18,7 +19,7 @@ public class Projects {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         List<Tag> tags,
-        Users owner
+        User owner
     ) {
         this.name = name;
         this.github_url = github_url;
@@ -65,7 +66,7 @@ public class Projects {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    private Users owner;
+    private User owner;
 
     @PrePersist
     protected void onCreate() {
@@ -79,7 +80,7 @@ public class Projects {
     }
 
     @OneToMany(mappedBy = "projectId")
-    private java.util.List<Comments> comments;
+    private java.util.List<Comment> comments;
 
     public Long getId() {
         return id;
@@ -145,11 +146,11 @@ public class Projects {
         this.updatedAt = updatedAt;
     }
 
-    public Users getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(Users owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 
@@ -161,11 +162,11 @@ public class Projects {
         this.tags = tags;
     }
 
-    public java.util.List<Comments> getComments() {
+    public java.util.List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(java.util.List<Comments> comments) {
+    public void setComments(java.util.List<Comment> comments) {
         this.comments = comments;
     }
 }
