@@ -89,6 +89,9 @@ public class ControllerAuth {
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         Users foundUser = serviceAuth.findById(id);
+        if (foundUser == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(
             new UserDTO(
                 foundUser.getRole().equals("ADMIN"),

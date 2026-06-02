@@ -84,7 +84,9 @@ public class ServicesPosts {
                     project.getOwner().getId(),
                     project.getOwner().getAvatar_url(),
                     project.getOwner().getBio(),
-                    false
+                    false,
+                    project.getOwner().getRole().equals("ADMIN"),
+                    project.getOwner().getCreated_at()
                 ),
                 project.getGithub_url(),
                 project.getLink_url(),

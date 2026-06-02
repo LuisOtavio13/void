@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   cookie.set("jwt", jwt, {
     httpOnly: true,
     secure: true,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
+    maxAge: 60 * 60 * 24 * 7,
     sameSite: "strict",
   });
   return new Response(null, { status: 200 });

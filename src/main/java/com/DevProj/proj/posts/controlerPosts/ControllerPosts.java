@@ -71,7 +71,9 @@ public class ControllerPosts {
                 post.getOwner().getId(),
                 post.getOwner().getAvatar_url(),
                 post.getOwner().getBio(),
-                false
+                false,
+                post.getOwner().getRole().equals("ADMIN"),
+                post.getOwner().getCreated_at()
             ),
             post.getGithub_url(),
             post.getLink_url(),

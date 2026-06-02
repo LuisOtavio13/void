@@ -1,7 +1,7 @@
-import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
-import SidebarHeaderBar from "@/components/sidebar-header-bar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import Footer from "@/shared/components/footer";
+import Navbar from "@/shared/components/navbar";
+import SidebarHeaderBar from "@/shared/components/sidebar-header-bar";
+import { SidebarInset, SidebarProvider } from "@/shared/components/ui/sidebar";
 
 export default function RootLayout({
   children,
