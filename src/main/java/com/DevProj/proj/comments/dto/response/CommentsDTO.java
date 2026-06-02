@@ -1,4 +1,4 @@
-package com.DevProj.proj.dtosGlobal;
+package com.DevProj.proj.comments.dto.response;
 
 import java.time.LocalDateTime;
 

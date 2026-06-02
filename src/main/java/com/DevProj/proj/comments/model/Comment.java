@@ -1,7 +1,7 @@
 package com.DevProj.proj.comments.model;
 
-import com.DevProj.proj.auth.model.User;
 import com.DevProj.proj.posts.model.Project;
+import com.DevProj.proj.user.model.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

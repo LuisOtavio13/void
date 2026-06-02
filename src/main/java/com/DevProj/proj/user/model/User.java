@@ -1,4 +1,4 @@
-package com.DevProj.proj.auth.model;
+package com.DevProj.proj.user.model;
 
 import com.DevProj.proj.comments.model.Comment;
 import com.DevProj.proj.posts.model.Project;

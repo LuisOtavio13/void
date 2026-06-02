@@ -1,7 +1,5 @@
-package com.DevProj.proj.posts.dto.response;
+package com.DevProj.proj.posts.dto.request;
 
-import com.DevProj.proj.posts.dto.request.TagRequest;
-import com.DevProj.proj.posts.dto.request.UserOwnerPost;
 import java.time.LocalDateTime;
 import java.util.List;
 

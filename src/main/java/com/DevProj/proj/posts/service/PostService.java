@@ -1,6 +1,5 @@
-package com.DevProj.proj.posts.serversePost;
+package com.DevProj.proj.posts.service;
 
-import com.DevProj.proj.auth.model.User;
 import com.DevProj.proj.posts.dto.request.CreatePostRequest;
 import com.DevProj.proj.posts.dto.response.ProjectsReponse;
 import com.DevProj.proj.posts.dto.response.UserResponse;
@@ -10,6 +9,7 @@ import com.DevProj.proj.posts.model.Project;
 import com.DevProj.proj.posts.model.Tag;
 import com.DevProj.proj.posts.repository.ProjectRepo;
 import com.DevProj.proj.posts.repository.TagRepo;
+import com.DevProj.proj.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,12 +20,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ServicesPosts {
+public class PostService {
 
     private final ProjectRepo projectRepo;
     private final TagRepo tagRepository;
 
-    public ServicesPosts(ProjectRepo projectRepo, TagRepo tagRepository) {
+    public PostService(ProjectRepo projectRepo, TagRepo tagRepository) {
         this.projectRepo = projectRepo;
         this.tagRepository = tagRepository;
     }

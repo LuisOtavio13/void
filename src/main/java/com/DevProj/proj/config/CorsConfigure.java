@@ -1,4 +1,4 @@
-package com.DevProj.proj;
+package com.DevProj.proj.config;
 
 import java.util.List;
 import org.springframework.context.annotation.Bean;

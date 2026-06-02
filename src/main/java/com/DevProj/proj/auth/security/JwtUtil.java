@@ -1,13 +1,13 @@
-package com.DevProj.proj.auth.config;
+package com.DevProj.proj.auth.security;
 
-import com.DevProj.proj.auth.model.User;
+import com.DevProj.proj.user.model.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Jwt {
+public class JwtUtil {
 
     private final String secretKey = "aaaaaaaaaaaaaaaaaa";
 

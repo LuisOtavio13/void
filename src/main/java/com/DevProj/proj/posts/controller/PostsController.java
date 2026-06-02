@@ -1,12 +1,12 @@
-package com.DevProj.proj.posts.controlerPosts;
+package com.DevProj.proj.posts.controller;
 
-import com.DevProj.proj.auth.model.User;
 import com.DevProj.proj.posts.dto.request.CreatePostRequest;
 import com.DevProj.proj.posts.dto.response.ProjectsReponse;
 import com.DevProj.proj.posts.dto.response.UserResponse;
 import com.DevProj.proj.posts.model.Project;
 import com.DevProj.proj.posts.model.Tag;
-import com.DevProj.proj.posts.serversePost.ServicesPosts;
+import com.DevProj.proj.posts.service.PostService;
+import com.DevProj.proj.user.model.User;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/posts")
-public class ControllerPosts {
+public class PostsController {
 
-    private final ServicesPosts servicesPosts;
+    private final PostService servicesPosts;
 
-    public ControllerPosts(ServicesPosts servicesPosts) {
+    public PostsController(PostService servicesPosts) {
         this.servicesPosts = servicesPosts;
     }
 

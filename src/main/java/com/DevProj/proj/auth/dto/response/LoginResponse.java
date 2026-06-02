@@ -1,4 +1,4 @@
-package com.DevProj.proj.auth.dtoAuth.response;
+package com.DevProj.proj.auth.dto.response;
 
 public record LoginResponse(
     String jwt,

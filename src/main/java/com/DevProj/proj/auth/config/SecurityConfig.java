@@ -1,6 +1,7 @@
 package com.DevProj.proj.auth.config;
 
-import com.DevProj.proj.auth.service.ServiceAuthConfig;
+import com.DevProj.proj.auth.security.filter.JwtFilter;
+import com.DevProj.proj.auth.service.AuthUserDetailsService;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,15 +20,15 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-public class ConfigAuth {
+public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final ServiceAuthConfig serviceAuthConfig;
+    private final AuthUserDetailsService serviceAuthConfig;
     private final CorsConfigurationSource corsConfigurationSource;
 
-    public ConfigAuth(
+    public SecurityConfig(
         JwtFilter jwtFilter,
-        ServiceAuthConfig serviceAuthConfig,
+        AuthUserDetailsService serviceAuthConfig,
         CorsConfigurationSource corsConfigurationSource
     ) {
         this.jwtFilter = jwtFilter;

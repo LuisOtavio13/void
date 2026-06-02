@@ -1,7 +1,8 @@
-package com.DevProj.proj.auth.config;
+package com.DevProj.proj.auth.security.filter;
 
-import com.DevProj.proj.auth.model.User;
-import com.DevProj.proj.auth.repository.UserRepo;
+import com.DevProj.proj.auth.security.JwtUtil;
+import com.DevProj.proj.user.model.User;
+import com.DevProj.proj.user.repository.UserRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +18,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserRepo userRepo;
-    private final Jwt jwt;
+    private final JwtUtil jwt;
 
-    public JwtFilter(UserRepo userRepo, Jwt jwt) {
+    public JwtFilter(UserRepo userRepo, JwtUtil jwt) {
         this.userRepo = userRepo;
         this.jwt = jwt;
     }

@@ -1,13 +1,13 @@
-package com.DevProj.proj.auth.controllerAuth;
+package com.DevProj.proj.auth.controller;
 
-import com.DevProj.proj.auth.dtoAuth.request.LoginRequest;
-import com.DevProj.proj.auth.dtoAuth.request.RegistrationRequest;
-import com.DevProj.proj.auth.dtoAuth.response.LoginResponse;
-import com.DevProj.proj.auth.dtoAuth.response.RegistrationResponse;
+import com.DevProj.proj.auth.dto.request.LoginRequest;
+import com.DevProj.proj.auth.dto.request.RegistrationRequest;
+import com.DevProj.proj.auth.dto.response.LoginResponse;
+import com.DevProj.proj.auth.dto.response.RegistrationResponse;
 import com.DevProj.proj.auth.exception.EmailAlreadyExistsException;
-import com.DevProj.proj.auth.model.User;
-import com.DevProj.proj.auth.service.ServiceAuth;
-import com.DevProj.proj.dtosGlobal.UserDTO;
+import com.DevProj.proj.auth.service.AuthService;
+import com.DevProj.proj.user.dto.UserDTO;
+import com.DevProj.proj.user.model.User;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/auth")
 @RestController
-public class ControllerAuth {
+public class AuthController {
 
-    private final ServiceAuth serviceAuth;
+    private final AuthService serviceAuth;
 
-    public ControllerAuth(ServiceAuth serviceAuth) {
+    public AuthController(AuthService serviceAuth) {
         this.serviceAuth = serviceAuth;
     }
 

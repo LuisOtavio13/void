@@ -1,6 +1,6 @@
-package com.DevProj.proj.auth.repository;
+package com.DevProj.proj.user.repository;
 
-import com.DevProj.proj.auth.model.User;
+import com.DevProj.proj.user.model.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,10 +1,10 @@
 package com.DevProj.proj.auth.service;
 
-import com.DevProj.proj.auth.config.Jwt;
 import com.DevProj.proj.auth.exception.EmailAlreadyExistsException;
 import com.DevProj.proj.auth.exception.InvalidLoginException;
-import com.DevProj.proj.auth.model.User;
-import com.DevProj.proj.auth.repository.UserRepo;
+import com.DevProj.proj.auth.security.JwtUtil;
+import com.DevProj.proj.user.model.User;
+import com.DevProj.proj.user.repository.UserRepo;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,18 +13,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ServiceAuth {
+public class AuthService {
 
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final Jwt jwt;
+    private final JwtUtil jwt;
 
-    public ServiceAuth(
+    public AuthService(
         UserRepo userRepo,
         PasswordEncoder passwordEncoder,
         AuthenticationManager authenticationManager,
-        Jwt jwt
+        JwtUtil jwt
     ) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;

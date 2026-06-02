@@ -1,4 +1,4 @@
-package com.DevProj.proj.dtosGlobal;
+package com.DevProj.proj.user.dto;
 
 public record UserDTO(
     boolean isAdmin,
