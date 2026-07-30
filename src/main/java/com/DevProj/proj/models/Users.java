@@ -32,6 +32,15 @@ public class Users implements UserDetails {
         this.role = "USER";
         this.avatar_url = "";
     }
+    public Users(String username, String password, String email, Long id) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.bio = "";
+        this.id = id;
+        this.role = "USER";
+        this.avatar_url = "";
+    }
 
     @Column(nullable = false)
     private String username;
