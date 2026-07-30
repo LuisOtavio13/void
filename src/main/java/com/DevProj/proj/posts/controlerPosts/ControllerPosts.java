@@ -9,6 +9,7 @@ import com.DevProj.proj.posts.dto.response.UserResponse;
 import com.DevProj.proj.posts.serversePost.ServicesPosts;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +31,16 @@ public class ControllerPosts {
     }
 
     @PostMapping("/new")
-    public void createPost(
+    public ResponseEntity<String> createPost(
         @Valid @RequestBody CreatePostRequest post,
         @AuthenticationPrincipal Users user
     ) throws RuntimeException {
-        servicesPosts.createPost(post, user);
+        try{
+            servicesPosts.createPost(post, user);    
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

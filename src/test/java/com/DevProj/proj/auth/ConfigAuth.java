@@ -114,15 +114,12 @@ public class ConfigAuth {
                 .andExpect(status().isBadRequest());
     }
 
-
     @Test
     void shouldReturn401UnauthorizedWhenAccessingMeWithoutAuthentication() throws Exception {
         mockMvc.perform(get("/auth/me")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden()); 
     }
-
-
 
     @Test
     void shouldReturnUserWhenSearchingByAuthenticatedID() throws Exception {

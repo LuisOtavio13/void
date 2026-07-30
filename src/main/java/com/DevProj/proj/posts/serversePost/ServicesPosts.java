@@ -63,6 +63,9 @@ public class ServicesPosts {
             tags,
             user
         );
+        if(projectRepo.existsById(pojeto.getId())){
+            throw new RuntimeException("Project with id = " + pojeto.getId() + " already exists");
+        }
         projectRepo.save(pojeto);
     }
 
