@@ -92,6 +92,39 @@ public class ConfigAuth {
     }
 
     @Test
+    void shouldReturn404NotFoundWhenUserDoesNotExist() throws Exception {
+        Long idInexistente = 99L;
+        when(serviceAuth.findById(idInexistente)).thenReturn(null);
+
+        mockMvc.perform(get("/auth/user/" + idInexistente)
+                .with(user("user_test").roles("ADMIN"))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturn400BadRequestWhenLoginCredentialsAreInvalid() throws Exception {
+        LoginRequest loginInvalido = new LoginRequest("errado@email.com", "senha");
+
+        when(serviceAuth.loginIsValid(anyString(), anyString())).thenReturn(false);
+
+        mockMvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginInvalido)))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    void shouldReturn401UnauthorizedWhenAccessingMeWithoutAuthentication() throws Exception {
+        mockMvc.perform(get("/auth/me")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden()); 
+    }
+
+
+
+    @Test
     void shouldReturnUserWhenSearchingByAuthenticatedID() throws Exception {
 
         Long id = 1L;
