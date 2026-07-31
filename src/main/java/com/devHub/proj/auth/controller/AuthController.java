@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.devHub.proj.auth.config.Jwt;
 import com.devHub.proj.auth.dto.request.LoginRequest;
 import com.devHub.proj.auth.dto.request.RegistroRequest;
 import com.devHub.proj.auth.dto.response.LoginResponse;
@@ -29,9 +30,11 @@ import com.devHub.proj.models.User;
 public class AuthController {
 
     private final AuthService serviceAuth;
+    private final Jwt jwt;
 
-    public AuthController(AuthService serviceAuth) {
+    public AuthController(AuthService serviceAuth, Jwt jwt) {
         this.serviceAuth = serviceAuth;
+        this.jwt = jwt;
     }
 
     @PostMapping("/login")
@@ -79,7 +82,7 @@ public class AuthController {
             .buildAndExpand(user.getId())
             .toUri();
         return ResponseEntity.created(uri).body(
-            new RegistroResponse(user.getName(), user.getUsername())
+            new RegistroResponse(user.getName(), user.getUsername(), jwt.generateToken(user) )
         );
     }
 
