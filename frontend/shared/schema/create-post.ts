@@ -10,7 +10,7 @@ export const createPostSchema = z.object({
     .min(1, "conteudo pode ter entre 1 e 5000 caracteres")
     .max(5000, "conteudo pode ter entre 1 e 5000 caracteres"),
 
-  tags: z.array(z.string().min(2)).optional(),
+  tags: z.array(z.string().min(2).max(100, "cada tag pode ter entre 2 e 100 caracteres")).max(10, "tags podem ter entre 1 e 10 tags"),
   githubUrl: z.string().optional(),
   demoUrl: z.string().optional(),
 });

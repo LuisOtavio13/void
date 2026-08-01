@@ -137,7 +137,7 @@ export default function Navbar() {
       const response = await createPostService(post, token);
       if (response.status === 200) {
         toast.success("Post criado com sucesso!");
-        router.push("/home");
+        router.push("/pages/home");
       }
     } catch (error: unknown) {
       if (error instanceof errCreatePost) toast.error(error.message);

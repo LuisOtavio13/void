@@ -43,7 +43,7 @@ export function HomePageIndex() {
               </div>
 
               <CardTitle className="text-xl font-bold tracking-tight cursor-pointer hover:underline">
-                <Link href={`/${card.user.id}/${card.id}`}>{card.title}</Link>
+                <Link href={`/posts/${card.user.id}/${card.id}`}>{card.title}</Link>
               </CardTitle>
             </CardPost.Header>
             <CardPost.Body>
