@@ -12,21 +12,49 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { FaEdit } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/shared/context/user";
-function Item({ text, icon }: { text: string; icon: React.ReactNode }) {
+import { CreatePost } from "../create-post";
+import { toast } from "sonner";
+import { createPostSchema, CreatePostSchema } from "@/shared/schema/create-post";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Dialog } from "../ui/dialog";
+function Item({ text, icon, onClick }: { text: string; icon: React.ReactNode; onClick?: () => void }) {
   return (
-    <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+    <DropdownMenuItem className="cursor-pointer flex items-center gap-2" onClick={onClick}>
       {icon}
       {text}
     </DropdownMenuItem>
   );
 }
-export function DropDownPost({ userID }: { userID: number }) {
+export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl }: { userID: number; title: string; content: string; tags?: string[]; demoUrl?: string; githubUrl?: string }) {
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
   });
-  const isOwner = user?.id === userID;
+  const [editMode, setEditMode] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<CreatePostSchema>({
+    resolver: zodResolver(createPostSchema),
+    defaultValues: {
+      content: content,
+      title: title,
+      tags: tags || [],
+      demoUrl: demoUrl || "",
+      githubUrl: githubUrl || "",
+    },
+  });
+  const isOwner = String(user?.id) === String(userID);
   console.log(isOwner + " " + userID + " " + user?.id);
+  async function onSubmit(post: CreatePostSchema) {
+    console.log(post);
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -51,7 +79,18 @@ export function DropDownPost({ userID }: { userID: number }) {
         <DropdownMenuGroup>
           <Item text="Compartilhar" icon={<FaShare />} />
           <Item text="ID" icon={<HiOutlineDotsHorizontal />} />
-          {isOwner && <Item text="Editar" icon={<FaEdit />} />}
+          {isOwner && <Item text="Editar" icon={<FaEdit />} onClick={() =>
+            setEditMode(true)} />}
+          {editMode && (
+             <Dialog open={editMode} onOpenChange={setEditMode}><CreatePost
+            onSubmit={handleSubmit(onSubmit)}
+            setValue={setValue}
+            watch={watch}
+            register={register}
+            reset={reset}
+            errors={errors}
+            EhEdit={true}
+          /></Dialog >)}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

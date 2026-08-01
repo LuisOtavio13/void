@@ -37,6 +37,7 @@ interface CreatePostProps {
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   reset: UseFormReset<CreatePostSchema>;
   errors: FieldErrors<CreatePostSchema>;
+  EhEdit?: boolean;
 }
 
 export function CreatePost({
@@ -46,6 +47,7 @@ export function CreatePost({
   errors,
   register,
   reset,
+  EhEdit = false,
 }: CreatePostProps) {
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -90,7 +92,7 @@ export function CreatePost({
       <form onSubmit={onSubmit}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold tracking-tight">
-            Criar postagem
+            {EhEdit ? "Editar Postagem" : "Criar Postagem"}
           </DialogTitle>
 
           <p className="text-sm text-zinc-400">
@@ -286,7 +288,7 @@ export function CreatePost({
             type="submit"
             className="bg-white text-black hover:bg-zinc-200"
           >
-            Criar post
+            {EhEdit ? "Atualizar" : "Criar"}
           </Button>
         </DialogFooter>
       </form>

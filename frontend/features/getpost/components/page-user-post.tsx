@@ -22,14 +22,29 @@ export function PageHeader({ children }: { children: React.ReactNode }) {
 export function PageTitle({
   title,
   ownerPost,
+  content,
+  tags,
+  demoUrl,
+  githubUrl,
 }: {
   title: string;
   ownerPost: string;
+  content: string;
+  tags?: string[];
+  demoUrl?: string;
+  githubUrl?: string;
 }) {
   return (
     <div className="flex items-start justify-between gap-4">
       <h1 className="text-4xl font-bold tracking-tight text-white">{title}</h1>
-      <DropDownPost userID={Number(ownerPost)} />
+      <DropDownPost
+        userID={Number(ownerPost)}
+        title={title}
+        content={content}
+        tags={tags}
+        demoUrl={demoUrl}
+        githubUrl={githubUrl}
+      />
     </div>
   );
 }

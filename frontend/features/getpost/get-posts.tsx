@@ -20,7 +20,14 @@ export async function GetPosts({ user, post }: PostPage) {
     <div>
       <div className="border-b border-border">
         <PageHeader>
-          <PageTitle title={postData.title} ownerPost={user} />
+          <PageTitle
+            title={postData.title}
+            ownerPost={user}
+            content={postData.description}
+            tags={postData.tags}
+            demoUrl={postData.demoLink}
+            githubUrl={postData.githubLink}
+          />
           <UserDatails
             photo={userData.photo}
             name={userData.name}

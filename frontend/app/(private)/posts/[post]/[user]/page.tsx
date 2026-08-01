@@ -14,7 +14,7 @@ interface PostPageProps {
 export default async function PostPage({ params }: PostPageProps) {
   const { user: ownerPost, post } = await params;
 
-  return <GetPosts user={ownerPost} post={post} />;
+  return <GetPosts user={post} post={ownerPost} />;
 }
 
 export async function generateMetadata({
