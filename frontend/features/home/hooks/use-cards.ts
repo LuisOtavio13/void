@@ -6,13 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/shared/context/user";
 
 export function useCards() {
-  const { data: user } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
   });
 
   const [cards, setCards] = useState<CardItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingA, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
 
@@ -84,6 +84,6 @@ export function useCards() {
   useEffect(() => {
     pageRef.current = page;
   }, [page]);
-
+  const loading = isLoading || loadingA;
   return { cards, loading, loadCards, pageRef, hasMore };
 }

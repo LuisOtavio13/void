@@ -78,7 +78,7 @@ interface HeaderBarItens {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { data: user } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
   });
@@ -152,6 +152,46 @@ export default function Navbar() {
     queryClient.setQueryData(["user"], null);
     router.push("/login");
   };
+    if (isLoading) {
+    return (
+      <aside className="w-64 h-screen flex flex-col border-r border-sidebar-border bg-sidebar p-5 justify-between">
+        {/* Topo / Header Skeleton */}
+        <div className="flex flex-col gap-5 w-full">
+          <div className="flex flex-col gap-2 py-2 border-b border-sidebar-border pb-5">
+            <div className="h-6 w-24 bg-sidebar-accent rounded-md animate-pulse" />
+            <div className="h-3 w-36 bg-sidebar-accent/60 rounded-md animate-pulse" />
+          </div>
+
+          {/* Itens do Menu Skeleton (4 Itens correspondentes) */}
+          <div className="flex flex-col gap-3 pt-2">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="flex items-center gap-3 h-12 px-4 rounded-2xl bg-sidebar-accent/40 animate-pulse">
+                <div className="h-5 w-5 bg-sidebar-accent rounded-full" />
+                <div className="h-4 w-20 bg-sidebar-accent rounded-md" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Rodapé / Footer Skeleton */}
+        <div className="flex flex-col gap-4 w-full">
+          {/* Botão Criar Post */}
+          <div className="w-full h-11 bg-sidebar-accent rounded-2xl animate-pulse" />
+          
+          {/* Card do GitHub */}
+          <div className="w-full h-32 border border-sidebar-border rounded-3xl p-4 flex flex-col justify-between bg-sidebar-accent/20 animate-pulse">
+            <div className="space-y-2">
+              <div className="h-4 w-28 bg-sidebar-accent rounded-md" />
+              <div className="h-3 w-full bg-sidebar-accent/60 rounded-md" />
+            </div>
+            <div className="h-9 w-full bg-sidebar-accent rounded-2xl" />
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
+
   return (
     <>
       <Toaster />
