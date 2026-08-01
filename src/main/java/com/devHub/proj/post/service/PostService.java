@@ -3,6 +3,8 @@ package com.devHub.proj.post.service;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -91,6 +93,34 @@ public class PostService {
                 project.getUpdatedAt()
             );
         });
+    }
+
+    public Project updatePost(Long id, CreatePostRequest post) throws RuntimeException {
+        validatePost(post);
+        Project existingProject = projectRepo
+            .findById(id)
+            .orElseThrow(() ->
+                new NotFoundException("Project with id = " + id)
+            );
+
+        List<Tag> tags = post
+            .tags()
+            .stream()
+            .map(t ->
+                tagRepository
+                    .findByName(t.name())
+                    .orElseGet(() -> tagRepository.save(new Tag(t.name())))
+            )
+            .collect(Collectors.toList());
+
+        existingProject.setName(post.name());
+        existingProject.setDescription(post.description());
+        existingProject.setGithub_url(post.LinkGithub());
+        existingProject.setLink_url(post.linkProjeto());
+        existingProject.setTags(tags);
+        existingProject.setUpdatedAt(LocalDateTime.now());
+
+        return projectRepo.save(existingProject);
     }
 
     private void validatePost(CreatePostRequest post) throws RuntimeException {

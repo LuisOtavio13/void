@@ -32,12 +32,11 @@ public class PostController {
 
     @PostMapping("/new")
     public ResponseEntity<String> createPost(
-        @Valid @RequestBody CreatePostRequest post,
-        @AuthenticationPrincipal User user
-    ) throws RuntimeException {
-        try{
-            servicesPosts.createPost(post, user);    
-        }catch(RuntimeException e){
+            @Valid @RequestBody CreatePostRequest post,
+            @AuthenticationPrincipal User user) throws RuntimeException {
+        try {
+            servicesPosts.createPost(post, user);
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().build();
@@ -45,10 +44,9 @@ public class PostController {
 
     @GetMapping
     public Page<ProjectsResponse> getAllPosts(
-        @AuthenticationPrincipal User user,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size
-    ) {
+            @AuthenticationPrincipal User user,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         return servicesPosts.getAllPosts(user, page, size);
     }
 
@@ -59,33 +57,45 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ProjectsResponse getPostById(
-        @PathVariable Long id,
-        @AuthenticationPrincipal User user
-    ) {
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user) {
         final Project post = servicesPosts.getPostById(id);
         boolean isOwner = false;
         if (user != null) {
             isOwner = post.getOwner().getId().equals(user.getId());
         }
         return new ProjectsResponse(
-            post.getName(),
-            post.getId(),
-            post.getDescription(),
-            post.getTags().stream().map(tag -> tag.getName()).toList(),
-            new UserResponse(
-                post.getOwner().getName(),
-                post.getOwner().getId(),
-                post.getOwner().getAvatar_url(),
-                post.getOwner().getBio(),
-                false,
-                post.getOwner().getRole().equals("ADMIN"),
-                post.getOwner().getCreated_at()
-            ),
-            post.getGithub_url(),
-            post.getLink_url(),
-            isOwner,
-            post.getCreatedAt(),
-            post.getUpdatedAt()
-        );
+                post.getName(),
+                post.getId(),
+                post.getDescription(),
+                post.getTags().stream().map(tag -> tag.getName()).toList(),
+                new UserResponse(
+                        post.getOwner().getName(),
+                        post.getOwner().getId(),
+                        post.getOwner().getAvatar_url(),
+                        post.getOwner().getBio(),
+                        false,
+                        post.getOwner().getRole().equals("ADMIN"),
+                        post.getOwner().getCreated_at()),
+                post.getGithub_url(),
+                post.getLink_url(),
+                isOwner,
+                post.getCreatedAt(),
+                post.getUpdatedAt());
+    }
+
+    @PostMapping("/{id}/update")
+    public ResponseEntity<String> updatePost(
+            @PathVariable Long id,
+            @Valid @RequestBody CreatePostRequest post,
+            @AuthenticationPrincipal User user) throws Exception {
+
+        final Project existingPost = servicesPosts.getPostById(id);
+        if (!existingPost.getOwner().getId().equals(user.getId())) {
+            return ResponseEntity.status(403).body("You are not authorized to update this post.");
+        }
+        servicesPosts.updatePost(id, post);
+
+        return ResponseEntity.ok().build();
     }
 }

@@ -27,7 +27,7 @@ function Item({ text, icon, onClick }: { text: string; icon: React.ReactNode; on
     </DropdownMenuItem>
   );
 }
-export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl }: { userID: number; title: string; content: string; tags?: string[]; demoUrl?: string; githubUrl?: string }) {
+export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl, id }: { userID: number; title: string; content: string; tags?: string[]; demoUrl?: string; githubUrl?: string; id: number }) {
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
@@ -53,13 +53,42 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl 
   const isOwner = String(user?.id) === String(userID);
   console.log(isOwner + " " + userID + " " + user?.id);
   async function onSubmit(post: CreatePostSchema) {
-    console.log(post);
+    try {
+      const sla = {
+        name: post.title,
+        description: post.content,
+        LinkGithub: post.githubUrl,
+        linkProjeto: post.demoUrl,
+        tags: post.tags?.map((tag) => {
+          return { name: tag };
+        }),
+      };
+      console.log(sla);
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `posts/${id}/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.jwt}`,
+        },
+        body: JSON.stringify(sla),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        toast.error(error.message || "Erro ao atualizar o post. Tente novamente.");
+        return;
+      }
+      toast.success("Post atualizado com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao atualizar o post. Tente novamente.");
+    }
   }
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          className="
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className="
             flex h-10 w-10 items-center justify-center
             rounded-xl border border-zinc-800
             bg-zinc-900/80
@@ -70,29 +99,31 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl 
             hover:text-white
             active:scale-95
           "
-        >
-          <FiMenu size={20} />
-        </button>
-      </DropdownMenuTrigger>
+          >
+            <FiMenu size={20} />
+          </button>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-48  text-zinc-200">
-        <DropdownMenuGroup>
-          <Item text="Compartilhar" icon={<FaShare />} />
-          <Item text="ID" icon={<HiOutlineDotsHorizontal />} />
-          {isOwner && <Item text="Editar" icon={<FaEdit />} onClick={() =>
-            setEditMode(true)} />}
-          {editMode && (
-             <Dialog open={editMode} onOpenChange={setEditMode}><CreatePost
-            onSubmit={handleSubmit(onSubmit)}
-            setValue={setValue}
-            watch={watch}
-            register={register}
-            reset={reset}
-            errors={errors}
-            EhEdit={true}
-          /></Dialog >)}
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <DropdownMenuContent align="end" className="w-48  text-zinc-200">
+          <DropdownMenuGroup>
+            <Item text="Compartilhar" icon={<FaShare />} />
+            <Item text="ID" icon={<HiOutlineDotsHorizontal />} />
+            {isOwner && <Item text="Editar" icon={<FaEdit />} onClick={() =>
+              setEditMode(true)} />}
+
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Dialog open={editMode} onOpenChange={setEditMode}>
+        <CreatePost
+          onSubmit={handleSubmit(onSubmit)}
+          setValue={setValue}
+          watch={watch}
+          register={register}
+          reset={reset}
+          errors={errors}
+          EhEdit={true} />
+      </Dialog >
+    </>
   );
 }

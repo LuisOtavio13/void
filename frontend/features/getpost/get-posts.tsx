@@ -27,6 +27,7 @@ export async function GetPosts({ user, post }: PostPage) {
             tags={postData.tags}
             demoUrl={postData.demoLink}
             githubUrl={postData.githubLink}
+            id={postData.id}
           />
           <UserDatails
             photo={userData.photo}

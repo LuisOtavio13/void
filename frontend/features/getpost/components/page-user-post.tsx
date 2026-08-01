@@ -25,6 +25,7 @@ export function PageTitle({
   content,
   tags,
   demoUrl,
+  id,
   githubUrl,
 }: {
   title: string;
@@ -33,6 +34,7 @@ export function PageTitle({
   tags?: string[];
   demoUrl?: string;
   githubUrl?: string;
+  id: number;
 }) {
   return (
     <div className="flex items-start justify-between gap-4">
@@ -42,6 +44,7 @@ export function PageTitle({
         title={title}
         content={content}
         tags={tags}
+        id={id}
         demoUrl={demoUrl}
         githubUrl={githubUrl}
       />

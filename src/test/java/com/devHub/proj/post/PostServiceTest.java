@@ -102,4 +102,37 @@ public class PostServiceTest {
         
     }
 
+    @Test
+    void shouldUpdateProjectSuccessfully(){
+        Long id = 1L;
+        User owner = new User("username", "password", "email", id);
+        Project existingProject = new Project("Nome Antigo", "github_antigo", "link_antigo", "Descricao Antiga", 0, LocalDateTime.now(), LocalDateTime.now(), List.of(), owner);
+
+        CreatePostRequest request = new CreatePostRequest(
+                "DevHub Atualizado",
+                "https://github.com-novo",
+                "https://devhub-novo.com",
+                "Nova descricao do projeto",
+                List.of(new TagRequest("Java")));
+
+        when(projectRepo.findById(id)).thenReturn(Optional.of(existingProject));
+        when(tRepo.findByName("Java")).thenReturn(Optional.of(new Tag("Java")));
+        when(projectRepo.save(any(Project.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        
+        Project result = servicesPosts.updatePost(id, request);
+
+        
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals("DevHub Atualizado", result.getName());
+        Assertions.assertEquals("Nova descricao do projeto", result.getDescription());
+        Assertions.assertEquals("https://github.com-novo", result.getGithub_url());
+        Assertions.assertEquals("https://devhub-novo.com", result.getLink_url());
+        Assertions.assertEquals(1, result.getTags().size());
+        Assertions.assertEquals("Java", result.getTags().get(0).getName());
+        Assertions.assertNotNull(result.getUpdatedAt());
+
+        verify(projectRepo).findById(id);
+        verify(projectRepo).save(existingProject);
+    } 
 }
