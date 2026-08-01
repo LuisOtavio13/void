@@ -18,6 +18,7 @@ import com.devHub.proj.models.User;
 import com.devHub.proj.post.dto.request.CreatePostRequest;
 import com.devHub.proj.post.dto.response.ProjectsResponse;
 import com.devHub.proj.post.dto.response.UserResponse;
+import com.devHub.proj.post.exception.NotFoundException;
 import com.devHub.proj.post.service.PostService;
 
 @RestController
@@ -51,7 +52,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) {
+    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) throws NotFoundException{
         servicesPosts.deletePost(id, user);
     }
 

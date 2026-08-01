@@ -13,12 +13,13 @@ import { FaEdit } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/shared/context/user";
 import { CreatePost } from "../create-post";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 import { createPostSchema, CreatePostSchema } from "@/shared/schema/create-post";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Dialog } from "../ui/dialog";
+import { useRouter } from "next/router";
 function Item({ text, icon, onClick }: { text: string; icon: React.ReactNode; onClick?: () => void }) {
   return (
     <DropdownMenuItem className="cursor-pointer flex items-center gap-2" onClick={onClick}>
@@ -83,6 +84,27 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
       toast.error("Erro ao atualizar o post. Tente novamente.");
     }
   }
+  const roter = useRouter();
+  async function handleDelete() {
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `posts/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user?.jwt}`,
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        toast.error(error.message || "Erro ao excluir o post. Tente novamente.");
+        return;
+      }
+      toast.success("Post excluído com sucesso!");
+      roter.push("/pages/home");
+    } catch (error) {
+      toast.error("Erro ao excluir o post. Erro: "+ error);
+    }
+  }
   return (
     <>
       <DropdownMenu>
@@ -108,9 +130,16 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
           <DropdownMenuGroup>
             <Item text="Compartilhar" icon={<FaShare />} />
             <Item text="ID" icon={<HiOutlineDotsHorizontal />} />
-            {isOwner && <Item text="Editar" icon={<FaEdit />} onClick={() =>
-              setEditMode(true)} />}
+            {isOwner && (
+              <>
+              <Item text="Editar" icon={<FaEdit />} onClick={() =>
+              setEditMode(true)} />
 
+              <Item text="Excluir" icon={<FiShare />} onClick={() => {
+                  handleDelete();
+              }} />
+              </>
+              )}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

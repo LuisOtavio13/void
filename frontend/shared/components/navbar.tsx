@@ -194,7 +194,7 @@ export default function Navbar() {
 
   return (
     <>
-      <Toaster />
+       
       <Sidebar className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
         <SidebarHeader className="border-b border-sidebar-border p-5">
           <div className="flex flex-col gap-1">
