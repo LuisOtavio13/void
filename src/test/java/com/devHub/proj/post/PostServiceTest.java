@@ -1,14 +1,16 @@
 package com.devHub.proj.post;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.devHub.proj.models.Like;
 import com.devHub.proj.models.Project;
 import com.devHub.proj.models.Tag;
 import com.devHub.proj.models.User;
@@ -78,7 +81,7 @@ public class PostServiceTest {
         List<Tag> tags = List.of(new Tag("sla")); 
         List<Project> projects = List.of(new Project("Name", "github_url", "link_url",
             "description",
-            0, 
+            new HashSet<Like>(),
             LocalDateTime.now(), 
             LocalDateTime.now(), 
             tags, owner));
@@ -110,7 +113,7 @@ public class PostServiceTest {
     @Test
     void shouldUpdateProjectSuccessfully(){
         Long id = 1L;
-        Project existingProject = new Project("Nome Antigo", "github_antigo", "link_antigo", "Descricao Antiga", 0, LocalDateTime.now(), LocalDateTime.now(), List.of(), owner);
+            Project existingProject = new Project("Nome Antigo", "github_antigo", "link_antigo", "Descricao Antiga", new HashSet<>(), LocalDateTime.now(), LocalDateTime.now(), List.of(), owner);
 
         CreatePostRequest request = new CreatePostRequest(
                 "DevHub Atualizado",
@@ -144,7 +147,7 @@ public class PostServiceTest {
         Long id = 1L;
         Project existingProject = new Project("Nome", "github_url", "link_url",
             "description",
-            0,
+            new HashSet<Like>(),
             LocalDateTime.now(),
             LocalDateTime.now(),
             List.of(), owner);

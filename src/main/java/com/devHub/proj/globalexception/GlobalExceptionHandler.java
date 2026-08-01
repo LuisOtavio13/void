@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.devHub.proj.auth.exception.EmailAlreadyExistsException;
 import com.devHub.proj.auth.exception.InvalidLoginException;
+import com.devHub.proj.post.exception.NotFoundException;
 import com.devHub.proj.post.exception.PostLenException;
 
 @ControllerAdvice
@@ -45,5 +46,15 @@ public class GlobalExceptionHandler {
         response.put("date", LocalDateTime.now().toString());
         response.put("status", HttpStatus.BAD_REQUEST.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<HashMap<String, String>> handleNotFoundException(
+        NotFoundException e
+    ) {
+        HashMap<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        response.put("date", LocalDateTime.now().toString());
+        response.put("status", HttpStatus.NOT_FOUND.toString());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }

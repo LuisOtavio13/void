@@ -19,7 +19,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Dialog } from "../ui/dialog";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/navigation';
+
 function Item({ text, icon, onClick }: { text: string; icon: React.ReactNode; onClick?: () => void }) {
   return (
     <DropdownMenuItem className="cursor-pointer flex items-center gap-2" onClick={onClick}>
@@ -33,6 +34,7 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
     queryKey: ["user"],
     queryFn: getUser,
   });
+    const roter = useRouter();
   const [editMode, setEditMode] = useState(false);
   const {
     register,
@@ -84,7 +86,7 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
       toast.error("Erro ao atualizar o post. Tente novamente.");
     }
   }
-  const roter = useRouter();
+
   async function handleDelete() {
     try {
       const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `posts/${id}`, {

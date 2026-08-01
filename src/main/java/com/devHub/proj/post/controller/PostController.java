@@ -80,6 +80,9 @@ public class PostController {
                         post.getOwner().getCreated_at()),
                 post.getGithub_url(),
                 post.getLink_url(),
+
+                post.getLikesCount(),
+                post.getLikes().stream().anyMatch(like -> like.getUser().getId().equals(user != null ? user.getId() : null)),
                 isOwner,
                 post.getCreatedAt(),
                 post.getUpdatedAt());

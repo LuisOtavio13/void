@@ -2,6 +2,8 @@ package com.devHub.proj.post.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.devHub.proj.models.Like;
 import com.devHub.proj.models.Project;
 import com.devHub.proj.models.Tag;
 import com.devHub.proj.models.User;
@@ -54,7 +57,7 @@ public class PostService {
             post.LinkGithub(),
             post.linkProjeto(),
             post.description(),
-            0,
+            new HashSet<Like>(),
             LocalDateTime.now(),
             LocalDateTime.now(),
             tags,
@@ -88,6 +91,9 @@ public class PostService {
                 ),
                 project.getGithub_url(),
                 project.getLink_url(),
+                project.getLikesCount(),
+                project.getLikes().stream().anyMatch(like -> like.getUser().getId().equals(user != null ? user.getId() : null)),
+            
                 project.getOwner().getId().equals(user.getId()),
                 project.getCreatedAt(),
                 project.getUpdatedAt()

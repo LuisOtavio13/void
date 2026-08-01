@@ -2,7 +2,10 @@ package com.devHub.proj.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Projects")
 public class Project {
@@ -14,7 +17,7 @@ public class Project {
         String github_url,
         String link_url,
         String description,
-        int likes,
+        Set<Like> likes,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         List<Tag> tags,
@@ -46,8 +49,9 @@ public class Project {
     @Column(columnDefinition = "text")
     private String description;
 
-    @Column(nullable = false)
-    private int likes;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Like> likes = new HashSet<Like>();
+
 
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
@@ -62,7 +66,8 @@ public class Project {
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<Tag> tags;
-
+    @Column(name = "likes_count", nullable = false)
+    private int likesCount = 0;
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
@@ -121,13 +126,22 @@ public class Project {
         this.description = description;
     }
 
-    public int getLikes() {
+    public Set<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(Set<Like> likes) {
         this.likes = likes;
     }
+    public void addLike(Like like) {
+    this.likes.add(like);
+    like.setProject(this); 
+    this.likesCount = this.likes.size(); 
+}
+public void removeLike(Like like) {
+    this.likes.remove(like);
+    this.likesCount = this.likes.size();
+}
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -167,5 +181,13 @@ public class Project {
 
     public void setComments(java.util.List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
     }
 }
