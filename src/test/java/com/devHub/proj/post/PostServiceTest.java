@@ -1,6 +1,8 @@
 package com.devHub.proj.post;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +27,7 @@ import com.devHub.proj.models.User;
 import com.devHub.proj.post.dto.request.CreatePostRequest;
 import com.devHub.proj.post.dto.request.TagRequest;
 import com.devHub.proj.post.dto.response.ProjectsResponse;
+import com.devHub.proj.post.exception.NotFoundException;
 import com.devHub.proj.post.service.PostService;
 import com.devHub.proj.repository.ProjectRepo;
 import com.devHub.proj.repository.TagRepo;
@@ -37,6 +40,9 @@ public class PostServiceTest {
 
     @Mock
     private TagRepo tRepo;
+    
+    
+    private User owner = new User("username", "password", "email", 1L);
 
     @InjectMocks
     private PostService servicesPosts;
@@ -67,7 +73,6 @@ public class PostServiceTest {
 
     @Test
     private void shouldGetProjectSuccessfully(){
-        User owner = new User("username", "password", "email", 1L);
         
 
         List<Tag> tags = List.of(new Tag("sla")); 
@@ -105,7 +110,6 @@ public class PostServiceTest {
     @Test
     void shouldUpdateProjectSuccessfully(){
         Long id = 1L;
-        User owner = new User("username", "password", "email", id);
         Project existingProject = new Project("Nome Antigo", "github_antigo", "link_antigo", "Descricao Antiga", 0, LocalDateTime.now(), LocalDateTime.now(), List.of(), owner);
 
         CreatePostRequest request = new CreatePostRequest(
@@ -134,5 +138,33 @@ public class PostServiceTest {
 
         verify(projectRepo).findById(id);
         verify(projectRepo).save(existingProject);
-    } 
+    }
+    @Test
+    void shouldDeleteProjectSuccessfully() {
+        Long id = 1L;
+        Project existingProject = new Project("Nome", "github_url", "link_url",
+            "description",
+            0,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            List.of(), owner);
+
+        when(projectRepo.findById(id)).thenReturn(Optional.of(existingProject));
+        servicesPosts.deletePost(id,owner );
+
+        verify(projectRepo).deleteById(id);
+    }
+    @Test
+    void shouldThrowNotFoundExceptionWhenDeletingNonExistentProject() {
+        Long id = 1L;
+
+        when(projectRepo.findById(id)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NotFoundException.class, () -> servicesPosts.deletePost(id, owner));
+
+        verify(projectRepo).findById(id);
+        verify(projectRepo, never()).deleteById(id);
+    }
+    
+    
 }

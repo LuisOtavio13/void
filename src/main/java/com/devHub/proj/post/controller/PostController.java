@@ -51,8 +51,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
-        servicesPosts.deletePost(id);
+    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        servicesPosts.deletePost(id, user);
     }
 
     @GetMapping("/{id}")

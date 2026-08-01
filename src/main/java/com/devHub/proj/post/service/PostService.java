@@ -138,8 +138,12 @@ public class PostService {
         }
     }
 
-    public void deletePost(Long id) {
+    public void deletePost(Long id, User user) throws NotFoundException {
         try {
+            Project project = getPostById(id);
+            if (!project.getOwner().getId().equals(user.getId())) {
+                throw new NotFoundException("Project with id = " + id);
+            }
             projectRepo.deleteById(id);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("Project with id = " + id);
