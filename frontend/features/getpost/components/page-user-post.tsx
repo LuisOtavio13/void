@@ -11,6 +11,8 @@ import {
   BreadcrumbSeparator,
 } from "@/shared/components/ui/breadcrumb";
 import Link from "next/link";
+import { formatDistanceToNow, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export function PageHeader({ children }: { children: React.ReactNode }) {
   return (
@@ -55,13 +57,35 @@ export function UserDatails({
   photo,
   name,
   createdAt,
+  updatedAt,
 }: {
   photo: string;
   name: string;
   createdAt: string;
+  updatedAt: string;
 }) {
+  const dataCriacao = parseISO(createdAt);
+  const dataAtualizacao = parseISO(updatedAt);
+  
+  
+  const isUpdated = (dataAtualizacao.getTime() - dataCriacao.getTime()) > 10000;
+
+  
+  const dataAlvo = isUpdated ? dataAtualizacao : dataCriacao;
+
+ 
+  const dia = String(dataAlvo.getDate()).padStart(2, '0');
+  const mes = String(dataAlvo.getMonth() + 1).padStart(2, '0');
+  const ano = dataAlvo.getFullYear();
+  const dataFormatada = `${dia}/${mes}/${ano}`;
+
+  
+  const atualizacaoFormatada = isUpdated 
+    ? formatDistanceToNow(dataAtualizacao, { addSuffix: true, locale: ptBR }) 
+    : null;
+
   return (
-    <div className="flex items-center gap-3 text-sm text-zinc-400">
+   <div className="flex items-center gap-3 text-sm text-zinc-400">
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarImage src={photo} alt={name} />
@@ -70,10 +94,14 @@ export function UserDatails({
         <span>{name}</span>
       </div>
       <span>•</span>
-      <span>{new Date(createdAt).toLocaleDateString("pt-BR")}</span>
+      <span className="tabular-nums">
+        {dataFormatada}
+        {atualizacaoFormatada && ` • Atualizado ${atualizacaoFormatada}`}
+      </span>
     </div>
   );
 }
+
 export function PageBreadcrumb({
   name,
   title,

@@ -13,3 +13,19 @@ export function CardPostDescription({ description }: { description: string }) {
     </p>
   );
 }
+export function CardTags({ tags, cores }: { tags: string[]; cores: string[] }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {tags.map((tag, index) => (
+        <span
+          key={index}
+          className={`rounded-full border px-3 py-1 text-xs font-medium ${
+            cores[index % cores.length]
+          }`}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+}

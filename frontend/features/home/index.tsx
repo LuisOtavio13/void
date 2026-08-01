@@ -2,18 +2,17 @@
 import { CardTitle } from "@/shared/components/ui/card";
 import {
   CardPost,
-  CardTags,
   UserInfo,
   UserPopover,
-} from "@/features/home/components/card-post";
+} from "@/features/home/components/card-post"
 import { useCards } from "@/features/home/hooks/use-cards";
 import { useInfiniteScroll } from "@/features/home/hooks/use-infinite-scroll";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
-import { CardPostDescription } from "./components/client";
+import { CardPostDescription, CardTags } from "./components/client";
 
-const cores: string[] = [
+export const cores: string[] = [
   "bg-pink-700 text-white",
   "bg-blue-700 text-white",
   "bg-green-700 text-white",
