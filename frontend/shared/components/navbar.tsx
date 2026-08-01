@@ -49,7 +49,6 @@ import {
   IoSettings,
   IoSparkles,
 } from "react-icons/io5";
-import { useUser } from "@/shared/hooks/use-user";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Dialog, DialogTrigger } from "./ui/dialog";
@@ -66,6 +65,8 @@ import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { FaTrophy } from "react-icons/fa6";
 import { logout } from "@/lib/cookies/cookie";
+import { getUser } from "../context/user";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface HeaderBarItens {
   label: string;
@@ -77,7 +78,10 @@ interface HeaderBarItens {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { user, setUser } = useUser();
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
   const {
     register,
     handleSubmit,
@@ -125,7 +129,10 @@ export default function Navbar() {
 
   async function onSubmit(post: CreatePostSchema) {
     const token = user?.jwt;
-    if (!token) return;
+    if (!token) {
+      toast.error("Você precisa estar logado para criar um post.");
+      return;
+    }
     try {
       const response = await createPostService(post, token);
       if (response.status === 200) {
@@ -137,11 +144,12 @@ export default function Navbar() {
     }
   }
   const [activeCard, setActiveCard] = useState(true);
-
+  const queryClient = useQueryClient();
   const router = useRouter();
   const logoutCliente = async () => {
     await logout();
-    setUser(null);
+
+    queryClient.setQueryData(["user"], null);
     router.push("/login");
   };
   return (
@@ -284,7 +292,7 @@ export default function Navbar() {
           )}
 
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild id="sidebar-user-dropdown-trigger">
               <SidebarMenuButton
                 className="
                 h-14 rounded-2xl

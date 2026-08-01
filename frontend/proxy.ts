@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const publicRoutes = ["/login", "/registro"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const jwt = request.cookies.get("jwt")?.value;
 
   const pathname = request.nextUrl.pathname;

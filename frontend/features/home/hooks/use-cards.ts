@@ -1,13 +1,19 @@
-import { useUser } from "@/shared/hooks/use-user";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CardItem } from "../types/types";
 import { fetchCards } from "../services/fetch-cards";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "@/shared/context/user";
 
 export function useCards() {
-  const { user } = useUser();
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
 
   const [cards, setCards] = useState<CardItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
 
   const loadingRef = useRef(false);
@@ -22,17 +28,19 @@ export function useCards() {
       setLoading(true);
 
       try {
-        const newCards = await fetchCards(currentPage, jwt);
-
+        let newCards = await fetchCards(currentPage, jwt);
+        let NextPageToFetch = currentPage;
         if (newCards.length === 0) {
-          setCards([]);
-          const firstPage = await fetchCards(0, jwt);
-          setCards(firstPage);
-          setPage(1);
-        } else {
-          setCards((prev) => [...prev, ...newCards]);
-          setPage(currentPage + 1);
+          NextPageToFetch = 0;
+          newCards = await fetchCards(0, jwt);
         }
+
+        const PAGE_LIMIT = 3;
+        const pageSize = newCards.length;
+
+        setCards((prev) => [...prev, ...newCards]);
+        setHasMore(pageSize > 0);
+        setPage(NextPageToFetch + 1);
       } catch (err) {
         console.error(err);
       } finally {
@@ -40,7 +48,7 @@ export function useCards() {
         setLoading(false);
       }
     },
-    [jwt],
+    [hasMore, jwt],
   );
 
   useEffect(() => {
@@ -77,5 +85,5 @@ export function useCards() {
     pageRef.current = page;
   }, [page]);
 
-  return { cards, loading, loadCards, pageRef };
+  return { cards, loading, loadCards, pageRef, hasMore };
 }

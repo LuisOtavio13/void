@@ -10,7 +10,8 @@ import {
 import { FaShare } from "react-icons/fa6";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { FaEdit } from "react-icons/fa";
-import { useUser } from "@/shared/hooks/use-user";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "@/shared/context/user";
 function Item({ text, icon }: { text: string; icon: React.ReactNode }) {
   return (
     <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
@@ -20,7 +21,10 @@ function Item({ text, icon }: { text: string; icon: React.ReactNode }) {
   );
 }
 export function DropDownPost({ userID }: { userID: number }) {
-  const { user, setUser } = useUser();
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
   const isOwner = user?.id === userID;
   console.log(isOwner + " " + userID + " " + user?.id);
   return (

@@ -1,4 +1,4 @@
-import { DropDownPost } from "@/shared/components/posts/DropDown";
+import { DropDownPost } from "@/shared/components/posts/drop-down";
 import {
   Avatar,
   AvatarFallback,

@@ -1,11 +1,10 @@
 "use client";
 
-import { useUser } from "@/shared/hooks/use-user";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query"; 
 import {
   loginSchema,
   LoginSchema,
@@ -13,6 +12,7 @@ import {
 import { login } from "@/features/auth/login/services/auth-service";
 import { errorToast } from "@/shared/components/toast-error";
 import { ErrorLogin } from "../types/errorLogin";
+
 export function useLoginForm() {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -23,17 +23,13 @@ export function useLoginForm() {
 
 export function useLogin() {
   const router = useRouter();
-  const { setUser } = useUser();
+  const queryClient = useQueryClient();
 
-  const [loading, setLoading] = useState(false);
-
-  async function signIn(data: LoginSchema) {
-    setLoading(true);
-
-    try {
-      const result = await login(data);
-
-      setUser({
+  
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (result) => {
+      queryClient.setQueryData(["user"], {
         jwt: result.jwt,
         isAdmin: result.isAdmin,
         name: result.name,
@@ -41,10 +37,10 @@ export function useLogin() {
         email: result.email,
       });
 
-      toast.success("login realizado com sucesso");
-
+      toast.success("Login realizado com sucesso");
       router.push("/pages/home");
-    } catch (err: unknown) {
+    },
+    onError: (err: unknown) => {
       if (!(err instanceof ErrorLogin)) return;
 
       if (err.isValidationError() && Array.isArray(err.message)) {
@@ -52,13 +48,11 @@ export function useLogin() {
       } else {
         errorToast(err.message as string);
       }
-    } finally {
-      setLoading(false);
-    }
-  }
+    },
+  });
 
   return {
-    loading,
-    signIn,
+    loading: mutation.isPending, 
+    signIn: mutation.mutate,     
   };
 }

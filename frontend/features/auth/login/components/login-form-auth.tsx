@@ -14,7 +14,7 @@ export function LoginFormAuth() {
   const form = useLoginForm();
   const { signIn, loading } = useLogin();
   return (
-    <CardForm onSubmit={form.handleSubmit(signIn)}>
+    <CardForm onSubmit={form.handleSubmit((data) => signIn(data))}>
       <CardInput
         {...form.register("email")}
         placeholder="Email"

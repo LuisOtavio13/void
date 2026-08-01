@@ -23,16 +23,18 @@ const cores: string[] = [
 ];
 
 export function HomePageIndex() {
-  const { cards, loading, loadCards, pageRef } = useCards();
+  const { cards, loading, loadCards, pageRef, hasMore } = useCards();
   const loadingRef = useInfiniteScroll(() => {
-    loadCards(pageRef.current);
+      if(hasMore){
+        loadCards(pageRef.current);
+      }
   });
 
   return (
     <div className="min-h-screen p-6">
       <div className="mx-10 flex flex-col gap-6">
         {cards.map((card, index) => (
-          <CardPost key={index}>
+          <CardPost key={`${card.id}-${index}`}>
             <CardPost.Header>
               <div className="group relative flex items-center gap-3">
                 <UserInfo user={card.user} />
@@ -48,21 +50,22 @@ export function HomePageIndex() {
               <CardPostDescription description={card.description} />
               <CardTags tags={card.tags} cores={cores} />
             </CardPost.Body>
-
+            { (card.githubLink || card.demoLink) && (
             <CardPost.Footer>
               <CardPost.Button
-                isActive={card.githubLink !== undefined}
+                isActive={!!card.githubLink}
                 href={card.githubLink ?? ""}
                 icon={<FaGithub />}
                 title="GitHub"
               />
               <CardPost.Button
-                isActive={card.demoLink !== undefined}
+                isActive={!!card.demoLink}
                 href={card.demoLink ?? ""}
                 icon={<FiExternalLink />}
                 title="Ver demo"
               />
             </CardPost.Footer>
+            )}
           </CardPost>
         ))}
 

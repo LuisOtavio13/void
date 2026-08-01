@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./(config)/globals.css";
-import { UserProvider } from "@/shared/context/user";
+import { QueryClient} from "@tanstack/react-query";
+import Providers from "@/shared/context/user";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,15 +24,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const queryClient = new QueryClient();
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-screen">
-        <UserProvider>
+        <Providers>
           <main className="flex-1">{children}</main>
-        </UserProvider>
+        </Providers>
       </body>
     </html>
   );
