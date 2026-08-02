@@ -2,6 +2,7 @@ import { GetPosts } from "@/features/getpost/get-posts";
 import { getPost } from "@/features/getpost/services/get-post";
 
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 export const dynamic = "force-dynamic";
 
 interface PostPageProps {
@@ -21,7 +22,9 @@ export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
   const { post } = await params;
-  const postData = await getPost(Number(post));
+  const cookieStore = await cookies();
+  const jwt = cookieStore.get("jwt")?.value;
+  const postData = await getPost(Number(post), jwt || " ");
 
   if (!postData) return {};
 
