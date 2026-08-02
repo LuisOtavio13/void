@@ -49,72 +49,75 @@
 }
 
 :root {
-    --radius: 0.5rem;
-
-    /* Base */
-    --background: oklch(0.145 0.01 260);
-    --foreground: oklch(0.985 0 0);
-
-    /* Cards / surfaces */
-    --card: oklch(0.18 0.015 260);
-    --card-foreground: oklch(0.985 0 0);
-
-    --popover: oklch(0.18 0.015 260);
-    --popover-foreground: oklch(0.985 0 0);
-
-    /* Primary */
-    --primary: oklch(0.63 0.22 262);
-    --primary-foreground: oklch(0.985 0 0);
-
-    /* Secondary */
-    --secondary: oklch(0.24 0.02 260);
-    --secondary-foreground: oklch(0.985 0 0);
-
-    /* Muted */
-    --muted: oklch(0.22 0.015 260);
-    --muted-foreground: oklch(0.72 0.01 260);
-
-    /* Accent */
-    --accent: oklch(0.28 0.03 262);
-    --accent-foreground: oklch(0.985 0 0);
-
-    /* Borders */
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 14%);
-    --ring: oklch(0.55 0.18 262);
-
-    /* Destructive */
-    --destructive: oklch(0.65 0.22 25);
-
-    /* Charts */
-    --chart-1: oklch(0.72 0.18 250);
-    --chart-2: oklch(0.68 0.2 262);
-    --chart-3: oklch(0.63 0.22 272);
-    --chart-4: oklch(0.58 0.24 282);
-    --chart-5: oklch(0.53 0.26 292);
-
-    /* Sidebar */
-    --sidebar: oklch(0.17 0.015 260);
-    --sidebar-foreground: oklch(0.985 0 0);
-
-    --sidebar-primary: oklch(0.63 0.22 262);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-
-    --sidebar-accent: oklch(0.24 0.02 260);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.55 0.18 262);
+  --background: oklch(0.148 0.004 228.8);
+  --foreground: oklch(0.987 0.002 197.1);
+  --card: oklch(0.218 0.008 223.9);
+  --card-foreground: oklch(0.987 0.002 197.1);
+  --popover: oklch(0.218 0.008 223.9);
+  --popover-foreground: oklch(0.987 0.002 197.1);
+  
+  --primary: oklch(0.424 0.199 265.638);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.275 0.011 216.9);
+  --muted-foreground: oklch(0.723 0.014 214.4);
+  --accent: oklch(0.275 0.011 216.9);
+  --accent-foreground: oklch(0.987 0.002 197.1);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.56 0.021 213.5);
+--chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --radius: 0.3rem;
+ --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.275 0.011 216.9);
+  --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.56 0.021 213.5);
 }
+
 .dark {
+  
+  
+  --primary: oklch(0.424 0.199 265.638);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.275 0.011 216.9);
+  --muted-foreground: oklch(0.723 0.014 214.4);
+  --accent: oklch(0.275 0.011 216.9);
+  --accent-foreground: oklch(0.987 0.002 197.1);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.56 0.021 213.5);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.218 0.008 223.9);
+  --sidebar-foreground: oklch(0.987 0.002 197.1);
+  --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.275 0.011 216.9);
+  --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.56 0.021 213.5);
 }
-
 @layer base {
     * {
         @apply border-border outline-ring/50;
     }
     body {
         @apply bg-background text-foreground;
+        background-attachment: fixed;
     }
     html {
         @apply font-sans;

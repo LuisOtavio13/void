@@ -1,0 +1,377 @@
+Discord 1.0.150
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 19: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 20: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 23: invalid constant used : monospace
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 42: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 43: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 46: invalid constant used : sans-serif
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 68: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 69: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 72: invalid constant used : serif
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 88: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 89: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 92: invalid constant used : emoji
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 108: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 109: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 112: invalid constant used : math
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 120: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 121: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 124: invalid constant used : system-ui
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 132: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 133: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 136: invalid constant used : cursive
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 144: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 145: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 148: invalid constant used : fantasy
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 156: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 157: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 160: invalid constant used : ui-sans-serif
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 168: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 169: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 172: invalid constant used : ui-serif
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 180: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 181: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 184: invalid constant used : ui-monospace
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 192: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 193: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 196: invalid constant used : ui-rounded
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 204: invalid attribute 'xsi:nil'
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 205: invalid constant used : 
+Fontconfig warning: "/etc/fonts/conf.d/48-guessfamily.conf", line 208: invalid constant used : fangsong
+Fontconfig warning: "/etc/fonts/conf.d/48-spacing.conf", line 14: invalid constant used : monospace
+Fontconfig warning: "/etc/fonts/conf.d/49-sansserif.conf", line 10: invalid constant used : serif
+Fontconfig warning: "/etc/fonts/conf.d/49-sansserif.conf", line 18: invalid constant used : sans-serif
+Fontconfig warning: "/etc/fonts/conf.d/49-sansserif.conf", line 26: invalid constant used : monospace
+Fontconfig warning: "/etc/fonts/conf.d/49-sansserif.conf", line 34: invalid constant used : emoji
+Fontconfig warning: "/etc/fonts/conf.d/49-sansserif.conf", line 42: invalid constant used : math
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 19: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 20: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 23: invalid constant used : monospace
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 42: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 43: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 46: invalid constant used : sans-serif
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 68: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 69: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 72: invalid constant used : serif
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 88: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 89: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 92: invalid constant used : emoji
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 108: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 109: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 112: invalid constant used : math
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 120: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 121: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 124: invalid constant used : system-ui
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 132: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 133: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 136: invalid constant used : cursive
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 144: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 145: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 148: invalid constant used : fantasy
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 156: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 157: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 160: invalid constant used : ui-sans-serif
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 168: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 169: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 172: invalid constant used : ui-serif
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 180: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 181: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 184: invalid constant used : ui-monospace
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 192: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 193: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 196: invalid constant used : ui-rounded
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 204: invalid attribute 'xsi:nil'
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 205: invalid constant used : 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-guessfamily.conf", line 208: invalid constant used : fangsong
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/48-spacing.conf", line 14: invalid constant used : monospace
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/49-sansserif.conf", line 10: invalid constant used : serif
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/49-sansserif.conf", line 18: invalid constant used : sans-serif
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/49-sansserif.conf", line 26: invalid constant used : monospace
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/49-sansserif.conf", line 34: invalid constant used : emoji
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/49-sansserif.conf", line 42: invalid constant used : math
+App ready
+Warming up DNS and TCP connections
+(node:120318) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `Discord --trace-deprecation ...` to show where the warning was created)
+Starting app.
+Starting updater.
+Determined current Linux architecture: x64
+[2026-08-02 09:36:26.271090 -03:00] WARN [updater]: Could not determine platform version
+splashScreen.initSplash(false)
+splashScreen: Starting update check eagerly
+allowOptionalUpdates: true
+splashScreen.updateSplashState checking-for-updates checking-for-updates {}
+splashScreen.updateSplashState: Windows is null.
+blackbox: 8/2/2026, 9:36:26 AM GMT-3 0 
+
+----------------------------------------------
+blackbox: 8/2/2026, 9:36:26 AM GMT-3 1 Discord starting: {"releaseChannel":"stable","sentryDist":"stable-linux-x64","sentryRelease":"discord-desktop-7dee28cab490a6b4a90acdf1d6dc553024f9fe97","version":"1.0.150","disableUpdater":false}, modulepath: /home/luis/.config/discord/module_data
+blackbox: 8/2/2026, 9:36:26 AM GMT-3 2 ✅ webContents.created web1 ""
+blackbox: 8/2/2026, 9:36:26 AM GMT-3 3 ✅ window.created win1 "discord"
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+09:36:26.973 › splashScreenPreload: signalReady
+splashScreen: SPLASH_SCREEN_READY
+splashScreen.webContentsSend: SPLASH_SCREEN_QUOTE SPLASH_SCREEN_QUOTE [ 'Hold Tight — Loading Discord' ]
+splashScreen: Resending splash state after SPLASH_SCREEN_READY: checking-for-updates
+splashScreen.updateSplashState checking-for-updates checking-for-updates {}
+splashScreen.webContentsSend: SPLASH_UPDATE_STATE SPLASH_UPDATE_STATE [ { status: 'checking-for-updates' } ]
+[120318:0802/093626.995296:ERROR:base/nix/mime_util_xdg.cc:137] Invalid mime.cache file does not contain null prior to ALIAS_LIST_OFFSET=44
+blackbox: 8/2/2026, 9:36:27 AM GMT-3 4 ✅ webContents.did-finish-load web1
+09:36:27.097 › splashScreenPreload: onStateUpdate: {"status":"checking-for-updates"}
+splashScreen.launchMainWindow: false
+Optional module ./ElectronTestRpc was not included.
+Clearing GPU cache...
+splashScreen.updateSplashState launching launching {}
+splashScreen.webContentsSend: SPLASH_UPDATE_STATE SPLASH_UPDATE_STATE [ { status: 'launching' } ]
+blackbox: 8/2/2026, 9:36:29 AM GMT-3 5 ✅ webContents.created web2 ""
+09:36:29.485 › splashScreenPreload: onStateUpdate: {"status":"launching"}
+blackbox: 8/2/2026, 9:36:29 AM GMT-3 6 ✅ window.created win2 "Discord"
+[ConnectivityTester i6xvml] Sending DNS query: idt-i6xvml-msbsb2v6.loc-pt-br.chk-webapp.res-ok.dur-0.v1.dc-telemetry.net
+09:36:33.891 › [FAST CONNECT] wss://gateway.discord.gg/?encoding=etf&v=9&compress=zstd-stream, encoding: etf, version: 9
+[2026-08-02 09:36:34.380] [info] Wayland idle manager initialized successfully
+09:36:34.709 › [FAST CONNECT] sending identify
+blackbox: 8/2/2026, 9:36:35 AM GMT-3 7 ✅ webContents.did-finish-load web2
+09:36:35.062 › [libdiscore] [experiment_manager] Loaded experiments from cache
+09:36:35.118 › [libdiscore] [BlockedDomainsStore] Deserialized 43640 hashes, revision 3052
+09:36:35.955 › Initializing voice engine with audio subsystem: standard
+[2026-08-02 09:36:35.984] [info] Wayland idle manager initialized successfully
+09:36:36.472 › [DatabaseManager] active user changed (now: 1370960452066218035, was: null, was: undefined)
+09:36:36.975 › [default] [BUILD INFO] Release Channel: stable, Build Number: 586984, Version Hash: 060db27ba71fcdaa609e766684ebd08516bb7d93
+09:36:37.040 › [CloudSyncUtils] CloudSync is not supported on this platform
+09:36:37.595 › [default] [NATIVE INFO] host 1.0.150, modules: discord_zstd: 1, discord_desktop_core: 1, discord_krisp: 1, discord_utils: 1, discord_rpc: 1, discord_spellcheck: 1, discord_voice: 1, discord_erlpack: 1, discord_game_utils: 1, build: 86777
+ipcMain.on(IPCEvents.APP_ASYNC_INDEX_TSX_LOADED) false false
+splashScreen.pageReady
+09:36:37.619 › [libdiscore] The answer for life the universe and everything is: 42
+09:36:37.651 › [Spellchecker] sh is not a valid locale.
+Main process startup timing:
+|  index-init:                                     855.86
+|  index-init-duration:                            1024.81 (168.96)
+|  bootstrap-gpuflags:                             1008.36
+|  bootstrap-gpuflags-duration:                    1028.71 (20.35)
+|  bootstrap-startapp:                             1618.78
+|  bootstrap-startupdate:                          1642.84
+|  bootstrap-startupdate-duration:                 4792.63 (3149.79)
+|  splash-window-launch:                           1682.34
+|  splash-window-loadurl-duration:                 1803.21 (120.86)
+|  splash-window-duration:                         13111.42 (11429.08)
+|  splash-screen-ready:                            2385.71
+|  splash-update-complete:                         4778.12
+|  splash-launch-mainwindow:                       4791.44
+|  bootstrap-coremodule-startup:                   4792.90
+|  bootstrap-coremodule-startup-duration:          4885.16 (92.27)
+|  coremodule-index-startup:                       4855.33
+|  coremodule-index-startup-duration:              4885.14 (29.81)
+|  mainscreen-launch-window:                       4876.03
+|  mainscreen-launch-window-duration:              4932.68 (56.65)
+|  mainscreen-launch-window-misc-setup:            4903.74
+|  mainscreen-launch-window-misc-setup-duration:   4918.01 (14.27)
+|  mainscreen-loadmainpage:                        4919.60
+|  mainscreen-loadmainpage-duration:               12998.99 (8079.39)
+|  splash-destroy-splashwindow:                    13007.82
+|  bootstrap-coremodule-show-mainwin:              13010.29
+blackbox: 8/2/2026, 9:36:37 AM GMT-3 8 window.close win1
+blackbox: 8/2/2026, 9:36:37 AM GMT-3 9 webContents.destroyed web1
+blackbox: 8/2/2026, 9:36:37 AM GMT-3 10 window.closed win1
+09:36:38.006 › [MediaEngineStore] OpenH264 is ready [object Object]
+09:36:38.011 › [Spellchecker] Switching to pt-BR (available)
+09:36:39.031 › [RPCServer:WSS] Starting on 6463
+09:36:39.061 › [RPCServer:IPC] Starting on /run/user/1000/discord-ipc-0
+09:36:39.271 › [ConnectionStore] Socket is reconnecting because of starting new session
+09:36:39.271 › [GatewaySocket] .connect() called, new state is WILL_RECONNECT
+09:36:39.271 › [GatewaySocket] Setting connection state to WILL_RECONNECT
+09:36:39.272 › [GatewaySocket] Setting connection state to CONNECTING
+09:36:39.272 › [GatewaySocket] [CONNECT] wss://gateway.discord.gg, encoding: etf, version: 9, compression: zstd-stream
+09:36:39.272 › [GatewaySocket] [FAST CONNECT] successfully took over websocket, state: [object Object]
+09:36:39.273 › [GatewaySocket] [CONNECTED] wss://gateway.discord.gg/?encoding=etf&v=9&compress=zstd-stream in 0 ms
+09:36:39.273 › [ConnectionStore] handleIdentify called [object Object]
+09:36:39.273 › [GatewaySocket] Setting connection state to IDENTIFYING
+09:36:39.274 › [GatewaySocket] [IDENTIFY, fast-connect]
+09:36:39.274 › [GatewaySocket] [HELLO] via 
+gateway-prd-arm-us-east1-d-g9w4: 0, heartbeat interval: 41250, took 2 ms
+09:36:39.806 › [GatewaySocket] [READY] took 535ms, as aa697843d6fc910375f793c784771b37
+09:36:39.806 › [GatewaySocket] 
+gateway-prd-arm-us-east1-d-g9w4: 594.636
+|  id_created: 0.711
+|  session_lookup_time: 1.922
+|  session_lookup_finished: 0.011
+|  sessions-prd-gcp-us-east1-d-31: 576.788
+|  |  start_session: 426.788
+|  |  |  prd-rpc-796bb7c5d4-ss4bg: 275.131
+|  |  |  |  get_user: 10.423
+|  |  |  |  get_guilds: 84.334
+|  |  |  |  user_settings_proto: 0.104
+|  |  |  |  relationships: 80.678
+|  |  |  |  game_relationships: 0.005
+|  |  |  |  friend_suggestion: 0.04
+|  |  |  |  connections: 0.155
+|  |  |  |  serialized_read_states: 0.007
+|  |  |  |  send_scheduled_deletion_message: 0.005
+|  |  |  |  sanitize_premium_perks: 0.004
+|  |  |  |  guild_join_requests: 0.007
+|  |  |  |  user_guild_settings: 0.003
+|  |  |  |  serialized_private_channels: 0.003
+|  |  |  |  user_segments: 53.59
+|  |  |  |  blocker_ids: 0.004
+|  |  |  |  affine_user_ids: 0.009
+|  |  |  |  experiments: 17.358
+|  |  |  |  required_action: 0.007
+|  |  |  |  authorized_ip_coro: 0.002
+|  |  |  |  pending_payments: 5.201
+|  |  |  |  apex_experiments: 65.418
+|  |  |  |  sessions_experiments: 0.004
+|  |  |  |  played_application_ids: 0.003
+|  |  |  |  linked_users: 0.003
+|  |  |  |  ad_personalization_toggles_disabled: 54.025
+|  |  |  |  regional_feature_config: 0.004
+|  |  starting_guild_connect: 0.102
+|  |  lobbies_started: 0
+|  |  presence_started: 7.11
+|  |  guilds_started: 1.71
+|  |  guilds_connect: 134.972
+|  |  presence_connect: 0.774
+|  |  connect_finished: 135.307
+|  |  build_ready: 3.834
+|  |  clean_ready: 0.001
+|  |  optimize_ready: 1.785
+|  |  split_ready: 0.15
+09:36:39.806 › [GatewaySocket] Setting connection state to SESSION_ESTABLISHED
+09:36:39.807 › [GatewaySocket] Updating resume url to wss://gateway-us-east1-d.discord.gg
+09:36:39.807 › [Flux] Slow dispatch on START_SESSION: 538.6000000014901ms
+09:36:40.323 › [Flux] Dispatching CONNECTION_OPEN
+09:36:40.334 › [AuthenticationStore] handleConnectionOpen called [object Object]
+09:36:40.339 › [DatabaseManager] removing database (user: 1370960452066218035, database: undefined)
+09:36:40.340 › [DatabaseManager] added database (1370960452066218035 → null)
+09:36:40.363 › [NativeDispatchUtils] Tried getting Dispatch instance before instantiated
+09:36:40.403 › [Spotify] WS Connecting
+09:36:40.404 › [Spotify] Added account: 31ie2bdmagffroa5qgkuvxvmzkya
+09:36:40.514 › [Flux] Slow dispatch on CONNECTION_OPEN: 191.20000000298023ms
+09:36:40.521 › [OverlayRenderStore] setOverlayEnabled: not supported
+09:36:41.651 › [GatewaySocket] [READY_SUPPLEMENTAL] took 2380ms
+09:36:41.651 › [GatewaySocket] Setting connection state to SESSION_ESTABLISHED
+09:36:41.652 › [MediaEngineStore] OpenH264 cleanup [object Object]
+09:36:42.235 › [Spotify] Updated account access token: 31ie2bdmagffroa5qgkuvxvmzkya
+09:36:45.389 › [OverlayKeybindExperimentManager] Experiments initializing...
+09:36:45.427 › [OverlayKeybindExperimentManager] Experiments initialized
+09:36:45.514 › [Spotify] WS Connected
+09:36:46.802 › [libdiscore] [Cache] Set cache for key: experiments_snapshot
+09:36:46.813 › [Spotify] Devices updated for 31ie2bdmagffroa5qgkuvxvmzkya: 
+09:36:46.814 › [Spotify] Profile updated for 31ie2bdmagffroa5qgkuvxvmzkya: isPremium = false
+09:36:48.615 › [SignalHelpers.web] signalAllAcceptedCredentials [object Object]
+09:36:50.616 › [MessageActionCreators] Fetching messages for 1506094343713456251 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+09:36:51.041 › [ReadStateStore] Deleting ReadState 1133849506673328241 0 [object Object]
+09:36:51.367 › [Flux] Slow dispatch on GAMES_DATABASE_UPDATE: 104.30000000074506ms
+09:36:51.440 › [MessageActionCreators] Fetched 10 messages for 1506094343713456251 isBefore:false isAfter:false
+09:36:51.447 › [ChannelMessages] loadComplete: resetting state for channelId=1506094343713456251, sending.length=0
+09:36:51.630 › [ReadStateStore] Deleting ReadState 1531782486730997821 0 [object Object]
+09:36:52.848 › [discord_protos.discord_users.v1.FrecencyUserSettings] Loading proto
+09:36:52.849 › [RTCLatencyTestManager] RTC region latency test completed, ranked regions are:  brazil,buenos-aires,santiago,atlanta,us-east
+09:36:54.888 › [discord_protos.discord_users.v1.FrecencyUserSettings] Scheduling save from markDirty
+09:36:54.967 › [discord_protos.discord_users.v1.FrecencyUserSettings] Persisting proto
+09:36:55.453 › [libdiscore] [NETWORK] Sending GET request to https://cdn.discordapp.com/bad-domains/current_revision.txt
+09:36:55.496 › [libdiscore] [NETWORK] Completed GET request to https://cdn.discordapp.com/bad-domains/current_revision.txt with status: 200
+09:36:55.498 › [libdiscore] [BlockedDomainsStore] Fetching delta between revisions 3052 -> 3065
+09:36:55.499 › [libdiscore] [NETWORK] Sending GET request to https://discord.com/bad-hash-delta
+09:36:55.589 › [libdiscore] [NETWORK] Completed GET request to https://discord.com/bad-hash-delta with status: 200
+09:36:55.592 › [libdiscore] [BlockedDomainsStore] Adding 186 hashes, removing 0 hashes
+09:36:55.606 › [libdiscore] [Cache] Set cache for key: blocked_domains_state
+09:36:55.607 › [libdiscore] [BlockedDomainsStore] Successfully fetched blocked domains
+09:37:02.395 › [discord_protos.discord_users.v1.PreloadedUserSettings] Updating userContent with delay 0
+09:37:02.461 › [discord_protos.discord_users.v1.PreloadedUserSettings] Scheduling save from markDirty
+09:37:02.569 › [discord_protos.discord_users.v1.PreloadedUserSettings] Updating userContent with delay 0
+09:37:02.795 › [discord_protos.discord_users.v1.PreloadedUserSettings] Persisting proto
+09:37:09.153 › [MessageQueue] Queueing message to be sent LogId:9513
+09:37:09.154 › [MessageQueue] Draining message from queue LogId:9513 QueueLength: 0
+09:37:09.154 › [MessageQueue] Draining Message Queue with:  0
+09:37:09.223 › [MessageActionCreators] Fetching messages for 1506094343713456251 between undefined and 1527461412149133392. jump=undefined
+09:37:09.515 › [MessageActionCreators] Fetched 20 messages for 1506094343713456251 isBefore:true isAfter:false
+09:37:10.121 › [MessageQueue] Finished draining message from queue LogId:9513 QueueLength: 0
+09:37:12.904 › [MessageQueue] Queueing message to be sent LogId:6106
+09:37:12.905 › [MessageQueue] Draining message from queue LogId:6106 QueueLength: 0
+09:37:12.905 › [MessageQueue] Draining Message Queue with:  0
+09:37:13.526 › [MessageQueue] Finished draining message from queue LogId:6106 QueueLength: 0
+09:37:41.452 › [MessageQueue] Queueing message to be sent LogId:1114
+09:37:41.455 › [MessageQueue] Draining message from queue LogId:1114 QueueLength: 0
+09:37:41.455 › [MessageQueue] Draining Message Queue with:  0
+09:37:41.763 › [MessageQueue] Finished draining message from queue LogId:1114 QueueLength: 0
+09:37:43.233 › [MessageActionCreators] Fetching messages for 1495993781907099740 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+09:37:43.322 › [Routing/Utils] transitionTo - Transitioning to /channels/1495993781114241095/1495993781907099740
+09:37:43.826 › [MessageActionCreators] Fetched 10 messages for 1495993781907099740 isBefore:false isAfter:false
+09:37:43.830 › [ChannelMessages] loadComplete: resetting state for channelId=1495993781907099740, sending.length=0
+09:37:51.839 › [MessageActionCreators] Fetching messages for 1113274694443999282 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+09:37:51.923 › [Routing/Utils] transitionTo - Transitioning to /channels/1112920281367973900/1113274694443999282
+09:37:52.377 › ResizeObserver loop completed with undelivered notifications.
+09:37:52.396 › [MessageActionCreators] Fetched 10 messages for 1113274694443999282 isBefore:false isAfter:false
+09:37:52.408 › [ChannelMessages] loadComplete: resetting state for channelId=1113274694443999282, sending.length=0
+09:37:54.276 › [DispatcherWorkScheduler] Unable to fully flush work queue after max retries, skipping future deadline.
+09:37:54.349 › [MessageActionCreators] Fetching messages for 1113274694443999282 between undefined and 1533442560704647251. jump=undefined
+09:37:54.834 › [MessageActionCreators] Fetched 20 messages for 1113274694443999282 isBefore:true isAfter:false
+09:38:03.487 › [WebP] [WebP] Starting conversion for: JesrLkYI0BgAAABBkZUJHMkRBMEVGNDVEMzVEOUNFNBkZdL4AAAAASUVORK5CYII=.png
+09:38:03.652 › Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+09:38:03.681 › [WebP] [WebP] Pixel hash results: fileName=JesrLkYI0BgAAABBkZUJHMkRBMEVGNDVEMzVEOUNFNBkZdL4AAAAASUVORK5CYII=.png fileLength={57089} width=735 height=527 pixelHash=b160437e mezzanineFileLength={13044} mezzaninePixelHash=b160437e match=true elapsed_ms=57
+09:38:03.682 › [WebP] [WebP] Conversion successful: JesrLkYI0BgAAABBkZUJHMkRBMEVGNDVEMzVEOUNFNBkZdL4AAAAASUVORK5CYII=.png to WebP in 195ms
+09:38:03.684 › [CloudUpload.tsx] webp conversion worked for upload10: 57089 -> 13044 bytes (0.23x)
+09:38:03.690 › [CloudUpload.tsx] Requesting upload url for upload10
+09:38:03.980 › [CloudUpload.tsx] Uploading upload10 filename=JesrLkYI0BgAAABBkZUJHMkRBMEVGNDVEMzVEOUNFNBkZdL4AAAAASUVORK5CYII=.png
+09:38:03.981 › [CloudUpload.tsx] Attempting to upload attachment with resumeFrom: 0 and attempts: 1
+09:38:05.013 › [CloudUpload.tsx] Upload complete for upload10
+09:38:07.476 › [UploaderBase.tsx] setUploadingTextForUI - total content: 13044 bytes and 1 attachments for Uploader12
+09:38:07.477 › [UploaderBase.tsx] _handleComplete for Uploader12
+09:38:07.480 › [MessageQueue] Queueing message to be sent LogId:3023
+09:38:07.481 › [MessageQueue] Draining message from queue LogId:3023 QueueLength: 0
+09:38:07.481 › [MessageQueue] Draining Message Queue with:  0
+09:38:08.960 › [MessageQueue] Finished draining message from queue LogId:3023 QueueLength: 0
+09:38:40.656 › [MessageActionCreators] Fetching messages for 1452797439735238921 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+09:38:41.287 › [MessageActionCreators] Fetched 6 messages for 1452797439735238921 isBefore:false isAfter:false
+09:38:41.291 › [ChannelMessages] loadComplete: resetting state for channelId=1452797439735238921, sending.length=0
+09:38:57.787 › [MessageActionCreators] Fetching messages for 1409673947540099102 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+09:38:58.481 › [MessageActionCreators] Fetched 10 messages for 1409673947540099102 isBefore:false isAfter:false
+09:38:58.488 › [ChannelMessages] loadComplete: resetting state for channelId=1409673947540099102, sending.length=0
+09:39:07.345 › [Routing/Utils] transitionTo - Transitioning to /channels/1112920281367973900/1113274694443999282
+09:39:09.006 › ResizeObserver loop completed with undelivered notifications.
+09:39:46.080 › [MessageActionCreators] Fetching messages for 1409673947540099102 between undefined and 1533144110641320208. jump=undefined
+09:39:46.379 › [MessageActionCreators] Fetched 20 messages for 1409673947540099102 isBefore:true isAfter:false
+09:39:50.624 › [MessageQueue] Queueing message to be sent LogId:3920
+09:39:50.625 › [MessageQueue] Draining message from queue LogId:3920 QueueLength: 0
+09:39:50.625 › [MessageQueue] Draining Message Queue with:  0
+09:39:51.347 › [MessageQueue] Finished draining message from queue LogId:3920 QueueLength: 0
+09:40:01.612 › [MessageQueue] Queueing message to be sent LogId:4679
+09:40:01.612 › [MessageQueue] Draining message from queue LogId:4679 QueueLength: 0
+09:40:01.612 › [MessageQueue] Draining Message Queue with:  0
+09:40:02.119 › [MessageQueue] Finished draining message from queue LogId:4679 QueueLength: 0
+09:40:07.749 › [Routing/Utils] transitionTo - Transitioning to /channels/1112920281367973900/1113274694443999282
+09:40:08.540 › ResizeObserver loop completed with undelivered notifications.
+[2026-08-02 09:41:46.320053 -03:00] ERROR [updater_client::install]: Module download failed (attempt 1), retrying: request or response body error: error reading a body from connection: stream error received: not a result of an error
+[2026-08-02 09:41:46.321993 -03:00] ERROR [updater_client::install]: Module download failed (attempt 1), retrying: request or response body error: error reading a body from connection: stream error received: not a result of an error
+[2026-08-02 09:41:46.322418 -03:00] ERROR [updater_client::install]: Module download failed (attempt 1), retrying: request or response body error: error reading a body from connection: stream error received: not a result of an error
+09:42:32.914 › [Spotify] Devices updated for 31ie2bdmagffroa5qgkuvxvmzkya: [object Object]
+09:45:04.114 › [MessageQueue] Queueing message to be sent LogId:5891
+09:45:04.116 › [MessageQueue] Draining message from queue LogId:5891 QueueLength: 0
+09:45:04.116 › [MessageQueue] Draining Message Queue with:  0
+09:45:04.469 › [MessageQueue] Finished draining message from queue LogId:5891 QueueLength: 0
+09:49:11.005 › [Routing/Utils] transitionTo - Transitioning to /channels/1112920281367973900/1113274694443999282
+09:49:11.947 › ResizeObserver loop completed with undelivered notifications.
+blackbox: 8/2/2026, 9:49:18 AM GMT-3 11 before-quit
+blackbox: 8/2/2026, 9:49:18 AM GMT-3 12 window.close win2
+[120318:0802/094918.795729:ERROR:content/browser/network_service_instance_impl.cc:597] Network service crashed, restarting service.
+[120318:0802/094918.909076:ERROR:content/common/zygote/zygote_communication_linux.cc:296] Failed to send GetTerminationStatus message to zygote
+[120318:0802/094918.928073:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.936177:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.943352:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.955797:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.963386:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.969821:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.971676:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.973032:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.978670:ERROR:content/browser/gpu/gpu_process_host.cc:951] GPU process launch failed: error_code=1002
+[120318:0802/094918.978876:FATAL:content/browser/gpu/gpu_data_manager_impl_private.cc:415] GPU process isn't usable. Goodbye.
+[0802/094919.043848:ERROR:third_party/crashpad/crashpad/snapshot/elf/elf_dynamic_array_reader.h:64] tag not found
+[0802/094919.044696:ERROR:third_party/crashpad/crashpad/snapshot/elf/elf_dynamic_array_reader.h:64] tag not found
+[0802/094919.045346:ERROR:third_party/crashpad/crashpad/snapshot/elf/elf_dynamic_array_reader.h:64] tag not found
+[0802/094919.062337:ERROR:third_party/crashpad/crashpad/util/process/process_memory_linux.cc:50] pread64: Input/output error (5)
+[0802/094919.062391:ERROR:third_party/crashpad/crashpad/snapshot/crashpad_types/image_annotation_reader.cc:128] could not read annotation at index 8
+[0802/094919.062910:ERROR:third_party/crashpad/crashpad/util/process/process_memory_linux.cc:50] pread64: Input/output error (5)
+[0802/094919.062933:ERROR:third_party/crashpad/crashpad/snapshot/crashpad_types/image_annotation_reader.cc:128] could not read annotation at index 8
+[0802/094919.062997:ERROR:third_party/crashpad/crashpad/util/process/process_memory_linux.cc:50] pread64: Input/output error (5)
+[0802/094919.063024:ERROR:third_party/crashpad/crashpad/snapshot/crashpad_types/image_annotation_reader.cc:128] could not read annotation at index 8
+[0802/094919.063084:ERROR:third_party/crashpad/crashpad/util/process/process_memory_linux.cc:50] pread64: Input/output error (5)
+[0802/094919.063097:ERROR:third_party/crashpad/crashpad/snapshot/crashpad_types/image_annotation_reader.cc:128] could not read annotation at index 8
