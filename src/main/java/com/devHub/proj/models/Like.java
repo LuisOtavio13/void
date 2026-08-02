@@ -21,7 +21,7 @@ public class Like {
     private Long id;
 
     @Column(name = "is_like", nullable = false)
-    private boolean isLike;
+    private boolean liked;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -34,15 +34,15 @@ public class Like {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
     public Like() {}
-    public Like(Long id, boolean isLike, User user, Project project, LocalDateTime createdAt) {
+    public Like(Long id, boolean liked, User user, Project project, LocalDateTime createdAt) {
         this.id = id;
-        this.isLike = isLike;
+        this.liked = liked;
         this.user = user;
         this.project = project;
         this.createdAt = createdAt;
     }
-    public Like(boolean isLike, User user, Project project) {
-        this.isLike = isLike;
+    public Like(boolean liked, User user, Project project) {
+        this.liked = liked;
         this.user = user;
         this.project = project;
         this.createdAt = LocalDateTime.now();
@@ -55,12 +55,12 @@ public class Like {
         this.id = id;
     }
 
-    public boolean isLike() {
-        return isLike;
+    public boolean getLiked() {
+        return liked;
     }
 
-    public void setLike(boolean isLike) {
-        this.isLike = isLike;
+    public void setLike(boolean liked) {
+        this.liked = liked;
     }
 
     public User getUser() {

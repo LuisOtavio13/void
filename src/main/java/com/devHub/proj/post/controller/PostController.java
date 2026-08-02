@@ -1,6 +1,9 @@
 package com.devHub.proj.post.controller;
 
 import jakarta.validation.Valid;
+
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devHub.proj.models.Like;
 import com.devHub.proj.models.Project;
 import com.devHub.proj.models.User;
 import com.devHub.proj.post.dto.request.CreatePostRequest;
@@ -20,15 +24,18 @@ import com.devHub.proj.post.dto.response.ProjectsResponse;
 import com.devHub.proj.post.dto.response.UserResponse;
 import com.devHub.proj.post.exception.NotFoundException;
 import com.devHub.proj.post.service.PostService;
+import com.devHub.proj.repository.LikeRepository;
 
 @RestController
 @RequestMapping("/posts")
 public class PostController {
 
     private final PostService servicesPosts;
+    private final LikeRepository likeRepository;
 
-    public PostController(PostService servicesPosts) {
+    public PostController(PostService servicesPosts, LikeRepository likeRepository) {
         this.servicesPosts = servicesPosts;
+        this.likeRepository = likeRepository;
     }
 
     @PostMapping("/new")
@@ -52,7 +59,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) throws NotFoundException{
+    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) throws NotFoundException {
         servicesPosts.deletePost(id, user);
     }
 
@@ -64,6 +71,19 @@ public class PostController {
         boolean isOwner = false;
         if (user != null) {
             isOwner = post.getOwner().getId().equals(user.getId());
+        }
+        boolean like = false;
+        boolean deslike = false;
+        if (user != null) {
+            Optional<Like> reaction = likeRepository.findByUserIdAndProjectId(user.getId(), post.getId());
+
+            if (reaction.isPresent()) {
+                if (reaction.get().getLiked()) {
+                    like = true;
+                } else if (!reaction.get().getLiked()) {
+                    deslike = true;
+                }
+            }
         }
         return new ProjectsResponse(
                 post.getName(),
@@ -81,8 +101,10 @@ public class PostController {
                 post.getGithub_url(),
                 post.getLink_url(),
 
-                post.getLikesCount(),
-                post.getLikes().stream().anyMatch(like -> like.getUser().getId().equals(user != null ? user.getId() : null)),
+                likeRepository.countByProjectIdAndLiked(post.getId(), true),
+                likeRepository.countByProjectIdAndLiked(post.getId(), false),
+                like,
+                deslike,
                 isOwner,
                 post.getCreatedAt(),
                 post.getUpdatedAt());

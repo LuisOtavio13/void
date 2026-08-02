@@ -11,12 +11,15 @@ import { notFound } from "next/navigation";
 import { getPost } from "./services/get-post";
 import { cores } from "../home";
 import { CardTags } from "../home/components/client";
-
+import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { LikeDislike } from "./components/like-deslike";
+import { cookies } from "next/headers";
 export async function GetPosts({ user, post }: PostPage) {
-  const postData = await getPost(Number(post));
+  const cookieStore = await cookies();
+  const jwt = cookieStore.get("jwt")?.value;
+  const postData = await getPost(Number(post), jwt || " ");
 
   if (!postData || !postData.user) notFound();
-  console.log(cores);
   const userData = postData.user;
   return (
     <div>
@@ -44,7 +47,11 @@ export async function GetPosts({ user, post }: PostPage) {
             ownerPost={user}
             post={post}
           />
+            <LikeDislike id={postData.id} initialLikes={postData.likesCount} liked={postData.isLikedByUser} disliked={postData.isDesLikedByUser} initialDislikes={postData.desLikesCount}/>
            <CardTags tags={postData.tags} cores={cores} />
+           
+           
+           
         </PageHeader>
       </div>
       <div className="mx-auto max-w-6xl px-6 py-10">

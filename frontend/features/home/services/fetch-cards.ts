@@ -28,12 +28,17 @@ async function fetchCards(
   const data: CardItem[] = body.content.map((item: any) => ({
     id: item.id,
     title: item.title,
-
     description: item.description,
     image: item.image,
     tags: item.tags,
     githubLink: item.githubLink,
     demoLink: item.demoLink,
+    likesCount: item.likesCount,
+    desLikesCount: item.desLikesCount,
+    isLikedByUser: item.isLikedByUser,
+    isDesLikedByUser: item.isDesLikedByUser,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
     user: {
       isAdmin: item.user.isAdmin,
       id: item.user.id,

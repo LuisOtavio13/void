@@ -11,8 +11,10 @@ public record ProjectsResponse(
     UserResponse user,
     String githubLink,
     String demoLink,
-    int likesCount,
+    Long likesCount,
+    Long desLikesCount,
     Boolean isLikedByUser,
+    Boolean isDesLikedByUser,
     Boolean thisUserIsOwner,
     LocalDateTime createdAt,
     LocalDateTime updatedAt

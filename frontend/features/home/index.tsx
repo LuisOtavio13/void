@@ -11,6 +11,7 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { CardPostDescription, CardTags } from "./components/client";
+import { LikeDislike } from "../getpost/components/like-deslike";
 
 export const cores: string[] = [
   "bg-pink-700 text-white",
@@ -48,6 +49,7 @@ export function HomePageIndex() {
             <CardPost.Body>
               <CardPostDescription description={card.description} />
               <CardTags tags={card.tags} cores={cores} />
+              <LikeDislike readOnly id={card.id} initialLikes={card.likesCount} liked={card.isLikedByUser} disliked={card.isDesLikedByUser} initialDislikes={card.desLikesCount} />
             </CardPost.Body>
             { (card.githubLink || card.demoLink) && (
             <CardPost.Footer>

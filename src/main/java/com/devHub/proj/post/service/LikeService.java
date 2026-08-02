@@ -21,31 +21,40 @@ public class LikeService {
     }
 
     public void likePost(Long postId, User user) throws RuntimeException {
-        Project project = projectRepo.findById(postId).orElseThrow(() -> new NotFoundException("Post not found"));
-        for(var like : project.getLikes()) {
-            if(like.getUser().getId().equals(user.getId())) {
-                throw new RuntimeException("User has already liked this post");
+        Like reaction = likeRepository
+                .findByUserIdAndProjectId(user.getId(), postId)
+                .orElse(null);
+
+        if (reaction == null) {
+            Like like =new Like(true, user, projectRepo.findById(postId).orElse(null));
+            if(like.getProject() == null){
+                throw new NotFoundException("Not exisits project");
             }
+            likeRepository.save(like);
+        } else if (reaction.getLiked()) {
+            reaction.setLike(true);
+            likeRepository.save(reaction);
+        } else {
+            likeRepository.delete(reaction);
         }
-        Like like = new Like(true, user, project);
-        likeRepository.save(like);
-        project.addLike(like);
-        projectRepo.save(project);
     }
+
     public void unlikePost(Long postId, User user) throws RuntimeException {
-        Project project = projectRepo.findById(postId).orElseThrow(() -> new NotFoundException("Post not found"));
-        Like likeToRemove = null;
-        for(var like : project.getLikes()) {
-            if(like.getUser().getId().equals(user.getId())) {
-                likeToRemove = like;
-                break;
+        Like reaction = likeRepository
+                .findByUserIdAndProjectId(user.getId(), postId)
+                .orElse(null);
+
+        if (reaction == null) {
+            Like like =new Like(false, user, projectRepo.findById(postId).orElse(null));
+            if(like.getProject() == null){
+                throw new NotFoundException("Not exisits project");
             }
+            likeRepository.save(like);
+        } else if (reaction.getLiked()) {
+            reaction.setLike(false);
+            likeRepository.save(reaction);
+        } else {
+            likeRepository.delete(reaction);
         }
-        if(likeToRemove == null) {
-            throw new RuntimeException("User has not liked this post");
-        }
-        project.removeLike(likeToRemove);
-        likeRepository.delete(likeToRemove);
-        projectRepo.save(project);
     }
 }
