@@ -2,8 +2,6 @@ package com.devHub.proj.post.controller;
 
 import jakarta.validation.Valid;
 
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,37 +14,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devHub.proj.models.Like;
-import com.devHub.proj.models.Project;
 import com.devHub.proj.models.User;
 import com.devHub.proj.post.dto.request.CreatePostRequest;
 import com.devHub.proj.post.dto.response.ProjectsResponse;
-import com.devHub.proj.post.dto.response.UserResponse;
 import com.devHub.proj.post.exception.NotFoundException;
 import com.devHub.proj.post.service.ProjectService;
-import com.devHub.proj.repository.LikeRepository;
 
 @RestController
 @RequestMapping("/posts")
 public class PostController {
 
     private final ProjectService servicesPosts;
-    private final LikeRepository likeRepository;
 
-    public PostController(ProjectService servicesPosts, LikeRepository likeRepository) {
+    public PostController(ProjectService servicesPosts) {
         this.servicesPosts = servicesPosts;
-        this.likeRepository = likeRepository;
+
     }
 
     @PostMapping("/new")
     public ResponseEntity<String> createPost(
             @Valid @RequestBody CreatePostRequest post,
             @AuthenticationPrincipal User user) throws RuntimeException {
-        try {
-            servicesPosts.createPost(post, user);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+
+        servicesPosts.createProject(post, user);
+
         return ResponseEntity.ok().build();
     }
 
@@ -55,59 +46,19 @@ public class PostController {
             @AuthenticationPrincipal User user,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return servicesPosts.getAllPosts(user, page, size);
+        return servicesPosts.getAllProjects(user, page, size);
     }
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) throws NotFoundException {
-        servicesPosts.deletePost(id, user);
+        servicesPosts.deleteProject(id, user);
     }
 
     @GetMapping("/{id}")
     public ProjectsResponse getPostById(
             @PathVariable Long id,
             @AuthenticationPrincipal User user) {
-        final Project post = servicesPosts.getPostById(id);
-        boolean isOwner = false;
-        if (user != null) {
-            isOwner = post.getOwner().getId().equals(user.getId());
-        }
-        boolean like = false;
-        boolean deslike = false;
-        if (user != null) {
-            Optional<Like> reaction = likeRepository.findByUserIdAndProjectId(user.getId(), post.getId());
-
-            if (reaction.isPresent()) {
-                if (reaction.get().getLiked()) {
-                    like = true;
-                } else if (!reaction.get().getLiked()) {
-                    deslike = true;
-                }
-            }
-        }
-        return new ProjectsResponse(
-                post.getName(),
-                post.getId(),
-                post.getDescription(),
-                post.getTags().stream().map(tag -> tag.getName()).toList(),
-                new UserResponse(
-                        post.getOwner().getName(),
-                        post.getOwner().getId(),
-                        post.getOwner().getAvatar_url(),
-                        post.getOwner().getBio(),
-                        false,
-                        post.getOwner().getRole().equals("ADMIN"),
-                        post.getOwner().getCreated_at()),
-                post.getGithub_url(),
-                post.getLink_url(),
-
-                likeRepository.countByProjectIdAndLiked(post.getId(), true),
-                likeRepository.countByProjectIdAndLiked(post.getId(), false),
-                like,
-                deslike,
-                isOwner,
-                post.getCreatedAt(),
-                post.getUpdatedAt());
+        return servicesPosts.getProjectDetails(id, user);
     }
 
     @PostMapping("/{id}/update")
@@ -116,11 +67,7 @@ public class PostController {
             @Valid @RequestBody CreatePostRequest post,
             @AuthenticationPrincipal User user) throws Exception {
 
-        final Project existingPost = servicesPosts.getPostById(id);
-        if (!existingPost.getOwner().getId().equals(user.getId())) {
-            return ResponseEntity.status(403).body("You are not authorized to update this post.");
-        }
-        servicesPosts.updatePost(id, post);
+        servicesPosts.updateProject(id, post, user);
 
         return ResponseEntity.ok().build();
     }
