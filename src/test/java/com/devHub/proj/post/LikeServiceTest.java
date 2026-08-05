@@ -19,13 +19,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.devHub.proj.like.service.LikeService;
-import com.devHub.proj.models.Like;
-import com.devHub.proj.models.Project;
-import com.devHub.proj.models.User;
-import com.devHub.proj.post.exception.NotFoundException;
-import com.devHub.proj.repository.LikeRepository;
-import com.devHub.proj.repository.ProjectRepo;
+import com.devHub.proj.features.like.service.LikeService;
+import com.devHub.proj.global.exception.NotFoundException;
+import com.devHub.proj.global.models.Like;
+import com.devHub.proj.global.models.Project;
+import com.devHub.proj.global.models.User;
+import com.devHub.proj.global.repository.LikeRepository;
+import com.devHub.proj.global.repository.ProjectRepository;
 
 @ExtendWith(MockitoExtension.class)
 class LikeServiceTest {
@@ -34,7 +34,7 @@ class LikeServiceTest {
     private LikeRepository likeRepository;
 
     @Mock
-    private ProjectRepo projectRepo;
+    private ProjectRepository projectRepo;
 
     @InjectMocks
     private LikeService likeService;

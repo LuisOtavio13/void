@@ -18,24 +18,24 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.data.domain.*;
 
-import com.devHub.proj.like.dto.ReactionCountAndStatus;
-import com.devHub.proj.like.service.ReactionService;
-import com.devHub.proj.models.*;
-import com.devHub.proj.post.dto.request.CreatePostRequest;
-import com.devHub.proj.post.dto.request.TagRequest;
-import com.devHub.proj.post.dto.response.ProjectsResponse;
-import com.devHub.proj.post.exception.NotFoundException;
-import com.devHub.proj.post.service.ProjectService;
-import com.devHub.proj.post.service.TagService;
-import com.devHub.proj.post.service.mapper.ProjectMapper;
-import com.devHub.proj.post.service.validator.ProjectValidator;
-import com.devHub.proj.repository.ProjectRepo;
+import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
+import com.devHub.proj.features.like.service.ReactionService;
+import com.devHub.proj.features.post.dto.request.CreatePostRequest;
+import com.devHub.proj.features.post.dto.request.TagRequest;
+import com.devHub.proj.features.post.dto.response.ProjectsResponse;
+import com.devHub.proj.features.post.service.ProjectService;
+import com.devHub.proj.features.post.service.TagService;
+import com.devHub.proj.features.post.service.mapper.ProjectMapper;
+import com.devHub.proj.features.post.service.validator.ProjectValidator;
+import com.devHub.proj.global.exception.NotFoundException;
+import com.devHub.proj.global.models.*;
+import com.devHub.proj.global.repository.ProjectRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
 
     @Mock
-    private ProjectRepo projectRepo;
+    private ProjectRepository projectRepo;
 
     @Mock
     private TagService tagService;
@@ -64,7 +64,7 @@ public class PostServiceTest {
                 "Projeto de teste",
                 List.of(new TagRequest("Java")));
 
-        Tag tag = new Tag("Java");
+        
 
         when(tagService.findByName("Java"))
                 .thenReturn(Optional.of(new Tag("Java")));

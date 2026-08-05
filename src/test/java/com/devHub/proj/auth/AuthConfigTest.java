@@ -10,10 +10,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.devHub.proj.auth.dto.request.LoginRequest;
-import com.devHub.proj.auth.dto.request.RegistroRequest;
-import com.devHub.proj.auth.service.AuthService;
-import com.devHub.proj.models.User;
+import com.devHub.proj.features.auth.dto.request.LoginRequest;
+import com.devHub.proj.features.auth.dto.request.RegistroRequest;
+import com.devHub.proj.features.auth.service.AuthService;
+import com.devHub.proj.global.models.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.anyString;
