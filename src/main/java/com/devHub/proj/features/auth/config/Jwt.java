@@ -5,12 +5,15 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.devHub.proj.global.models.User;
 
 import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Jwt {
 
-    private final String secretKey = "aaaaaaaaaaaaaaaaaa";
+    @Value("${app.secretKey}")
+    private String secretKey;
 
     public String generateToken(User user) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);

@@ -1,11 +1,14 @@
 package com.devHub.proj.features.like.service;
 
+import org.springframework.stereotype.Service;
+
 import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
 import com.devHub.proj.features.like.service.LikeService.ReactionStatus;
 import com.devHub.proj.global.models.Like;
 import com.devHub.proj.global.models.User;
 import com.devHub.proj.global.repository.LikeRepository;
 
+@Service
 public class ReactionService {
     private final LikeRepository likeRepository;
 
