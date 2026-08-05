@@ -1,9 +1,7 @@
 package com.devHub.proj.post;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -13,49 +11,51 @@ import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import com.devHub.proj.models.Like;
-import com.devHub.proj.models.Project;
-import com.devHub.proj.models.Tag;
-import com.devHub.proj.models.User;
-import com.devHub.proj.post.dto.request.CreatePostRequest;
-import com.devHub.proj.post.dto.request.TagRequest;
-import com.devHub.proj.post.dto.response.ProjectsResponse;
-import com.devHub.proj.post.exception.NotFoundException;
-import com.devHub.proj.post.service.PostService;
-import com.devHub.proj.repository.ProjectRepo;
-import com.devHub.proj.repository.TagRepo;
+import org.springframework.data.domain.*;
+
+import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
+import com.devHub.proj.features.like.service.ReactionService;
+import com.devHub.proj.features.post.dto.request.CreatePostRequest;
+import com.devHub.proj.features.post.dto.request.TagRequest;
+import com.devHub.proj.features.post.dto.response.ProjectsResponse;
+import com.devHub.proj.features.post.service.ProjectService;
+import com.devHub.proj.features.post.service.TagService;
+import com.devHub.proj.features.post.service.mapper.ProjectMapper;
+import com.devHub.proj.features.post.service.validator.ProjectValidator;
+import com.devHub.proj.global.exception.NotFoundException;
+import com.devHub.proj.global.models.*;
+import com.devHub.proj.global.repository.ProjectRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
 
     @Mock
-    private ProjectRepo projectRepo;
+    private ProjectRepository projectRepo;
 
     @Mock
-    private TagRepo tRepo;
-    
-    
-    private User owner = new User("username", "password", "email", 1L);
+    private TagService tagService;
+
+    @Mock
+    private ReactionService reactionService;
+
+    @Mock
+    private ProjectValidator validator;
+
+    @Mock
+    private ProjectMapper projectMapper;
 
     @InjectMocks
-    private PostService servicesPosts;
+    private ProjectService projectService;
+
+    private final User owner = new User("username", "password", "email", 1L);
 
     @Test
-    private void shouldCreateProjectSuccessfully() {
-
-        when(tRepo.findByName("Java"))
-                .thenReturn(Optional.empty());
-
-        when(tRepo.save(any(Tag.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+    void shouldCreateProjectSuccessfully() {
 
         CreatePostRequest request = new CreatePostRequest(
                 "DevHub",
@@ -64,108 +64,185 @@ public class PostServiceTest {
                 "Projeto de teste",
                 List.of(new TagRequest("Java")));
 
-        User user = new User();
+        
 
-        servicesPosts.createPost(request, user);
+        when(tagService.findByName("Java"))
+                .thenReturn(Optional.of(new Tag("Java")));
 
-        verify(tRepo).save(any(Tag.class));
+        when(projectMapper.toProject(
+                any(),
+                any(),
+                any())).thenReturn(new Project());
+
+        projectService.createProject(request, owner);
+
+        verify(validator).validate(request);
         verify(projectRepo).save(any(Project.class));
     }
 
     @Test
-    private void shouldGetProjectSuccessfully(){
-        
+    void shouldGetProjectSuccessfully() {
 
-        List<Tag> tags = List.of(new Tag("sla")); 
-        List<Project> projects = List.of(new Project("Name", "github_url", "link_url",
-            "description",
-            new HashSet<Like>(),
-            LocalDateTime.now(), 
-            LocalDateTime.now(), 
-            tags, owner));
-        Pageable pg = PageRequest.of(0, 10);
-        Page<Project> page = new PageImpl<>(projects, pg, projects.size());
+        Project project = new Project(
+                "Name",
+                "github_url",
+                "link_url",
+                "description",
+                new HashSet<>(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                List.of(),
+                owner);
 
-        when(projectRepo.findAll(any(Pageable.class))).thenReturn(page);
+        Page<Project> page = new PageImpl<>(
+                List.of(project),
+                PageRequest.of(0, 10),
+                1);
 
-        Page<ProjectsResponse> out = servicesPosts.getAllPosts(owner, 0, 10);
+        when(projectRepo.findAll(any(Pageable.class)))
+                .thenReturn(page);
 
+        when(reactionService.getReactionInfo(any(), any()))
+                .thenReturn(
+                        new ReactionCountAndStatus(
+                                0,
+                                false,
+                                0,
+                                false));
 
-        Assertions.assertNotNull(out);
-        Assertions.assertEquals(1, out.getTotalElements());
-        Assertions.assertEquals(0, out.getNumber());
-        Assertions.assertEquals(10, out.getSize());
-        Assertions.assertFalse(out.getContent().isEmpty());
+        when(projectMapper.toProjectsResponse(
+                any(),
+                any(),
+                any())).thenReturn(mock(ProjectsResponse.class));
 
-        // this is test of conversion
-        Assertions.assertEquals("Name", out.getContent().get(0).title());
-        Assertions.assertEquals("github_url", out.getContent().get(0).githubLink());
-        Assertions.assertEquals("link_url", out.getContent().get(0).demoLink());
-        Assertions.assertEquals("description", out.getContent().get(0).description());
+        Page<ProjectsResponse> result = projectService.getAllProjects(owner, 0, 10);
 
-        verify(projectRepo).findAll(any(Pageable.class));
+        Assertions.assertNotNull(result);
 
-        
+        Assertions.assertEquals(
+                1,
+                result.getTotalElements());
+
+        verify(projectRepo)
+                .findAll(any(Pageable.class));
+
     }
 
     @Test
-    void shouldUpdateProjectSuccessfully(){
+    void shouldUpdateProjectSuccessfully() {
+
         Long id = 1L;
-            Project existingProject = new Project("Nome Antigo", "github_antigo", "link_antigo", "Descricao Antiga", new HashSet<>(), LocalDateTime.now(), LocalDateTime.now(), List.of(), owner);
+
+        Project project = new Project(
+                "Nome antigo",
+                "github",
+                "link",
+                "desc",
+                new HashSet<>(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                List.of(),
+                owner);
 
         CreatePostRequest request = new CreatePostRequest(
-                "DevHub Atualizado",
-                "https://github.com-novo",
-                "https://devhub-novo.com",
-                "Nova descricao do projeto",
+                "Novo",
+                "github novo",
+                "link novo",
+                "desc nova",
                 List.of(new TagRequest("Java")));
 
-        when(projectRepo.findById(id)).thenReturn(Optional.of(existingProject));
-        when(tRepo.findByName("Java")).thenReturn(Optional.of(new Tag("Java")));
-        when(projectRepo.save(any(Project.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(projectRepo.findById(id))
+        .thenReturn(Optional.of(project));
+
+when(tagService.findByName("Java"))
+        .thenReturn(Optional.of(new Tag("Java")));
+
+when(projectRepo.save(any()))
+        .thenAnswer(i -> i.getArgument(0));
+
+
+doAnswer(invocation -> {
+
+    Project p = invocation.getArgument(0);
+    CreatePostRequest req = invocation.getArgument(1);
+    List<Tag> tags = invocation.getArgument(2);
+
+    p.setName(req.name());
+    p.setDescription(req.description());
+    p.setGithub_url(req.LinkGithub());
+    p.setLink_url(req.linkProjeto());
+    p.setTags(tags);
+
+    return null;
+
+}).when(projectMapper)
+.updateProject(any(), any(), any());
+
+
+
+Project result = projectService.updateProject(
+        id,
+        request,
+        owner);
+
+
+
+Assertions.assertEquals(
+        "Novo",
+        result.getName()
+);
+
+
+verify(projectRepo).save(project);
 
         
-        Project result = servicesPosts.updatePost(id, request);
 
-        
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals("DevHub Atualizado", result.getName());
-        Assertions.assertEquals("Nova descricao do projeto", result.getDescription());
-        Assertions.assertEquals("https://github.com-novo", result.getGithub_url());
-        Assertions.assertEquals("https://devhub-novo.com", result.getLink_url());
-        Assertions.assertEquals(1, result.getTags().size());
-        Assertions.assertEquals("Java", result.getTags().get(0).getName());
-        Assertions.assertNotNull(result.getUpdatedAt());
-
-        verify(projectRepo).findById(id);
-        verify(projectRepo).save(existingProject);
     }
+
     @Test
     void shouldDeleteProjectSuccessfully() {
+
         Long id = 1L;
-        Project existingProject = new Project("Nome", "github_url", "link_url",
-            "description",
-            new HashSet<Like>(),
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            List.of(), owner);
 
-        when(projectRepo.findById(id)).thenReturn(Optional.of(existingProject));
-        servicesPosts.deletePost(id,owner );
+        Project project = new Project(
+                "Nome",
+                "github",
+                "link",
+                "desc",
+                new HashSet<>(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                List.of(),
+                owner);
 
-        verify(projectRepo).deleteById(id);
+        when(projectRepo.findById(id))
+                .thenReturn(Optional.of(project));
+
+        projectService.deleteProject(id, owner);
+
+        verify(projectRepo)
+                .delete(project);
+
     }
+
     @Test
     void shouldThrowNotFoundExceptionWhenDeletingNonExistentProject() {
+
         Long id = 1L;
 
-        when(projectRepo.findById(id)).thenReturn(Optional.empty());
+        when(projectRepo.findById(id))
+                .thenReturn(Optional.empty());
 
-        Assertions.assertThrows(NotFoundException.class, () -> servicesPosts.deletePost(id, owner));
+        Assertions.assertThrows(
+                NotFoundException.class,
+                () -> projectService.deleteProject(id, owner));
 
-        verify(projectRepo).findById(id);
-        verify(projectRepo, never()).deleteById(id);
+        verify(projectRepo)
+                .findById(id);
+
+        verify(projectRepo, never())
+                .delete(any());
+
     }
-    
-    
+
 }
