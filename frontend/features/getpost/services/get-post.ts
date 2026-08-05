@@ -19,7 +19,7 @@ export async function getPost(id: number, jwt : string): Promise<Post | null> {
 export async function likePut(id: number, jwt : string): Promise<Post | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}posts/likes/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}posts/likes/${id}/like`,
       { 
         method: "PUT",
         cache: "no-cache",
@@ -36,9 +36,9 @@ export async function likePut(id: number, jwt : string): Promise<Post | null> {
 export async function desLike(id: number, jwt : string): Promise<Post | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}posts/likes/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}posts/likes/${id}/deslike`,
       { 
-        method: "DELETE",
+        method: "PUT",
         cache: "no-cache",
         headers:{
         "Authorization":`Bearer ${jwt}`

@@ -23,17 +23,17 @@ import com.devHub.proj.post.dto.request.CreatePostRequest;
 import com.devHub.proj.post.dto.response.ProjectsResponse;
 import com.devHub.proj.post.dto.response.UserResponse;
 import com.devHub.proj.post.exception.NotFoundException;
-import com.devHub.proj.post.service.PostService;
+import com.devHub.proj.post.service.ProjectService;
 import com.devHub.proj.repository.LikeRepository;
 
 @RestController
 @RequestMapping("/posts")
 public class PostController {
 
-    private final PostService servicesPosts;
+    private final ProjectService servicesPosts;
     private final LikeRepository likeRepository;
 
-    public PostController(PostService servicesPosts, LikeRepository likeRepository) {
+    public PostController(ProjectService servicesPosts, LikeRepository likeRepository) {
         this.servicesPosts = servicesPosts;
         this.likeRepository = likeRepository;
     }

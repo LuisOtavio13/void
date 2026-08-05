@@ -19,11 +19,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.devHub.proj.like.service.LikeService;
 import com.devHub.proj.models.Like;
 import com.devHub.proj.models.Project;
 import com.devHub.proj.models.User;
 import com.devHub.proj.post.exception.NotFoundException;
-import com.devHub.proj.post.service.LikeService;
 import com.devHub.proj.repository.LikeRepository;
 import com.devHub.proj.repository.ProjectRepo;
 
@@ -62,7 +62,7 @@ class LikeServiceTest {
         when(projectRepo.findById(postId)).thenReturn(Optional.of(project));
 
         
-        likeService.likePost(postId, user);
+        likeService.updateReaction(postId, user, true);
 
        
         verify(likeRepository).save(any(Like.class));
@@ -75,7 +75,7 @@ class LikeServiceTest {
 
         
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            likeService.likePost(postId, user);
+            likeService.updateReaction(postId, user, true);
         });
 
         assertEquals("Not found: Post not found", exception.getMessage());
@@ -91,7 +91,7 @@ class LikeServiceTest {
 
         
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            likeService.likePost(postId, user);
+            likeService.updateReaction(postId, user, true);
         });
 
         assertEquals("User has already liked this post", exception.getMessage());
@@ -106,7 +106,7 @@ class LikeServiceTest {
         when(projectRepo.findById(postId)).thenReturn(Optional.of(project));
 
         
-        likeService.unlikePost(postId, user);
+        likeService.updateReaction(postId, user, false);
 
         
         verify(likeRepository).delete(existingLike);
@@ -119,7 +119,7 @@ class LikeServiceTest {
 
         
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            likeService.unlikePost(postId, user);
+            likeService.updateReaction(postId, user, false);
         });
 
         assertEquals("Not found: Post not found", exception.getMessage());
@@ -132,7 +132,7 @@ class LikeServiceTest {
 
         
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            likeService.unlikePost(postId, user);
+            likeService.updateReaction(postId, user, false);
         });
 
         assertEquals("User has not liked this post", exception.getMessage());

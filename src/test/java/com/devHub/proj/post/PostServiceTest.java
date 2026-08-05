@@ -29,7 +29,7 @@ import com.devHub.proj.post.dto.request.CreatePostRequest;
 import com.devHub.proj.post.dto.request.TagRequest;
 import com.devHub.proj.post.dto.response.ProjectsResponse;
 import com.devHub.proj.post.exception.NotFoundException;
-import com.devHub.proj.post.service.PostService;
+import com.devHub.proj.post.service.ProjectService;
 import com.devHub.proj.repository.ProjectRepo;
 import com.devHub.proj.repository.TagRepo;
 
@@ -46,7 +46,7 @@ public class PostServiceTest {
     private User owner = new User("username", "password", "email", 1L);
 
     @InjectMocks
-    private PostService servicesPosts;
+    private ProjectService servicesPosts;
 
     @Test
     private void shouldCreateProjectSuccessfully() {

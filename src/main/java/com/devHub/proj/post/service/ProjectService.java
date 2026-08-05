@@ -27,13 +27,13 @@ import com.devHub.proj.repository.ProjectRepo;
 import com.devHub.proj.repository.TagRepo;
 
 @Service
-public class PostService {
+public class ProjectService {
 
     private final ProjectRepo projectRepo;
     private final LikeRepository likeRepository;
     private final TagRepo tagRepository;
 
-    public PostService(
+    public ProjectService(
             ProjectRepo projectRepo,
             TagRepo tagRepository,
             LikeRepository likeRepository) {
@@ -107,6 +107,11 @@ public class PostService {
                     project.getCreatedAt(),
                     project.getUpdatedAt());
         });
+    }
+
+    public Project findProject(Long postId) {
+        return projectRepo.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Project not found"));
     }
 
     public Project updatePost(Long id, CreatePostRequest post) throws RuntimeException {
