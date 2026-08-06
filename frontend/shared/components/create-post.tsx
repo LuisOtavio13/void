@@ -19,6 +19,8 @@ import { FaGithub } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { X } from "lucide-react";
 
+
+
 import Link from "next/link";
 import {
   FieldErrors,
@@ -29,6 +31,9 @@ import {
 } from "react-hook-form";
 import { CreatePostSchema } from "@/shared/schema/create-post";
 import { MD } from "./MD";
+import { uploadImage } from "../services/upload-image-service";
+import { toast } from "sonner";
+import { Spinner } from "./ui/spinner";
 
 interface CreatePostProps {
   setValue: UseFormSetValue<CreatePostSchema>;
@@ -49,6 +54,7 @@ export function CreatePost({
   reset,
   EhEdit = false,
 }: CreatePostProps) {
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
 
@@ -68,6 +74,35 @@ export function CreatePost({
       setTagInput("");
     }
   }
+
+  async function handlePasteImage(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+
+  const imageItem = Array.from(items).find((item) =>
+    item.type.startsWith("image/")
+  );
+  if (!imageItem) return; 
+
+  e.preventDefault(); 
+
+  const file = imageItem.getAsFile();
+  if (!file) return;
+
+  setUploadingImage(true);
+
+  try {
+    const url = await uploadImage(file);
+    const markdownImage = `![imagem](${url})`;
+
+    const current = watch("content") || "";
+    setValue("content", current + `\n${markdownImage}\n`);
+  } catch {
+    toast.error("Erro ao enviar a imagem");
+  } finally {
+    setUploadingImage(false);
+  }
+}
   function removeTag(tag: string) {
     const updatedTags = tags.filter((t) => t !== tag);
 
@@ -127,8 +162,15 @@ export function CreatePost({
               <Textarea
                 placeholder="Fale um pouco sobre o seu projeto..."
                 {...register("content")}
+                onPaste={handlePasteImage}
                 className="min-h-[180px] resize-none border-zinc-800 bg-zinc-900"
               />
+              {uploadingImage && (
+              <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-md bg-zinc-950/70 backdrop-blur-sm">
+                <Spinner className="size-5" />
+                <span className="text-sm text-zinc-300">Enviando imagem...</span>
+              </div>
+            )}
               {errors.content && (
                 <span className="text-sm text-red-500">
                   {errors.content.message}

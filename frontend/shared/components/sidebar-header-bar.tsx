@@ -29,6 +29,7 @@ import {
 } from "./ui/empty";
 import { IoChevronForwardCircleSharp } from "react-icons/io5";
 import { PiEmptyLight } from "react-icons/pi";
+import { GlobalSearch } from "@/features/globalsearch";
 
 export default function SidebarHeaderBar() {
   const [modal, setModal] = useState(false);
@@ -58,33 +59,7 @@ export default function SidebarHeaderBar() {
         </kbd>
       </button>
       <CommandDialog open={modal} onOpenChange={setModal}>
-        <Command>
-          <CommandInput placeholder="Pesquisar..." />
-          <CommandList>
-            <CommandEmpty>
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <PiEmptyLight />
-                  </EmptyMedia>
-                  <EmptyTitle>Nenhum resultado encontrado</EmptyTitle>
-                  <EmptyDescription>
-                    Não encontramos nenhum usuario ou projeto com esse nome.
-                  </EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            </CommandEmpty>
-            <CommandGroup>
-              <CommandItem>sla</CommandItem>
-              <CommandItem>dfgdf</CommandItem>
-              <CommandItem>addada</CommandItem>
-              <CommandItem>fdhgfghfgh</CommandItem>
-              <CommandItem>vbnvbnvbn</CommandItem>
-              <CommandItem>sfsfsfsfsfsd</CommandItem>
-              <CommandItem>sfsfsdfsdfs</CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
+        <GlobalSearch />
       </CommandDialog>
     </header>
   );
