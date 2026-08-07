@@ -1,12 +1,17 @@
 package com.devHub.proj.global.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Projects")
+@Getter
+@Setter
 public class Project {
 
     public Project() {}
@@ -85,53 +90,7 @@ public class Project {
     @OneToMany(mappedBy = "projectId")
     private java.util.List<Comment> comments;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getGithub_url() {
-        return github_url;
-    }
-
-    public void setGithub_url(String github_url) {
-        this.github_url = github_url;
-    }
-
-    public String getLink_url() {
-        return link_url;
-    }
-
-    public void setLink_url(String link_url) {
-        this.link_url = link_url;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Like> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Set<Like> likes) {
-        this.likes = likes;
-    }
+   
     public void addLike(Like like) {
     this.likes.add(like);
     like.setProject(this); 
@@ -141,52 +100,4 @@ public void removeLike(Like like) {
     this.likes.remove(like);
     this.likesCount = this.likes.size();
 }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public java.util.List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(java.util.List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public int getLikesCount() {
-        return likesCount;
-    }
-
-    public void setLikesCount(int likesCount) {
-        this.likesCount = likesCount;
-    }
 }

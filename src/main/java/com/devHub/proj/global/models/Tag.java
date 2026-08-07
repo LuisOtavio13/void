@@ -1,9 +1,14 @@
 package com.devHub.proj.global.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 @Entity(name = "Tag")
+@Getter
+@Setter
 @Table(name = "tag")
 public class Tag {
 
@@ -23,19 +28,4 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private List<Project> projects;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

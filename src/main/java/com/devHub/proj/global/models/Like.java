@@ -11,9 +11,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "likes")
+@Getter
+@Setter
 public class Like {
 
     @Id
@@ -21,7 +25,7 @@ public class Like {
     private Long id;
 
     @Column(name = "is_like", nullable = false)
-    private boolean liked;
+    private Boolean liked;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -46,46 +50,5 @@ public class Like {
         this.user = user;
         this.project = project;
         this.createdAt = LocalDateTime.now();
-    }
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public boolean getLiked() {
-        return liked;
-    }
-
-    public void setLike(boolean liked) {
-        this.liked = liked;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    
+    }    
 }
