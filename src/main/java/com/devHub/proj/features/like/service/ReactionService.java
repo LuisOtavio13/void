@@ -39,7 +39,7 @@ public class ReactionService {
     }
 
     public void saveReaction(Like reaction, boolean liked) {
-        reaction.setLike(liked);
+        reaction.setLiked(liked);
         likeRepository.save(reaction);
     }
 

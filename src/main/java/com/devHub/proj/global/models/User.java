@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +19,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity(name = "Users")
+@Getter
+@Setter
 public class User implements UserDetails {
 
     @Id
@@ -25,15 +30,15 @@ public class User implements UserDetails {
     public User() {}
 
     public User(String username, String password, String email) {
-        this.username = username;
+        this.name = username;
         this.password = password;
         this.email = email;
         this.bio = "";
         this.role = "USER";
         this.avatar_url = "";
     }
-    public User(String username, String password, String email, Long id) {
-        this.username = username;
+    public User(String name, String password, String email, Long id) {
+        this.name = name;
         this.password = password;
         this.email = email;
         this.bio = "";
@@ -42,8 +47,8 @@ public class User implements UserDetails {
         this.avatar_url = "";
     }
 
-    @Column(nullable = false)
-    private String username;
+    @Column(nullable = false, name = "username")
+    private String name;
 
     @Column(nullable = false)
     private String password;
@@ -82,30 +87,6 @@ public class User implements UserDetails {
         updated_at = LocalDateTime.now();
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
@@ -139,45 +120,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getAvatar_url() {
-        return avatar_url;
-    }
-
-    public void setAvatar_url(String avatar_url) {
-        this.avatar_url = avatar_url;
     }
 }

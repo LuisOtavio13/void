@@ -69,7 +69,7 @@ public class AuthConfigTest {
         Long id = 1L;
         User user = instantiateUserExample(id);
 
-        RegistroRequest registroRequest = new RegistroRequest(user.getName(), user.getName(), user.getPassword());
+        RegistroRequest registroRequest = new RegistroRequest(user.getName(), user.getEmail(), user.getPassword());
         when(serviceAuth.saveUser(anyString(), anyString(), anyString())).thenReturn(user);
         mockMvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(registroRequest)))
         .andExpectAll(status().isCreated());
