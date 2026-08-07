@@ -1,0 +1,13 @@
+version: 2
+updates:
+  
+  - package-manager: "maven"
+    directory: "/" 
+    schedule:
+      interval: "weekly"
+
+ 
+  - package-manager: "npm"
+    directory: "/frontend" 
+    schedule:
+      interval: "weekly"
