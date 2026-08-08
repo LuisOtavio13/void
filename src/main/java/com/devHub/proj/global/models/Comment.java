@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Comments")
 @Getter
@@ -33,11 +35,8 @@ public class Comment {
     @JoinColumn(name = "project_id", nullable = false)
     private Project projectId;
 
-    @Column(nullable = false)
-    private int likes = 0;
-
-    @Column(nullable = false)
-    private int dislikes = 0;
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<Like> likes = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

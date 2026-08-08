@@ -10,24 +10,75 @@ import com.devHub.proj.global.repository.LikeRepository;
 
 @Service
 public class ReactionService {
+
     private final LikeRepository likeRepository;
 
     public ReactionService(LikeRepository likeRepository) {
         this.likeRepository = likeRepository;
     }
 
-    public ReactionCountAndStatus getReactionInfo(Long projectId, Long userId) {
-        long likes = likeRepository.countByProjectIdAndLiked(projectId, true);
-        long dislikes = likeRepository.countByProjectIdAndLiked(projectId, false);
+    public ReactionCountAndStatus getProjectReactionInfo(
+            Long projectId,
+            Long userId) {
 
-        ReactionStatus reactionStatus = getUserReaction(projectId, userId);
+        long likes = likeRepository.countByProjectIdAndLiked(
+                projectId,
+                true);
 
-        return new ReactionCountAndStatus(likes, reactionStatus.like(), dislikes, reactionStatus.deslike());
+        long dislikes = likeRepository.countByProjectIdAndLiked(
+                projectId,
+                false);
+
+        ReactionStatus reactionStatus =
+                getProjectUserReaction(projectId, userId);
+
+        return new ReactionCountAndStatus(
+                likes,
+                reactionStatus.like(),
+                dislikes,
+                reactionStatus.deslike());
     }
 
-    private ReactionStatus getUserReaction(Long projectId, Long userId) {
+    public ReactionCountAndStatus getCommentReactionInfo(
+            Long commentId,
+            Long userId) {
+
+        long likes = likeRepository.countByCommentIdAndLiked(
+                commentId,
+                true);
+
+        long dislikes = likeRepository.countByCommentIdAndLiked(
+                commentId,
+                false);
+
+        ReactionStatus reactionStatus =
+                getCommentUserReaction(commentId, userId);
+
+        return new ReactionCountAndStatus(
+                likes,
+                reactionStatus.like(),
+                dislikes,
+                reactionStatus.deslike());
+    }
+
+    private ReactionStatus getProjectUserReaction(
+            Long projectId,
+            Long userId) {
+
         return likeRepository
                 .findByUserIdAndProjectId(userId, projectId)
+                .map(like -> new ReactionStatus(
+                        like.getLiked(),
+                        !like.getLiked()))
+                .orElse(new ReactionStatus(false, false));
+    }
+
+    private ReactionStatus getCommentUserReaction(
+            Long commentId,
+            Long userId) {
+
+        return likeRepository
+                .findByUserIdAndCommentId(userId, commentId)
                 .map(like -> new ReactionStatus(
                         like.getLiked(),
                         !like.getLiked()))
@@ -47,10 +98,15 @@ public class ReactionService {
         likeRepository.save(reaction);
     }
 
-    public Like findUserReaction(User user, Long postId) {
+    public Like findUserProjectReaction(User user, Long projectId) {
         return likeRepository
-                .findByUserIdAndProjectId(user.getId(), postId)
+                .findByUserIdAndProjectId(user.getId(), projectId)
                 .orElse(null);
     }
 
+    public Like findUserCommentReaction(User user, Long commentId) {
+        return likeRepository
+                .findByUserIdAndCommentId(user.getId(), commentId)
+                .orElse(null);
+    }
 }

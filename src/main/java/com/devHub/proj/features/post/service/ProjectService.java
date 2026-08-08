@@ -77,7 +77,7 @@ public class ProjectService {
                 Sort.by("createdAt").descending());
 
         return projectRepo.findAll(pageable).map(project -> {
-            var reaction = reactionService.getReactionInfo(
+            var reaction = reactionService.getProjectReactionInfo(
                     project.getId(),
                     user.getId());
 
@@ -92,7 +92,7 @@ public class ProjectService {
         Project project = getProjectById(id);
 
         return projectMapper.toProjectsResponse(
-                reactionService.getReactionInfo(project.getId(), user.getId()),
+                reactionService.getProjectReactionInfo(project.getId(), user.getId()),
                 project,
                 user);
     }

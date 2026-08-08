@@ -32,19 +32,13 @@ public class ControllerComment {
     }
 
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<List<CommentDTO>> getByProject(@PathVariable Long projectId) {
-        return ResponseEntity.ok(commentsService.getCommentsByProject(projectId));
+    public ResponseEntity<List<CommentDTO>> getByProject(@PathVariable Long projectId,
+                                                        @AuthenticationPrincipal User user
+    ) {
+        return ResponseEntity.ok(commentsService.getCommentsByProject(projectId, user));
     }
 
-    @PostMapping("/{id}/like")
-    public ResponseEntity<CommentDTO> like(@PathVariable Long id) {
-        return ResponseEntity.ok(commentsService.likeComment(id));
-    }
-
-    @PostMapping("/{id}/dislike")
-    public ResponseEntity<CommentDTO> dislike(@PathVariable Long id) {
-        return ResponseEntity.ok(commentsService.dislikeComment(id));
-    }
+   
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {

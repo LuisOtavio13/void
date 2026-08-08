@@ -60,13 +60,13 @@ class LikeServiceTest {
     @Test
     void likePost_Success() {
 
-        when(reactionService.findUserReaction(user, postId))
+        when(reactionService.findUserProjectReaction(user, postId))
                 .thenReturn(null);
 
         when(projectService.getProjectById(postId))
                 .thenReturn(project);
 
-        likeService.updateReaction(postId, user, true);
+        likeService.updateReactionProject(postId, user, true);
 
         verify(reactionService).saveReaction(any(Like.class));
     }
@@ -76,10 +76,10 @@ class LikeServiceTest {
 
         Like existingLike = new Like(true, user, project);
 
-        when(reactionService.findUserReaction(user, postId))
+        when(reactionService.findUserProjectReaction(user, postId))
                 .thenReturn(existingLike);
 
-        likeService.updateReaction(postId, user, true);
+        likeService.updateReactionProject(postId, user, true);
 
         verify(reactionService).removeReaction(existingLike);
     }
@@ -89,10 +89,10 @@ class LikeServiceTest {
 
         Like existingLike = new Like(true, user, project);
 
-        when(reactionService.findUserReaction(user, postId))
+        when(reactionService.findUserProjectReaction(user, postId))
                 .thenReturn(existingLike);
 
-        likeService.updateReaction(postId, user, false);
+        likeService.updateReactionProject(postId, user, false);
 
         verify(reactionService).saveReaction(existingLike, false);
     }
@@ -102,7 +102,7 @@ class LikeServiceTest {
 
         when(projectService.getProjectById(postId)).thenReturn(null);
 
-        likeService.updateReaction(postId, user, false);
+        likeService.updateReactionProject(postId, user, false);
 
         verify(reactionService, never()).removeReaction(any(Like.class));
     }
@@ -111,7 +111,7 @@ class LikeServiceTest {
     void unlikePost_UserHadNotLiked() {
         when(projectService.getProjectById(postId)).thenReturn(project);
 
-        likeService.updateReaction(postId, user, false);
+        likeService.updateReactionProject(postId, user, false);
 
         verify(reactionService, never()).removeReaction(any(Like.class));
     }
