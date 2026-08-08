@@ -1,6 +1,5 @@
 package com.devHub.proj.features.post.service;
 
-
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -21,8 +20,10 @@ import com.devHub.proj.global.models.Tag;
 import com.devHub.proj.global.models.User;
 import com.devHub.proj.global.repository.ProjectRepository;
 
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class ProjectService {
 
     private final ProjectRepository projectRepo;
@@ -45,6 +46,7 @@ public class ProjectService {
     }
 
     public Project getProjectById(Long id) {
+
         return projectRepo
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Project with id = " + id));
@@ -52,12 +54,20 @@ public class ProjectService {
 
     @Transactional
     public void createProject(CreatePostRequest projectRequest, User user) {
+
         validator.validate(projectRequest);
         List<Tag> tags = findOrCreateTags(projectRequest);
 
         Project project = projectMapper.toProject(projectRequest, tags, user);
 
         projectRepo.save(project);
+        log.info(
+                "Project created: projectId={}, userId={}, tags={}, tagCount={}",
+                project.getId(),
+                user.getId(),
+                tags.stream().map(t -> t.getName()).toList(),
+                tags.size());
+
     }
 
     public Page<ProjectsResponse> getAllProjects(User user, int page, int size) {
@@ -78,19 +88,18 @@ public class ProjectService {
         });
     }
 
-    public ProjectsResponse getProjectDetails(Long id, User user){
-       Project project = getProjectById(id);
+    public ProjectsResponse getProjectDetails(Long id, User user) {
+        Project project = getProjectById(id);
 
         return projectMapper.toProjectsResponse(
-            reactionService.getReactionInfo(project.getId(), user.getId()),
-            project,
-            user
-        );
+                reactionService.getReactionInfo(project.getId(), user.getId()),
+                project,
+                user);
     }
 
     @Transactional
-    public Project updateProject(Long id, CreatePostRequest projectRequest, User user){
-        
+    public Project updateProject(Long id, CreatePostRequest projectRequest, User user) {
+
         validator.validate(projectRequest);
 
         Project existingProject = getProjectById(id);
@@ -101,10 +110,18 @@ public class ProjectService {
 
         projectMapper.updateProject(existingProject, projectRequest, tags);
 
-        return projectRepo.save(existingProject);
+        Project updatedProject = projectRepo.save(existingProject);
+
+        log.info(
+                "Project updated: projectId={}, userId={}, tags={}, tagCount={}",
+                existingProject.getId(),
+                user.getId(),
+                tags.stream().map(t -> t.getName()).toList(),
+                tags.size());
+
+        return updatedProject;
     }
-    
-   
+
     @Transactional
     public void deleteProject(Long id, User user) {
         Project project = getProjectById(id);
@@ -112,13 +129,28 @@ public class ProjectService {
         validator.validateAuthorizationProject(project, user);
 
         projectRepo.delete(project);
+        log.info(
+                "Project deleted: projectId={}, userId={}, title={}",
+                project.getId(),
+                user.getId(),
+                project.getName());
+
     }
 
     private List<Tag> findOrCreateTags(CreatePostRequest request) {
+        log.debug("Finding or creating tags: tags={}",
+                request.tags().stream()
+                        .map(t -> t.name())
+                        .toList());
+
         return request.tags()
                 .stream()
                 .map(t -> tagService.findByName(t.name())
-                        .orElseGet(() -> tagService.newTag(t.name())))
+                        .orElseGet(() -> {
+                            log.debug("Tag not found, creating tag: name={}", t.name());
+                            return tagService.newTag(t.name());
+                        }))
+
                 .toList();
     }
 }

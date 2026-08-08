@@ -12,13 +12,17 @@ import com.devHub.proj.features.auth.exception.InvalidLoginException;
 import com.devHub.proj.features.post.exception.PostLenException;
 import com.devHub.proj.global.exception.NotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<
         HashMap<String, String>
     > handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
+        log.error(e.getMessage());
         HashMap<String, String> response = new HashMap<>();
         response.put("error", e.getMessage());
         response.put("date", LocalDateTime.now().toString());
