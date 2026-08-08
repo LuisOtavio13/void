@@ -38,6 +38,13 @@ public class Comment {
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     private List<Like> likes = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
+
+    @OneToMany(mappedBy = "parentComment")
+    private List<Comment> replies = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

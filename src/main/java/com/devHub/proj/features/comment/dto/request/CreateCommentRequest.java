@@ -5,5 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateCommentRequest(
     @NotBlank(message = "Content is required") String content,
-    @NotNull(message = "Project ID is required") Long projectId
+    @NotNull(message = "Project ID is required") Long projectId,
+    Long parentCommentId
 ) {}

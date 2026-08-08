@@ -1,5 +1,7 @@
 package com.devHub.proj.features.comment.service.mapper;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
@@ -19,8 +21,23 @@ public class CommentMapper {
         return comment;
     }
 
+    public CommentDTO toDto(
+        Comment comment,
+        User user,
+        ReactionCountAndStatus reaction) {
+
+    return toDto(
+            comment,
+            user,
+            reaction,
+            List.of()
+    );
+}
+
     public CommentDTO toDto(Comment comment, User user,
-            ReactionCountAndStatus reaction) {
+            ReactionCountAndStatus reaction,
+            List<CommentDTO> replies
+        ) {
         return new CommentDTO(comment.getId(),
                 new UserResponse(
                         user.getName(),
@@ -37,6 +54,12 @@ public class CommentMapper {
                 reaction.deslike(),
                 comment.getUserId().getId().equals(user.getId()),
                 comment.getCreatedAt(),
-                comment.getUpdatedAt());
+                comment.getUpdatedAt(),
+                replies,
+                comment.getParentComment() != null
+                        ? comment.getParentComment().getId()
+                        : null
+
+            );
     }
 }

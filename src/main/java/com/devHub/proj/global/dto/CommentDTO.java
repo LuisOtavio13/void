@@ -1,6 +1,7 @@
 package com.devHub.proj.global.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.devHub.proj.features.post.dto.response.UserResponse;
 
@@ -14,5 +15,8 @@ public record CommentDTO(
     Boolean isDesLikedByUser,
     Boolean thisUserIsOwner,
     LocalDateTime createdAt,
-    LocalDateTime updatedAt
+    LocalDateTime updatedAt,
+    List<CommentDTO> replies,
+    Long parentCommentId
+
 ) {}

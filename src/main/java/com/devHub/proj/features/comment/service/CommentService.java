@@ -1,6 +1,5 @@
 package com.devHub.proj.features.comment.service;
 
-
 import org.springframework.stereotype.Service;
 
 import com.devHub.proj.features.comment.dto.request.CreateCommentRequest;
@@ -17,6 +16,8 @@ import com.devHub.proj.global.models.User;
 import com.devHub.proj.global.repository.CommentRepository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -27,12 +28,11 @@ public class CommentService {
     private final ProjectService projectService;
     private final CommentValidator commentValidator;
 
-    public CommentService(ReactionService reactionService, 
-        ProjectService projectService,
-        CommentMapper commentMapper,
-        CommentRepository commentRepository,
-        CommentValidator commentValidator
-    ) {
+    public CommentService(ReactionService reactionService,
+            ProjectService projectService,
+            CommentMapper commentMapper,
+            CommentRepository commentRepository,
+            CommentValidator commentValidator) {
         this.reactionService = reactionService;
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
@@ -43,49 +43,96 @@ public class CommentService {
     public CommentDTO createComment(CreateCommentRequest request, User user) {
         Project project = projectService.getProjectById(request.projectId());
 
+        Comment parent = null;
+
+        if (request.parentCommentId() != null) {
+            parent = getCommentById(request.parentCommentId());
+
+            if (!parent.getProjectId().getId().equals(project.getId())) {
+
+                throw new IllegalArgumentException(
+                        "Parent comment belongs to another project");
+
+            }
+        }
+
         Comment comment = commentMapper.newComment(user, project, request.content());
+
+        comment.setParentComment(parent);
 
         commentRepository.save(comment);
 
-        ReactionCountAndStatus reactionCountAndStatus = reactionService.getCommentReactionInfo(comment.getId(), user.getId());
-        
+        ReactionCountAndStatus reactionCountAndStatus = reactionService.getCommentReactionInfo(comment.getId(),
+                user.getId());
+
         return commentMapper.toDto(comment, user, reactionCountAndStatus);
     }
 
     public List<CommentDTO> getCommentsByProject(
-        Long projectId,
-        User user) {
+            Long projectId,
+            User user) {
 
-    return commentRepository
-            .findByProjectId_Id(projectId)
-            .stream()
-            .map(comment -> {
+        List<Comment> roots = commentRepository
+                .findByProjectId_IdAndParentCommentIsNull(projectId);
 
-                ReactionCountAndStatus reaction =
-                        reactionService.getCommentReactionInfo(
-                                comment.getId(),
-                                user.getId());
+        if (roots.isEmpty()) {
+            return List.of();
+        }
 
-                return commentMapper.toDto(
-                        comment,
-                        comment.getUserId(),
-                        reaction);
-            })
-            .toList();
-}
+        List<Long> rootIds = roots.stream()
+                .map(com -> com.getId())
+                .toList();
 
-    public Comment getCommentById(Long id){
-            return commentRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Comment not found"));
+        List<Comment> replies = commentRepository.findByParentComment_IdIn(rootIds);
+
+        Map<Long, List<Comment>> repliesByParent = replies.stream()
+                .collect(Collectors.groupingBy(
+                        reply -> reply.getParentComment().getId()));
+        return roots.stream()
+                .map(root -> {
+
+                    ReactionCountAndStatus rootReaction = reactionService.getCommentReactionInfo(
+                            root.getId(),
+                            user.getId());
+
+                    List<CommentDTO> replyDTOs = repliesByParent
+                            .getOrDefault(root.getId(), List.of())
+                            .stream()
+                            .map(reply -> {
+
+                                ReactionCountAndStatus replyReaction = reactionService.getCommentReactionInfo(
+                                        reply.getId(),
+                                        user.getId());
+
+                                return commentMapper.toDto(
+                                        reply,
+                                        reply.getUserId(),
+                                        replyReaction,
+                                        List.of());
+                            })
+                            .toList();
+
+                    return commentMapper.toDto(
+                            root,
+                            root.getUserId(),
+                            rootReaction,
+                            replyDTOs);
+                })
+                .toList();
+
+    }
+
+    public Comment getCommentById(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Comment not found"));
     }
 
     public void deleteComment(Long commentId, User user) {
         Comment comment = getCommentById(commentId);
-    
+
         commentValidator.validateAuthorizationComment(user, comment);
 
         commentRepository.delete(comment);
     }
 
-   
 }
