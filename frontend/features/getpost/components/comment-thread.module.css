@@ -1,0 +1,73 @@
+.commentRoot {
+  position: relative;
+
+  --comment-avatar-size: 37px;
+  --comment-thread-color: var(--border, #3f3f46);
+  --comment-thread-color-soft: #3f3f46;
+}
+
+.header {
+  position: relative;
+}
+
+
+
+.replyItem {
+  position: relative;
+}
+
+
+.replyItem::after {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  height: calc(var(--comment-avatar-size) / 2);
+  width: 22px;
+  inset-inline-start: -22px;
+
+  border-inline-start: 1px solid var(--comment-thread-color-soft);
+  border-bottom: 1px solid var(--comment-thread-color-soft);
+
+  border-end-start-radius: 12px;
+
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+.threadlineStrip {
+  position: absolute;
+
+  inset-inline-start: 10px;
+  top: calc(var(--comment-avatar-size) / 2);
+  bottom: 0;
+
+  width: 16px;
+
+  z-index: 3;
+  cursor: pointer;
+}
+.commentRoot:has(> .threadLine)::before {
+  content: "";
+  position: absolute;
+
+  top: calc(var(--comment-avatar-size) / 2);
+  inset-inline-start: 18px;
+  bottom: var(--tronco-bottom, 0px);
+
+  border-inline-start: 1px solid var(--comment-thread-color-soft);
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.commentRoot:has(> .threadlineStrip:hover)::before {
+  border-inline-start-color: var(--muted-foreground, #a1a1aa);
+}
+
+.commentRoot:has(> .threadlineStrip:hover) .replyItem::after {
+  border-inline-start-color: var(--muted-foreground, #a1a1aa);
+  border-bottom-color: var(--muted-foreground, #a1a1aa);
+}

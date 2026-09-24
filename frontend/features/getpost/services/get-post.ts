@@ -16,10 +16,13 @@ export async function getPost(id: number, jwt : string): Promise<Post | null> {
     return null;
   }
 }
-export async function likePut(id: number, jwt : string): Promise<Post | null> {
+export async function likePut(id: number, jwt : string, sla: boolean): Promise<Post | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}posts/likes/${id}/like`,
+      sla
+        ? `${process.env.NEXT_PUBLIC_API_URL}likes/project/${id}/like`
+        : `${process.env.NEXT_PUBLIC_API_URL}likes/comment/${id}/like`,
+      
       { 
         method: "PUT",
         cache: "no-cache",
@@ -33,10 +36,11 @@ export async function likePut(id: number, jwt : string): Promise<Post | null> {
     return null;
   }
 }
-export async function desLike(id: number, jwt : string): Promise<Post | null> {
+export async function desLike(id: number, jwt : string, sla: boolean): Promise<Post | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}posts/likes/${id}/deslike`,
+       sla ? `${process.env.NEXT_PUBLIC_API_URL}likes/project/${id}/deslike`
+        : `${process.env.NEXT_PUBLIC_API_URL}likes/comment/${id}/deslike`,
       { 
         method: "PUT",
         cache: "no-cache",

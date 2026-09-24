@@ -17,6 +17,7 @@ public record CommentDTO(
     LocalDateTime createdAt,
     LocalDateTime updatedAt,
     List<CommentDTO> replies,
+    Long nestedRepliesCount,
     Long parentCommentId
 
 ) {}

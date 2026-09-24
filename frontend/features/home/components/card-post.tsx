@@ -54,7 +54,7 @@ export function UserAvatar({
 }) {
   return (
     <Avatar className={className}>
-      <AvatarImage src={user.photo} />
+      <AvatarImage src={user.avatar_url} />
 
       <AvatarFallback>{user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
     </Avatar>

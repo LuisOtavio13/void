@@ -13,53 +13,54 @@ import com.devHub.proj.global.models.User;
 
 @Component
 public class CommentMapper {
-    public Comment newComment(User user, Project project, String content) {
-        Comment comment = new Comment();
-        comment.setContent(content);
-        comment.setUserId(user);
-        comment.setProjectId(project);
-        return comment;
-    }
+        public Comment newComment(User user, Project project, String content) {
+                Comment comment = new Comment();
+                comment.setContent(content);
+                comment.setUserId(user);
+                comment.setProjectId(project);
+                return comment;
+        }
 
-    public CommentDTO toDto(
-        Comment comment,
-        User user,
-        ReactionCountAndStatus reaction) {
+        public CommentDTO toDto(
+                        Comment comment,
+                        User user,
+                        ReactionCountAndStatus reaction) {
 
-    return toDto(
-            comment,
-            user,
-            reaction,
-            List.of()
-    );
-}
+                return toDto(
+                                comment,
+                                user,
+                                reaction,
+                                List.of(),
+                                0);
+        }
 
-    public CommentDTO toDto(Comment comment, User user,
-            ReactionCountAndStatus reaction,
-            List<CommentDTO> replies
-        ) {
-        return new CommentDTO(comment.getId(),
-                new UserResponse(
-                        user.getName(),
-                        user.getId(),
-                        user.getAvatar_url(),
-                        user.getBio(),
-                        false,
-                        user.getRole().equals("ADMIN"),
-                        user.getCreated_at()),
-                comment.getContent(),
-                reaction.likes(),
-                reaction.deslikes(),
-                reaction.like(),
-                reaction.deslike(),
-                comment.getUserId().getId().equals(user.getId()),
-                comment.getCreatedAt(),
-                comment.getUpdatedAt(),
-                replies,
-                comment.getParentComment() != null
-                        ? comment.getParentComment().getId()
-                        : null
+        public CommentDTO toDto(Comment comment, User user,
+                        ReactionCountAndStatus reaction,
+                        List<CommentDTO> replies,
+                        int nestedRepliesCount) {
+                return new CommentDTO(comment.getId(),
+                                new UserResponse(
+                                                user.getName(),
+                                                user.getId(),
+                                                user.getAvatar_url(),
+                                                user.getBio(),
+                                                false,
+                                                user.getRole().equals("ADMIN"),
+                                                user.getCreated_at()),
+                                comment.getContent(),
+                                reaction.likes(),
+                                reaction.deslikes(),
+                                reaction.like(),
+                                reaction.deslike(),
+                                comment.getUserId().getId().equals(user.getId()),
+                                comment.getCreatedAt(),
+                                comment.getUpdatedAt(),
+                                replies,
+                                Long.valueOf(nestedRepliesCount),
+                                comment.getParentComment() != null
+                                                ? comment.getParentComment().getId()
+                                                : null
 
-            );
-    }
+                );
+        }
 }
