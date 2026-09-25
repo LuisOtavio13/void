@@ -5,8 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { comments } from "../types/comments";
 import { UserDatails } from "./page-user-post";
 import styles from "./comment-thread.module.css";
-import { IoIosMore, IoIosShareAlt } from "react-icons/io"
-import { IoArrowRedo } from "react-icons/io5";
+import { IoIosShareAlt } from "react-icons/io"
 import { HiOutlineReply } from "react-icons/hi";
 import { LikeDislike } from "./like-deslike";
 import { MD } from "@/shared/components/MD";
@@ -14,6 +13,7 @@ import { CommentFormData, CommentInput } from "./CommentInput";
 import { toast } from "sonner";
 import { PostComment } from "../services/post-comments";
 import { useRouter } from "next/navigation";
+import { DropDownPost } from "./drop-down";
 function VoteRow({
   likesCount,
   id,
@@ -21,6 +21,9 @@ function VoteRow({
   isDesLikedByUser,
   desLikesCount,
   onReply,
+  userID,
+  thisUserIsOwner,
+  content
 }: {
   likesCount: number;
   desLikesCount: number;
@@ -28,6 +31,9 @@ function VoteRow({
   isLikedByUser: boolean;
   isDesLikedByUser: boolean;
   onReply: () => void;
+  userID: number;
+  thisUserIsOwner: boolean;
+  content: string;
 
 }) {
   return (
@@ -48,9 +54,14 @@ function VoteRow({
       <button className="hidden items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold transition-colors hover:bg-accent sm:flex">
         <IoIosShareAlt className="size-3.5" /> Compartilhar
       </button>
-      <button className="rounded-full p-1 transition-colors hover:bg-accent" aria-label="Mais opções">
-        <IoIosMore className="size-4" />
-      </button>
+
+      <DropDownPost
+        userID={userID}
+        title={content}
+        thisUserIsOwner={thisUserIsOwner}
+        postId={id}
+      />
+
     </div>
   );
 }
@@ -60,9 +71,11 @@ export function Comment({
   isReply = false,
   jwt,
   projectId,
+  userID
 }: {
   comment: comments;
   isReply?: boolean;
+  userID: number;
   jwt: string,
   projectId: number
 }) {
@@ -145,6 +158,7 @@ export function Comment({
   function handleLoadMoreReplies() {
 
   }
+
   return (
     <div ref={rootRef} className={`${styles.commentRoot} ${isReply ? styles.replyItem : ""}`}>
       {hasReplies && !collapsed && (
@@ -176,6 +190,9 @@ export function Comment({
           id={comment.id}
           isDesLikedByUser={comment.isDesLikedByUser}
           isLikedByUser={comment.isLikedByUser}
+          content={comment.content}
+          userID={comment.user.id ?? 0}
+          thisUserIsOwner={comment.user.id === userID}
         />
         <div className="mt-3">
 
@@ -209,6 +226,7 @@ export function Comment({
                 <Comment
                   comment={reply}
                   isReply
+                  userID={userID}
                   jwt={jwt}
                   projectId={projectId}
                 />

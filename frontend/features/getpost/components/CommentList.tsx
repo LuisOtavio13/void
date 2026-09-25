@@ -9,6 +9,8 @@ import { PostComment } from "../services/post-comments";
 
 import { CommentInput, CommentFormData } from "./CommentInput";
 import { useRouter } from "next/navigation";
+import { getUser } from "@/shared/context/user";
+import { useQuery } from "@tanstack/react-query";
 
 interface CommentListProps {
   postId: number;
@@ -21,7 +23,10 @@ export function CommentList({ postId, jwt }: CommentListProps) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-
+   const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
 
 
   useEffect(() => {
@@ -43,6 +48,7 @@ export function CommentList({ postId, jwt }: CommentListProps) {
   }, [postId, jwt]);
 
   async function handleCreateComment(data: CommentFormData) {
+   
     if (!jwt) {
       toast.error("Você precisa estar logado para comentar.");
       return;
@@ -95,7 +101,7 @@ export function CommentList({ postId, jwt }: CommentListProps) {
       </>
     );
   }
-
+   
 
 
   return (
@@ -109,6 +115,8 @@ export function CommentList({ postId, jwt }: CommentListProps) {
           projectId={postId}
           key={comment.id}
           comment={comment}
+          userID={user?.id?? 0}
+
         />
       ))}
     </div>
