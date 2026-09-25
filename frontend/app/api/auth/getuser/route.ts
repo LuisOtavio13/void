@@ -12,6 +12,7 @@ export async function GET() {
     },
   });
   if (!user.ok) {
+    cookie.delete("jwt");
     return new Response(null, { status: user.status });
   }
   const userData = await user.json();

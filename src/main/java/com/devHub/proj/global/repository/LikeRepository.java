@@ -9,7 +9,16 @@ import com.devHub.proj.global.models.Like;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
-    Optional<Like> findByUserIdAndProjectId(Long userId, Long projectId);
     long countByProjectIdAndLiked(Long projectId, boolean liked);
+
+    long countByCommentIdAndLiked(Long commentId, boolean liked);
+
+    Optional<Like> findByUserIdAndProjectId(
+            Long userId,
+            Long projectId);
+
+    Optional<Like> findByUserIdAndCommentId(
+            Long userId,
+            Long commentId);
 
 }

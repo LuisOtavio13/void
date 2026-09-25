@@ -11,7 +11,7 @@ import com.devHub.proj.features.like.service.LikeService;
 import com.devHub.proj.global.models.User;
 
 @RestController
-@RequestMapping("/posts/likes")
+@RequestMapping("/likes")
 public class LikeController {
 
     private LikeService likeService;
@@ -20,14 +20,24 @@ public class LikeController {
         this.likeService = likeService;
     }
 
-    @PutMapping("/{postId}/like")
-    public ResponseEntity<Void> like(@PathVariable Long postId, @AuthenticationPrincipal User user) {
-        likeService.updateReaction(postId, user, true);
+    @PutMapping("/project/{postId}/like")
+    public ResponseEntity<Void> likeProject(@PathVariable Long postId, @AuthenticationPrincipal User user) {
+        likeService.updateReactionProject(postId, user, true);
         return ResponseEntity.ok().build();
     }
-    @PutMapping("/{postId}/deslike")
-    public ResponseEntity<Void> deslike(@PathVariable Long postId, @AuthenticationPrincipal User user) {
-        likeService.updateReaction(postId, user, false);
+    @PutMapping("/project/{postId}/deslike")
+    public ResponseEntity<Void> deslikeProject(@PathVariable Long postId, @AuthenticationPrincipal User user) {
+        likeService.updateReactionProject(postId, user, false);
+        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/comment/{commentId}/like")
+    public ResponseEntity<Void> likeComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
+        likeService.updateReactionComment(commentId, user, true);
+        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/comment/{commentId}/deslike")
+    public ResponseEntity<Void> deslikeComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
+        likeService.updateReactionComment(commentId, user, false);
         return ResponseEntity.ok().build();
     }
 }

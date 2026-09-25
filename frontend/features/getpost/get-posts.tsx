@@ -14,6 +14,7 @@ import { CardTags } from "../home/components/client";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { LikeDislike } from "./components/like-deslike";
 import { cookies } from "next/headers";
+import { CommentList } from "./components/CommentList";
 export async function GetPosts({ user, post }: PostPage) {
   const cookieStore = await cookies();
   const jwt = cookieStore.get("jwt")?.value;
@@ -36,7 +37,7 @@ export async function GetPosts({ user, post }: PostPage) {
           />
           <UserDatails
           
-            photo={userData.photo}
+            photo={userData.avatar_url}
             name={userData.name}
             createdAt={postData.createdAt}
             updatedAt={postData.updatedAt}
@@ -47,7 +48,13 @@ export async function GetPosts({ user, post }: PostPage) {
             ownerPost={user}
             post={post}
           />
-            <LikeDislike id={postData.id} initialLikes={postData.likesCount} liked={postData.isLikedByUser} disliked={postData.isDesLikedByUser} initialDislikes={postData.desLikesCount}/>
+            <LikeDislike id={postData.id}
+            initialLikes={postData.likesCount}
+            liked={postData.isLikedByUser}
+            disliked={postData.isDesLikedByUser}
+            initialDislikes={postData.desLikesCount}
+            sla={true}
+            />
            <CardTags tags={postData.tags} cores={cores} />
            
            
@@ -56,7 +63,9 @@ export async function GetPosts({ user, post }: PostPage) {
       </div>
       <div className="mx-auto max-w-6xl px-6 py-10">
         <MD md={postData.description} />
+        <CommentList postId={Number(post)} jwt={jwt}/>
       </div>
+      
       <Footer />
     </div>
   );
