@@ -14,6 +14,7 @@ interface LikeDislikeProps {
   disliked: boolean;
   jwt?: string;
   id: number;
+  sla: boolean
 }
 
 function formatCount(n: number): string {
@@ -28,6 +29,7 @@ export function LikeDislike({
   jwt,
   liked,
   disliked,
+  sla
 }: LikeDislikeProps) {
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -57,7 +59,7 @@ export function LikeDislike({
     }
     setLikes((l) => (isLiked ? l - 1 : l + 1));
     setIsLiked((v) => !v);
-    likePut(id, currentJwt);
+    likePut(id, currentJwt, sla);
   }
 
   function handleDislike() {
@@ -69,14 +71,14 @@ export function LikeDislike({
     }
     setDislikes((d) => (isDisliked ? d - 1 : d + 1));
     setIsDisliked((v) => !v);
-    desLike(id, currentJwt);
+    desLike(id, currentJwt, sla);
   }
 
   return (
     <div
       className={`flex items-center gap-1 w-fit ${
-        readOnly ? "" : "bg-white/5 border border-white/10 rounded-md p-0.5"
-      }`}
+  sla ? "bg-white/5 border border-white/10 rounded-md p-0.5" : ""
+}`}
     >
       <button
         type="button"
@@ -91,7 +93,7 @@ export function LikeDislike({
         <span className="text-xs font-medium">{formatCount(likes)}</span>
       </button>
 
-      <div className={readOnly ? "hidden" : "w-px h-3 bg-white/10"} />
+      <div className={sla ? "w-px h-3 bg-white/10" : "hidden"}></div>
 
       <button
         type="button"

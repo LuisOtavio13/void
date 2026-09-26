@@ -3,7 +3,7 @@ export interface User {
   name: string;
   email: string;
   jwt?: string;
-  photo: string;
+  avatar_url: string;
   createdAt?: string;
   id?: number;
   isVerified?: boolean;

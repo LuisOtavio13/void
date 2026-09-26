@@ -340,7 +340,7 @@ export default function Navbar() {
               "
               >
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={user?.photo} />
+                  <AvatarImage src={user?.avatar_url} />
 
                   <AvatarFallback>
                     {user?.name.substring(0, 2).toUpperCase()}
@@ -376,7 +376,7 @@ export default function Navbar() {
               <DropdownMenuLabel className="p-3">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src={user?.photo} />
+                    <AvatarImage src={user?.avatar_url} />
 
                     <AvatarFallback>
                       {user?.name.substring(0, 2).toUpperCase()}

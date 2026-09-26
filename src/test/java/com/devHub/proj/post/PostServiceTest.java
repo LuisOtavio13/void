@@ -102,7 +102,7 @@ public class PostServiceTest {
         when(projectRepo.findAll(any(Pageable.class)))
                 .thenReturn(page);
 
-        when(reactionService.getReactionInfo(any(), any()))
+        when(reactionService.getProjectReactionInfo(any(), any()))
                 .thenReturn(
                         new ReactionCountAndStatus(
                                 0,

@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 function CodeBlock({ code, lang }: { code: string; lang?: string }) {
   const [copied, setCopied] = useState(false);
@@ -39,9 +40,9 @@ function CodeBlock({ code, lang }: { code: string; lang?: string }) {
   );
 }
 
-export function MD({ md }: { md: string }) {
+export function MD({ md, className}: { md: string, className?:string}) {
   return (
-    <div className="text-zinc-400 text-sm leading-relaxed">
+    <div className={cn("text-sm text-zinc-400", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

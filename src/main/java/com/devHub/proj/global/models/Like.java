@@ -32,8 +32,12 @@ public class Like {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id", nullable = false)
+    @JoinColumn(name = "project_id")
     private Project project;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -49,6 +53,12 @@ public class Like {
         this.liked = liked;
         this.user = user;
         this.project = project;
+        this.createdAt = LocalDateTime.now();
+    }   
+     public Like(boolean liked, User user, Comment comment) {
+        this.liked = liked;
+        this.user = user;
+        this.comment = comment;
         this.createdAt = LocalDateTime.now();
     }    
 }
