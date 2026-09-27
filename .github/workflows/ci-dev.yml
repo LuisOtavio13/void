@@ -1,0 +1,108 @@
+name: ci main
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: devhub
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d devhub"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      POSTGRES_DB: devhub
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      secretKey: ci-secret-key
+
+      
+      NEXT_PUBLIC_API_URL: http://localhost:8080/
+      NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+      NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: ${{ secrets.CLOUDINARY_UPLOAD_PRESET }}
+
+    steps:
+
+      
+
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+
+      
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+
+      
+
+      - name: Configurar Java JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+
+      
+
+      - name: Instalar dependências e compilar Frontend
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Testes do Frontend
+        working-directory: ./frontend
+        run: npm test
+
+      - name: Iniciar Frontend
+        working-directory: ./frontend
+        run: |
+          npm run start > frontend.log 2>&1 &
+          sleep 10
+
+
+      
+
+      - name: Compilar Backend
+        run: ./mvnw compile
+
+      - name: Testes Unitários do Backend
+        run: ./mvnw test
+
+      - name: Testes de Integração do Backend
+        run: ./mvnw verify -DskipUnitTests=true
+
+      - name: Iniciar Backend
+        run: |
+          ./mvnw spring-boot:run > backend.log 2>&1 &
+          sleep 15

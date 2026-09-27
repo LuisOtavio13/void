@@ -49,7 +49,7 @@ export function HomePageIndex() {
             <CardPost.Body>
               <CardPostDescription description={card.description} />
               <CardTags tags={card.tags} cores={cores} />
-              <LikeDislike readOnly id={card.id} initialLikes={card.likesCount} liked={card.isLikedByUser} disliked={card.isDesLikedByUser} initialDislikes={card.desLikesCount} />
+              <LikeDislike readOnly id={card.id} initialLikes={card.likesCount} liked={card.isLikedByUser} disliked={card.isDesLikedByUser} initialDislikes={card.desLikesCount} sla={false}/>
             </CardPost.Body>
             { (card.githubLink || card.demoLink) && (
             <CardPost.Footer>
