@@ -4,6 +4,8 @@ import { CardItem } from "../types/types";
 import { fetchCards } from "../services/fetch-cards";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/shared/context/user";
+import { subscribeToPosts } from "../services/subscribeToPosts";
+import { toast } from "sonner";
 
 export function useCards() {
   const { data: user, isLoading } = useQuery({
@@ -18,6 +20,7 @@ export function useCards() {
 
   const loadingRef = useRef(false);
   const pageRef = useRef(0);
+  const subscriptionRef = useRef<(() => void) | null>(null);
   const jwt = user?.jwt;
 
   const loadCards = useCallback(
@@ -50,36 +53,37 @@ export function useCards() {
     },
     [hasMore, jwt],
   );
-
   useEffect(() => {
     if (!jwt) return;
-    let cancelled = false;
 
-    async function init() {
-      loadingRef.current = true;
-      setLoading(true);
-
-      try {
-        const data = await fetchCards(0, jwt!);
-
-        if (!cancelled) {
-          setCards(data);
-          setPage(1);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-          loadingRef.current = false;
-        }
-      }
+    if (subscriptionRef.current) {
+      subscriptionRef.current();
+      subscriptionRef.current = null;
     }
-    init();
+
+    const unsubscribe = subscribeToPosts((newPost: CardItem) => {
+      setCards((prev) => {
+        if (prev.some((card) => card.id === newPost.id)) {
+          return prev;
+        }
+
+        toast.success("Novo post publicado!");
+        return [newPost, ...prev];
+      });
+    });
+
+    subscriptionRef.current = unsubscribe;
+
     return () => {
-      cancelled = true;
+      unsubscribe();
+
+      if (subscriptionRef.current === unsubscribe) {
+        subscriptionRef.current = null;
+      }
     };
   }, [jwt]);
+
+  
 
   useEffect(() => {
     pageRef.current = page;

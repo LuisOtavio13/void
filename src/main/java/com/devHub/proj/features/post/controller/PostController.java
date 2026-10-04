@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devHub.proj.features.post.dto.request.CreatePostRequest;
 import com.devHub.proj.features.post.dto.response.ProjectsResponse;
 import com.devHub.proj.features.post.service.ProjectService;
+import com.devHub.proj.features.post.service.SsePostService;
 import com.devHub.proj.global.exception.NotFoundException;
 import com.devHub.proj.global.models.User;
 
@@ -25,10 +26,10 @@ import com.devHub.proj.global.models.User;
 public class PostController {
 
     private final ProjectService servicesPosts;
-
-    public PostController(ProjectService servicesPosts) {
+    private final SsePostService proPostService;
+    public PostController(ProjectService servicesPosts, SsePostService proPostService) {
         this.servicesPosts = servicesPosts;
-
+        this.proPostService = proPostService;
     }
 
     @PostMapping("/new")
@@ -36,7 +37,8 @@ public class PostController {
             @Valid @RequestBody CreatePostRequest post,
             @AuthenticationPrincipal User user) throws RuntimeException {
 
-        servicesPosts.createProject(post, user);
+        ProjectsResponse projectsResponse = servicesPosts.createProject(post, user);
+        proPostService.createNewPost(projectsResponse);
 
         return ResponseEntity.ok().build();
     }

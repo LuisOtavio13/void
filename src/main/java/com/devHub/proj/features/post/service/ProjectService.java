@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
 import com.devHub.proj.features.like.service.ReactionService;
 import com.devHub.proj.features.post.dto.request.CreatePostRequest;
 import com.devHub.proj.features.post.dto.response.ProjectsResponse;
@@ -53,12 +54,13 @@ public class ProjectService {
     }
 
     @Transactional
-    public void createProject(CreatePostRequest projectRequest, User user) {
+    public ProjectsResponse createProject(CreatePostRequest projectRequest, User user) {
 
         validator.validate(projectRequest);
         List<Tag> tags = findOrCreateTags(projectRequest);
 
         Project project = projectMapper.toProject(projectRequest, tags, user);
+        var emptyReaction = new ReactionCountAndStatus(0L, false,0L, false);
 
         projectRepo.save(project);
         log.info(
@@ -67,6 +69,7 @@ public class ProjectService {
                 user.getId(),
                 tags.stream().map(t -> t.getName()).toList(),
                 tags.size());
+        return projectMapper.toProjectsResponse(emptyReaction, project, user);
 
     }
 
