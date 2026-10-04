@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Dialog } from "../ui/dialog";
 import { useRouter } from 'next/navigation';
+import { ConfirmDialog } from "../ConfirmDialog";
 
 function Item({ text, icon, onClick }: { text: string; icon: React.ReactNode; onClick?: () => void }) {
   return (
@@ -34,6 +35,7 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
     queryKey: ["user"],
     queryFn: getUser,
   });
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const roter = useRouter();
   const [editMode, setEditMode] = useState(false);
   const {
@@ -53,6 +55,7 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
       githubUrl: githubUrl || "",
     },
   });
+  
   const isOwner = String(user?.id) === String(userID);
   console.log(isOwner + " " + userID + " " + user?.id);
   async function onSubmit(post: CreatePostSchema) {
@@ -82,11 +85,14 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
         return;
       }
       toast.success("Post atualizado com sucesso!");
+      roter.refresh();
     } catch (error) {
       toast.error("Erro ao atualizar o post. Tente novamente.");
     }
   }
-
+  function handleDeleteClick() {
+    setDeleteDialogOpen(true);
+  }
   async function handleDelete() {
     try {
       const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `posts/${id}`, {
@@ -138,7 +144,7 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
               setEditMode(true)} />
 
               <Item text="Excluir" icon={<FiShare />} onClick={() => {
-                  handleDelete();
+                  handleDeleteClick();
               }} />
               </>
               )}
@@ -155,6 +161,15 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
           errors={errors}
           EhEdit={true} />
       </Dialog >
+      {deleteDialogOpen && (
+        <ConfirmDialog 
+            title="Deletar esse Post?"
+            description={`Tem certeza que deseja deletar o post "${title}"? Essa ação não pode ser desfeita.`}
+            isOpen={deleteDialogOpen}
+            onClose={() => setDeleteDialogOpen(false)}
+            onConfirm={handleDelete}
+        />
+        )}
     </>
   );
 }

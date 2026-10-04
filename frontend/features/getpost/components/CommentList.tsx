@@ -38,7 +38,7 @@ export function CommentList({ postId, jwt }: CommentListProps) {
 
         setComments(data);
       } catch (error) {
-        console.error("Erro ao buscar comentários:", error);
+        toast.error("Erro ao carregar comentários.");
       } finally {
         setLoading(false);
       }

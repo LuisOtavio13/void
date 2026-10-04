@@ -95,7 +95,6 @@ export function CommentInput({
 
       reset();
     } catch {
-      // O componente pai pode tratar o erro
     } finally {
       setSending(false);
     }

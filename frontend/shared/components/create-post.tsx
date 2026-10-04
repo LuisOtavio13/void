@@ -56,7 +56,7 @@ export function CreatePost({
 }: CreatePostProps) {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(watch("tags") || []);
 
   const title = watch("title");
   const content = watch("content");

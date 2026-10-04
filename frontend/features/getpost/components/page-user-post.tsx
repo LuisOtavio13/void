@@ -125,7 +125,7 @@ export function PageBreadcrumb({
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <Link href={`/${ownerPost}/${post}`}>{title}</Link>
+          <Link href={`/posts/${ownerPost}/${post}`}>{title}</Link>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

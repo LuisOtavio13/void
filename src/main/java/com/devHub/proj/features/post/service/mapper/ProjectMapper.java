@@ -64,7 +64,8 @@ public class ProjectMapper {
                 project.setDescription(postRequest.description());
                 project.setGithub_url(postRequest.LinkGithub());
                 project.setLink_url(postRequest.linkProjeto());
-                project.setTags(tags);
+                project.cleanTags();
+                project.getTags().addAll(tags);
                 project.setUpdatedAt(LocalDateTime.now());
         }
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,19 +15,19 @@ import java.util.Set;
 @Setter
 public class Project {
 
-    public Project() {}
-
+    public Project() {
+    }
+    
     public Project(
-        String name,
-        String github_url,
-        String link_url,
-        String description,
-        Set<Like> likes,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
-        List<Tag> tags,
-        User owner
-    ) {
+            String name,
+            String github_url,
+            String link_url,
+            String description,
+            Set<Like> likes,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            List<Tag> tags,
+            User owner) {
         this.name = name;
         this.github_url = github_url;
         this.link_url = link_url;
@@ -34,7 +35,7 @@ public class Project {
         this.likes = likes;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.tags = tags;
+        this.tags = new ArrayList<>(tags);
         this.owner = owner;
     }
 
@@ -56,7 +57,6 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Like> likes = new HashSet<Like>();
 
-
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
@@ -64,12 +64,8 @@ public class Project {
     private LocalDateTime updatedAt;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-        name = "has_tag",
-        joinColumns = @JoinColumn(name = "project_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private List<Tag> tags;
+    @JoinTable(name = "has_tag", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags = new ArrayList<>();
     @Column(name = "likes_count", nullable = false)
     private int likesCount = 0;
     @ManyToOne
@@ -90,14 +86,19 @@ public class Project {
     @OneToMany(mappedBy = "projectId")
     private java.util.List<Comment> comments;
 
-   
     public void addLike(Like like) {
-    this.likes.add(like);
-    like.setProject(this); 
-    this.likesCount = this.likes.size(); 
-}
-public void removeLike(Like like) {
-    this.likes.remove(like);
-    this.likesCount = this.likes.size();
-}
+        this.likes.add(like);
+        like.setProject(this);
+        this.likesCount = this.likes.size();
+    }
+
+    public void removeLike(Like like) {
+        this.likes.remove(like);
+        this.likesCount = this.likes.size();
+    }
+
+    public void cleanTags() {
+        this.tags.clear();
+    }
+
 }

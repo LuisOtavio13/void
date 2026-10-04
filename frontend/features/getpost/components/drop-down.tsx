@@ -15,6 +15,8 @@ import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import { toast } from "sonner";
+import { deleteComment } from "../services/delete-comment";
+import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 
 function Item({
   text,
@@ -48,6 +50,7 @@ export function DropDownPost({
   thisUserIsOwner: boolean;
 }) {
   const router = useRouter();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const [editMode, setEditMode] = useState(false);
 
@@ -56,33 +59,26 @@ export function DropDownPost({
     queryFn: getUser,
   });
 
-  async function handleDelete() {
+
+  function handleDeleteClick() {
+    setDeleteDialogOpen(true);
+  }
+
+  async function handleDeleteConfirm() {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}posts/${postId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${user?.jwt}`,
-          },
-        }
+      await deleteComment(postId, user?.jwt || "");
+
+      toast.success("Post deletado com sucesso!");
+      setDeleteDialogOpen(false);
+
+      router.refresh();
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Erro ao excluir o post.",
       );
 
-      if (!response.ok) {
-        const error = await response.json();
-
-        toast.error(
-          error.message || "Erro ao excluir o post. Tente novamente."
-        );
-
-        return;
-      }
-
-      toast.success("Post excluído com sucesso!");
-
-      router.push("/pages/home");
-    } catch (error) {
-      toast.error("Erro ao excluir o post.");
       console.error(error);
     }
   }
@@ -127,13 +123,20 @@ export function DropDownPost({
                 <Item
                   text="Excluir"
                   icon={<FiTrash2 />}
-                  onClick={handleDelete}
+                  onClick={handleDeleteClick}
                 />
               </>
             )}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
+      <ConfirmDialog
+        title="Excluir comentário?"
+        description={`Tem certeza que deseja excluir "${title}"? Essa ação não pode ser desfeita.`}
+        isOpen={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDeleteConfirm}
+      />
     </>
   );
 }
