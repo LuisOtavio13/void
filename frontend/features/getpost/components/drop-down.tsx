@@ -17,6 +17,7 @@ import { FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import { toast } from "sonner";
 import { deleteComment } from "../services/delete-comment";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
+import { CommentInput } from "./CommentInput";
 
 function Item({
   text,
@@ -130,6 +131,34 @@ export function DropDownPost({
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
+      {editMode && (
+        <CommentInput onSubmit={async (data) => {
+          try {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}comments/${postId}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user?.jwt}`,
+              },
+              body: JSON.stringify({
+                content: data.content,
+                projectId: postId,
+              }),
+            });
+
+            toast.success("Comentário atualizado com sucesso!");
+            setEditMode(false);
+            router.refresh();
+          } catch (error) {
+            toast.error(
+              error instanceof Error
+                ? error.message
+                : "Erro ao atualizar o comentário.",
+            );
+          }
+        }} />
+      )}
+
       <ConfirmDialog
         title="Excluir comentário?"
         description={`Tem certeza que deseja excluir "${title}"? Essa ação não pode ser desfeita.`}

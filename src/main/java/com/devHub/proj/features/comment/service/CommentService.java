@@ -15,11 +15,14 @@ import com.devHub.proj.global.models.Project;
 import com.devHub.proj.global.models.User;
 import com.devHub.proj.global.repository.CommentRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j 
 public class CommentService {
 
         private final ReactionService reactionService;
@@ -125,6 +128,25 @@ public class CommentService {
                 }
 
                 return count;
+        }
+        public CommentDTO updateComment(Long commentId, CreateCommentRequest request, User user) {
+                Comment comment = getCommentById(commentId);
+
+                commentValidator.validateAuthorizationComment(user, comment);
+
+                comment.setContent(request.content());
+
+                Comment updatedComment = commentRepository.save(comment);
+
+                ReactionCountAndStatus reactionCountAndStatus = reactionService.getCommentReactionInfo(
+                                updatedComment.getId(),
+                                user.getId());
+
+                log.info("Comment updated: commentId={}, userId={}, content={}",
+                                updatedComment.getId(),
+                                user.getId(),
+                                updatedComment.getContent());
+                return commentMapper.toDto(updatedComment, user, reactionCountAndStatus);
         }
 
         private CommentDTO buildCommentDTO(
