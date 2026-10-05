@@ -39,7 +39,7 @@ export function Comment({
   } = useCommentThread(comment);
 
   const router = useRouter();
-
+  
   async function handleCreateComment(data: CommentFormData) {
     if (!jwt) {
       toast.error("Você precisa estar logado para comentar.");

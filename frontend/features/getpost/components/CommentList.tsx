@@ -11,6 +11,7 @@ import { CommentInput, CommentFormData } from "./CommentInput";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/shared/context/user";
 import { useQuery } from "@tanstack/react-query";
+import { commentsRealtime } from "../realtime/comments-realtime";
 
 interface CommentListProps {
   postId: number;
@@ -23,18 +24,25 @@ export function CommentList({ postId, jwt }: CommentListProps) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-   const { data: user } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
   });
 
 
   useEffect(() => {
+    if (!jwt) {
+      return;
+    }
+    commentsRealtime({ setComments });
+  }, [jwt])
+  useEffect(() => {
     async function loadComments() {
       try {
         setLoading(true);
 
         const data = await get_comments(postId, jwt);
+        console.log(data);
 
         setComments(data);
       } catch (error) {
@@ -48,7 +56,7 @@ export function CommentList({ postId, jwt }: CommentListProps) {
   }, [postId, jwt]);
 
   async function handleCreateComment(data: CommentFormData) {
-   
+
     if (!jwt) {
       toast.error("Você precisa estar logado para comentar.");
       return;
@@ -61,10 +69,10 @@ export function CommentList({ postId, jwt }: CommentListProps) {
         jwt
       );
 
-      setComments((prev) => [...prev, newComment]);
+
 
       toast.success("Comentário publicado!");
-      router.refresh();
+
     } catch {
       toast.error("Erro ao publicar comentário.");
     }
@@ -92,16 +100,16 @@ export function CommentList({ postId, jwt }: CommentListProps) {
   if (comments.length === 0) {
     return (
       <>
-       <CommentInput
-        onSubmit={handleCreateComment}
-      />
-      <div className="py-8 text-center text-sm text-muted-foreground">
-        Nenhum comentário ainda.
-      </div>
+        <CommentInput
+          onSubmit={handleCreateComment}
+        />
+        <div className="py-8 text-center text-sm text-muted-foreground">
+          Nenhum comentário ainda.
+        </div>
       </>
     );
   }
-   
+
 
 
   return (
@@ -111,11 +119,11 @@ export function CommentList({ postId, jwt }: CommentListProps) {
       />
       {comments.map((comment) => (
         <Comment
-          jwt={jwt?? ""}
+          jwt={jwt ?? ""}
           projectId={postId}
           key={comment.id}
           comment={comment}
-          userID={user?.id?? 0}
+          userID={user?.id ?? 0}
 
         />
       ))}

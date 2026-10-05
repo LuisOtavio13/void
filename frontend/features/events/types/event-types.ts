@@ -1,4 +1,4 @@
-import { PostCreatedEvent, PostDeletedEvent, PostUpdatedEvent, ReactionProjectUpdatedEvent } from "./dto-types";
+import { CommentCreatedEvent, PostCreatedEvent, PostDeletedEvent, PostUpdatedEvent, ReactionCommentUpdatedEvent, ReactionProjectUpdatedEvent } from "./dto-types";
 
 
 
@@ -7,4 +7,6 @@ export type EventMap = {
   "post.updated": PostUpdatedEvent;
   "post.deleted": PostDeletedEvent;
   "post.reaction.updated": ReactionProjectUpdatedEvent;
+  "comment.reaction.updated": ReactionCommentUpdatedEvent;
+  "comment.created": CommentCreatedEvent;
 };
