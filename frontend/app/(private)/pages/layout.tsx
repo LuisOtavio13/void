@@ -2,6 +2,7 @@ import Footer from "@/shared/components/footer";
 import Navbar from "@/shared/components/navbar";
 import SidebarHeaderBar from "@/shared/components/sidebar-header-bar";
 import { SidebarInset, SidebarProvider } from "@/shared/components/ui/sidebar";
+import { RealtimeProvider } from "../providers/realtime-provider";
 
 export default function RootLayout({
   children,
@@ -9,6 +10,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <>
+    
     <SidebarProvider>
       <Navbar />
       <SidebarInset className="flex flex-col">
@@ -17,5 +20,6 @@ export default function RootLayout({
         <Footer />
       </SidebarInset>
     </SidebarProvider>
+    </>
   );
 }
