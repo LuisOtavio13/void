@@ -6,11 +6,12 @@ public enum EventType {
     
     POST_CREATED("post.created"),
     POST_UPDATED("post.updated"),
-    POST_LIKED("post.liked"),
     POST_DELETED("post.deleted"),
+    REACTION_PROJECT_UPDATED("post.reaction.updated"),
 
     COMMENT_CREATED("comment.created"),
     COMMENT_DELETED("comment.deleted"),
+    REACTION_COMMENT_UPDATED("comment.reaction.updated"),
 
     NOTIFICATION_CREATED("notification.created");
 

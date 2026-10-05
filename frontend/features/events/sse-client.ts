@@ -3,12 +3,11 @@ import { EventMap } from "./types/event-types";
 
 let eventSource: EventSource | null = null;
 
-const EVENT_NAMES: Array<keyof EventMap> = ["post.created", "post.updated", "post.deleted"];
-
 export function connectToSSE() {
     if (eventSource) return;
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     if (!apiUrl) {
         console.error("NEXT_PUBLIC_API_URL is not defined");
         return;
@@ -16,20 +15,22 @@ export function connectToSSE() {
 
     eventSource = new EventSource(`${apiUrl}sse/subscribe`);
 
-    EVENT_NAMES.forEach((eventName) => {
-        eventSource?.addEventListener(eventName, (event) => {
-            try {
-                const payload = JSON.parse((event as MessageEvent).data) as EventMap[typeof eventName];
-                console.log(`Received SSE event: ${eventName}`, payload);
-                eventBus.emit(eventName, payload);
-            } catch (error) {
-                console.error(`Failed to parse SSE event ${eventName}:`, error);
-            }
-        });
-    });
+    eventSource.onmessage = (event) => {
+        try {
+            const { type, data } = JSON.parse(event.data) as {
+                type: keyof EventMap;
+                data: EventMap[keyof EventMap];
+            };
+
+            eventBus.emit(type, data as never);
+        } catch (error) {
+            console.error("Failed to parse SSE event:", error);
+        }
+    };
 
     eventSource.onerror = (error) => {
         console.error("SSE connection error:", error);
+
         eventSource?.close();
         eventSource = null;
     };

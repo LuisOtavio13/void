@@ -3,6 +3,10 @@ package com.devHub.proj.features.like.service;
 import org.springframework.stereotype.Service;
 
 import com.devHub.proj.features.comment.service.CommentService;
+import com.devHub.proj.features.event.service.EventType;
+import com.devHub.proj.features.event.service.SseEventService;
+import com.devHub.proj.features.like.dto.ReactionCommentResponse;
+import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
 import com.devHub.proj.features.post.service.ProjectService;
 import com.devHub.proj.global.models.Comment;
 import com.devHub.proj.global.models.Like;
@@ -18,11 +22,13 @@ public class LikeService {
     private final ProjectService projectService;
     private final ReactionService reactionService;
     private final CommentService commentService;
+    private final SseEventService sseEventService;
 
-    public LikeService(ProjectService projectService, ReactionService reactionService, CommentService commentService) {
+    public LikeService(ProjectService projectService, ReactionService reactionService, CommentService commentService, SseEventService sseEventService) {
         this.reactionService = reactionService;
         this.commentService = commentService;
         this.projectService = projectService;
+        this.sseEventService = sseEventService;
     }
 
     /**
@@ -53,6 +59,10 @@ public class LikeService {
 
             reactionService.removeReaction(reaction);
         }
+        ReactionCountAndStatus reactionCountAndStatus = reactionService.getProjectReactionInfo(postId, user.getId());
+        ReactionCommentResponse reactionCommentResponse = new ReactionCommentResponse(postId, reactionCountAndStatus);
+        sseEventService.sendEvent(EventType.REACTION_PROJECT_UPDATED, reactionCommentResponse);
+        
     }
 
     public void updateReactionComment(Long commentID, User user, boolean liked) {
@@ -70,6 +80,10 @@ public class LikeService {
 
             reactionService.removeReaction(reaction);
         }
+        
+        ReactionCountAndStatus reactionCountAndStatus = reactionService.getCommentReactionInfo(commentID, user.getId());
+        ReactionCommentResponse reactionCommentResponse = new ReactionCommentResponse(commentID, reactionCountAndStatus);
+        sseEventService.sendEvent(EventType.REACTION_COMMENT_UPDATED, reactionCommentResponse);
     }
 
     
@@ -80,6 +94,7 @@ public class LikeService {
         Like reaction = new Like(liked, user, project);
 
         reactionService.saveReaction(reaction);
+
     }
       private void createReactionComment(User user, Long commentID, boolean liked) {
         Comment comment = commentService.getCommentById(commentID);

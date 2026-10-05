@@ -27,10 +27,28 @@ export function cardsRealtime({setCards}: {setCards: React.Dispatch<React.SetSta
             return updatedCards;
         });
     });
-
+    const unsubscribeReactionUpdated = eventBus.on("post.reaction.updated",
+    (data) =>{
+        setCards((prev) => {
+            const updatedCards = prev.map((card) => {
+                if (card.id === data.Id) {
+                    return {
+                        ...card,
+                        likesCount: data.likesCount,
+                        desLikesCount: data.desLikesCount,
+                        isLikedByUser: data.isLikedByUser,
+                        isDesLikedByUser: data.isDesLikedByUser,
+                    };
+                }
+                return card;
+            });
+            return updatedCards;
+        });
+    });
     return () => {
         unsubscribeCreated();
         unsubscribeUpdated();
         unsubscribeDeleted();
+        unsubscribeReactionUpdated();
     };
 }
