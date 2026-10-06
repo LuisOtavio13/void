@@ -1,5 +1,7 @@
-export async function search(termo: string) {
-  const response = await fetch(`/api/search?termo=${encodeURIComponent(termo)}`, {
+import type { SearchResult } from "../types";
+
+export async function search(term: string): Promise<SearchResult[]> {
+  const response = await fetch(`/api/search?termo=${encodeURIComponent(term)}`, {
     method: "GET",
     cache: "no-store",
   });
@@ -9,5 +11,5 @@ export async function search(termo: string) {
     throw new Error(error.message || "Erro ao buscar resultados");
   }
 
-  return response.json();
+  return response.json() as Promise<SearchResult[]>;
 }

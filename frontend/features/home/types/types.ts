@@ -1,7 +1,6 @@
 import { User } from "@/shared/types/UserType";
-import { boolean } from "zod";
 
-interface CardItem {
+export interface CardItem {
   id: number;
   title: string;
   description: string;
@@ -9,12 +8,11 @@ interface CardItem {
   tags: string[];
   githubLink?: string;
   demoLink?: string;
-  likesCount : number;
-  desLikesCount : number;
+  likesCount: number;
+  desLikesCount: number;
   isLikedByUser: boolean;
   isDesLikedByUser: boolean;
   createdAt: Date;
   updatedAt: Date;
   user: User;
 }
-export type { CardItem };
