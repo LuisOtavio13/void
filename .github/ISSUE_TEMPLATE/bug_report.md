@@ -1,11 +1,10 @@
 ---
-
 name: Bug report
 about: Report a bug or unexpected behavior in DevHub.
 title: "[Bug]: "
 labels: bug
 assignees: ""
--------------
+---
 
 ## Location of the problem
 

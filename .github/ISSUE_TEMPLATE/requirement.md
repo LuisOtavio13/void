@@ -1,11 +1,10 @@
 ---
-
 name: Requirement change
 about: Request the creation, modification, or removal of a system requirement.
 title: "[Requirement]: "
 labels: requirement
 assignees: ""
--------------
+---
 
 ## Requirement
 

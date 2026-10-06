@@ -1,11 +1,10 @@
 ---
-
 name: Feature request
 about: Request a new feature or modification to an existing feature.
 title: "[Feature]: "
 labels: feature
 assignees: ""
--------------
+---
 
 ## Feature location
 
