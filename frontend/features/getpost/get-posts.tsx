@@ -15,6 +15,7 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { LikeDislike } from "./components/like-deslike";
 import { cookies } from "next/headers";
 import { CommentList } from "./components/CommentList";
+import { PostRealtime } from "./components/PostRealtime";
 export async function GetPosts({ user, post }: PostPage) {
   const cookieStore = await cookies();
   const jwt = cookieStore.get("jwt")?.value;
@@ -24,47 +25,7 @@ export async function GetPosts({ user, post }: PostPage) {
   const userData = postData.user;
   return (
     <div>
-      <div className="border-b border-border">
-        <PageHeader>
-          <PageTitle
-            title={postData.title}
-            ownerPost={user}
-            content={postData.description}
-            tags={postData.tags}
-            demoUrl={postData.demoLink}
-            githubUrl={postData.githubLink}
-            id={postData.id}
-          />
-          <UserDatails
-          
-            photo={userData.avatar_url}
-            name={userData.name}
-            createdAt={postData.createdAt}
-            updatedAt={postData.updatedAt}
-          />
-          <PageBreadcrumb
-            name={userData.name}
-            title={postData.title}
-            ownerPost={user}
-            post={post}
-          />
-            <LikeDislike id={postData.id}
-            initialLikes={postData.likesCount}
-            liked={postData.isLikedByUser}
-            disliked={postData.isDesLikedByUser}
-            initialDislikes={postData.desLikesCount}
-            sla={true}
-            />
-           <CardTags tags={postData.tags} cores={cores} />
-           
-           
-           
-        </PageHeader>
-      </div>
-      <div className="mx-auto max-w-6xl px-6 py-10">
-        <MD md={postData.description} />
-        <CommentList postId={Number(post)} jwt={jwt}/>
-      </div>
+      <PostRealtime initialPost={postData} jwt={jwt ??" "} post={post} user={user} />
       
       <Footer />
     </div>

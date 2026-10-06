@@ -1,7 +1,7 @@
 export interface User {
   isAdmin: boolean;
   name: string;
-  email: string;
+  email?: string;
   jwt?: string;
   avatar_url: string;
   createdAt?: string;

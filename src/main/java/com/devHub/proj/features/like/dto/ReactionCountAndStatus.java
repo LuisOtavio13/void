@@ -1,8 +1,8 @@
 package com.devHub.proj.features.like.dto;
 
-public record ReactionCountAndStatus(long likes,
-                boolean like,
-                long deslikes,
-                boolean deslike) {
+public record ReactionCountAndStatus(long likesCount,
+                boolean isLikedByUser,
+                long desLikesCount,
+                boolean isDesLikedByUser) {
 
 }

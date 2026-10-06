@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devHub.proj.features.event.service.EventType;
+import com.devHub.proj.features.event.service.SseEventService;
 import com.devHub.proj.features.post.dto.request.CreatePostRequest;
 import com.devHub.proj.features.post.dto.response.ProjectsResponse;
 import com.devHub.proj.features.post.service.ProjectService;
-import com.devHub.proj.features.post.service.SsePostService;
 import com.devHub.proj.global.exception.NotFoundException;
 import com.devHub.proj.global.models.User;
 
@@ -26,8 +27,8 @@ import com.devHub.proj.global.models.User;
 public class PostController {
 
     private final ProjectService servicesPosts;
-    private final SsePostService proPostService;
-    public PostController(ProjectService servicesPosts, SsePostService proPostService) {
+    private final SseEventService proPostService;
+    public PostController(ProjectService servicesPosts, SseEventService proPostService) {
         this.servicesPosts = servicesPosts;
         this.proPostService = proPostService;
     }
@@ -38,7 +39,7 @@ public class PostController {
             @AuthenticationPrincipal User user) throws RuntimeException {
 
         ProjectsResponse projectsResponse = servicesPosts.createProject(post, user);
-        proPostService.createNewPost(projectsResponse);
+        proPostService.sendEvent(EventType.POST_CREATED, projectsResponse);
 
         return ResponseEntity.ok().build();
     }
@@ -52,8 +53,10 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) throws NotFoundException {
+    public ResponseEntity<String> deletePost(@PathVariable Long id, @AuthenticationPrincipal User user) throws NotFoundException {
         servicesPosts.deleteProject(id, user);
+        proPostService.sendEvent(EventType.POST_DELETED, java.util.Map.of("postId", id));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -70,6 +73,8 @@ public class PostController {
             @AuthenticationPrincipal User user) throws Exception {
 
         servicesPosts.updateProject(id, post, user);
+        ProjectsResponse updatedPost = servicesPosts.getProjectDetails(id, user);
+        proPostService.sendEvent(EventType.POST_UPDATED, updatedPost);
 
         return ResponseEntity.ok().build();
     }

@@ -1,31 +1,7 @@
-import { CardItem } from "../types/types";
+import type { CardItem } from "../types/types";
 
-async function fetchCards(
-  page: number,
-  jwt: string | undefined,
-): Promise<CardItem[]> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}posts?page=${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    },
-  );
-
-  if (!res.ok) {
-    const text = await res.text();
-
-    console.log(res.status);
-    console.log(jwt);
-    console.log(text);
-
-    throw new Error(`Erro ${res.status}`);
-  }
-
-  const body = await res.json();
-
-  const data: CardItem[] = body.content.map((item: any) => ({
+function mapCardItem(item: any): CardItem {
+  return {
     id: item.id,
     title: item.title,
     description: item.description,
@@ -43,13 +19,30 @@ async function fetchCards(
       isAdmin: item.user.isAdmin,
       id: item.user.id,
       name: item.user.name,
-      photo: item.user.avatar,
+      email: item.user.email ?? "",
+      avatar_url: item.user.avatar_url ?? item.user.avatar ?? "",
       createdAt: item.user.createdAt,
       description: item.user.description,
       isVerified: item.user.isVerified,
     },
-  }));
-
-  return data;
+  };
 }
+
+async function fetchCards(
+  page: number,
+  jwt: string | undefined,
+): Promise<CardItem[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}posts?page=${page}`,
+    {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    },
+  );
+
+  const body = await res.json();
+  return body.content.map(mapCardItem);
+}
+
 export { fetchCards };

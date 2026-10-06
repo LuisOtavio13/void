@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.devHub.proj.features.comment.dto.request.CreateCommentRequest;
 import com.devHub.proj.features.comment.service.mapper.CommentMapper;
 import com.devHub.proj.features.comment.service.validator.CommentValidator;
+import com.devHub.proj.features.event.service.EventType;
+import com.devHub.proj.features.event.service.SseEventService;
 import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
 import com.devHub.proj.features.like.service.ReactionService;
 import com.devHub.proj.features.post.service.ProjectService;
@@ -15,11 +17,14 @@ import com.devHub.proj.global.models.Project;
 import com.devHub.proj.global.models.User;
 import com.devHub.proj.global.repository.CommentRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j 
 public class CommentService {
 
         private final ReactionService reactionService;
@@ -27,17 +32,20 @@ public class CommentService {
         private final CommentRepository commentRepository;
         private final ProjectService projectService;
         private final CommentValidator commentValidator;
+        private final SseEventService sseEventService;
 
         public CommentService(ReactionService reactionService,
                         ProjectService projectService,
                         CommentMapper commentMapper,
                         CommentRepository commentRepository,
-                        CommentValidator commentValidator) {
+                        CommentValidator commentValidator,
+                        SseEventService sseEventService) {
                 this.reactionService = reactionService;
                 this.commentRepository = commentRepository;
                 this.commentMapper = commentMapper;
                 this.projectService = projectService;
                 this.commentValidator = commentValidator;
+                this.sseEventService = sseEventService;
         }
 
         public CommentDTO createComment(CreateCommentRequest request, User user) {
@@ -64,8 +72,10 @@ public class CommentService {
 
                 ReactionCountAndStatus reactionCountAndStatus = reactionService.getCommentReactionInfo(comment.getId(),
                                 user.getId());
-
-                return commentMapper.toDto(comment, user, reactionCountAndStatus);
+                
+                CommentDTO out = commentMapper.toDto(comment, user, reactionCountAndStatus);
+                sseEventService.sendEvent(EventType.COMMENT_CREATED, out);
+                return out;
         }
 
         public List<CommentDTO> getCommentsByProject(
@@ -125,6 +135,25 @@ public class CommentService {
                 }
 
                 return count;
+        }
+        public CommentDTO updateComment(Long commentId, CreateCommentRequest request, User user) {
+                Comment comment = getCommentById(commentId);
+
+                commentValidator.validateAuthorizationComment(user, comment);
+
+                comment.setContent(request.content());
+
+                Comment updatedComment = commentRepository.save(comment);
+
+                ReactionCountAndStatus reactionCountAndStatus = reactionService.getCommentReactionInfo(
+                                updatedComment.getId(),
+                                user.getId());
+
+                log.info("Comment updated: commentId={}, userId={}, content={}",
+                                updatedComment.getId(),
+                                user.getId(),
+                                updatedComment.getContent());
+                return commentMapper.toDto(updatedComment, user, reactionCountAndStatus);
         }
 
         private CommentDTO buildCommentDTO(

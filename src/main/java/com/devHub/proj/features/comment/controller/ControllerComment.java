@@ -37,6 +37,7 @@ public class ControllerComment {
     ) {
         return ResponseEntity.ok(commentsService.getCommentsByProject(projectId, user));
     }
+    
 
    
 
@@ -44,5 +45,13 @@ public class ControllerComment {
     public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
         commentsService.deleteComment(id, user);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<CommentDTO> updateComment(
+        @PathVariable Long id,
+        @Valid @RequestBody CreateCommentRequest request,
+        @AuthenticationPrincipal User user
+    ){
+        return ResponseEntity.ok(commentsService.updateComment(id, request, user));
     }
 }

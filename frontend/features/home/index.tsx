@@ -4,30 +4,25 @@ import {
   CardPost,
   UserInfo,
   UserPopover,
-} from "@/features/home/components/card-post"
+} from "@/features/home/components/card-post";
 import { useCards } from "@/features/home/hooks/use-cards";
 import { useInfiniteScroll } from "@/features/home/hooks/use-infinite-scroll";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { CardPostDescription, CardTags } from "./components/client";
+import { HOME_CARD_COLORS, HOME_SKELETON_COUNT } from "./constants";
 import { LikeDislike } from "../getpost/components/like-deslike";
 
-export const cores: string[] = [
-  "bg-pink-700 text-white",
-  "bg-blue-700 text-white",
-  "bg-green-700 text-white",
-  "bg-yellow-700 text-white",
-  "bg-red-700 text-white",
-  "bg-purple-700 text-white",
-];
+export const cores = HOME_CARD_COLORS;
 
 export function HomePageIndex() {
-  const { cards, loading, loadCards, pageRef, hasMore } = useCards();
+  const { cards, loading, loadCards, hasMore } = useCards();
+
   const loadingRef = useInfiniteScroll(() => {
-      if(hasMore){
-        loadCards(pageRef.current);
-      }
+    if (hasMore && !loading) {
+      loadCards();
+    }
   });
 
   return (
@@ -38,34 +33,47 @@ export function HomePageIndex() {
             <CardPost.Header>
               <div className="group relative flex items-center gap-3">
                 <UserInfo user={card.user} />
-
                 <UserPopover user={card.user} />
               </div>
 
-              <CardTitle className="text-xl font-bold tracking-tight cursor-pointer hover:underline">
-                <Link href={`/posts/${card.user.id}/${card.id}`}>{card.title}</Link>
+              <CardTitle className="cursor-pointer text-xl font-bold tracking-tight hover:underline">
+                <Link href={`/posts/${card.user.id}/${card.id}`}>
+                  {card.title}
+                </Link>
               </CardTitle>
             </CardPost.Header>
+
             <CardPost.Body>
               <CardPostDescription description={card.description} />
-              <CardTags tags={card.tags} cores={cores} />
-              <LikeDislike readOnly id={card.id} initialLikes={card.likesCount} liked={card.isLikedByUser} disliked={card.isDesLikedByUser} initialDislikes={card.desLikesCount} sla={false}/>
+              <CardTags tags={card.tags} cores={HOME_CARD_COLORS} />
+
+              <LikeDislike
+                readOnly
+                id={card.id}
+                initialLikes={card.likesCount}
+                liked={card.isLikedByUser}
+                disliked={card.isDesLikedByUser}
+                initialDislikes={card.desLikesCount}
+                sla={false}
+              />
             </CardPost.Body>
-            { (card.githubLink || card.demoLink) && (
-            <CardPost.Footer>
-              <CardPost.Button
-                isActive={!!card.githubLink}
-                href={card.githubLink ?? ""}
-                icon={<FaGithub />}
-                title="GitHub"
-              />
-              <CardPost.Button
-                isActive={!!card.demoLink}
-                href={card.demoLink ?? ""}
-                icon={<FiExternalLink />}
-                title="Ver demo"
-              />
-            </CardPost.Footer>
+
+            {(card.githubLink || card.demoLink) && (
+              <CardPost.Footer>
+                <CardPost.Button
+                  isActive={!!card.githubLink}
+                  href={card.githubLink ?? ""}
+                  icon={<FaGithub />}
+                  title="GitHub"
+                />
+
+                <CardPost.Button
+                  isActive={!!card.demoLink}
+                  href={card.demoLink ?? ""}
+                  icon={<FiExternalLink />}
+                  title="Ver demo"
+                />
+              </CardPost.Footer>
             )}
           </CardPost>
         ))}
@@ -74,8 +82,8 @@ export function HomePageIndex() {
 
         {loading && (
           <div className="flex flex-col gap-6">
-            {[...Array(3)].map((_, i) => (
-              <CardPost.Skeleton key={i} />
+            {Array.from({ length: HOME_SKELETON_COUNT }, (_, index) => (
+              <CardPost.Skeleton key={index} />
             ))}
           </div>
         )}

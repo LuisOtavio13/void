@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { PiEmptyLight } from "react-icons/pi";
 import {
@@ -14,18 +14,51 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/components/ui/empty";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { EMPTY_SEARCH_MESSAGES, SEARCH_SKELETON_ITEMS } from "./constants";
 import { search } from "./services/service";
+import type { SearchResult } from "./types";
 
-type SearchType = "USER" | "PROJECT";
+function EmptySearchState({ title, description }: { title: string; description: string }) {
+  return (
+    <CommandEmpty>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <PiEmptyLight />
+          </EmptyMedia>
+          <EmptyTitle>{title}</EmptyTitle>
+          <EmptyDescription>{description}</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    </CommandEmpty>
+  );
+}
 
-type SearchResult = {
-  type: SearchType;
-  id: number;
-  name: string;
-  avatarUrl?: string;
-};
+function SearchResultItem({ result }: { result: SearchResult }) {
+  return (
+    <CommandItem
+      key={`${result.type}-${result.id}`}
+      value={`${result.type}-${result.name}`}
+      className="flex items-center justify-between gap-3"
+    >
+      <div className="flex items-center gap-3">
+        {result.type === "USER" && (
+          <Avatar size="sm">
+            <AvatarImage src={result.avatarUrl} alt={result.name} />
+            <AvatarFallback>{result.name.slice(0, 1).toUpperCase()}</AvatarFallback>
+          </Avatar>
+        )}
 
-const skeletonItems = Array.from({ length: 4 }, (_, index) => index);
+        <div>
+          <p className="font-medium">{result.name}</p>
+          <p className="text-xs text-muted-foreground">
+            {result.type === "USER" ? "Usuário" : "Projeto"}
+          </p>
+        </div>
+      </div>
+    </CommandItem>
+  );
+}
 
 export function GlobalSearch() {
   const [query, setQuery] = useState("");
@@ -33,10 +66,11 @@ export function GlobalSearch() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const term = debouncedQuery.trim();
+  const normalizedQuery = useMemo(() => debouncedQuery.trim(), [debouncedQuery]);
+  const hasQuery = normalizedQuery.length > 0;
 
-    if (!term) {
+  useEffect(() => {
+    if (!hasQuery) {
       setResults([]);
       setLoading(false);
       return;
@@ -46,8 +80,8 @@ export function GlobalSearch() {
 
     setLoading(true);
 
-    search(term)
-      .then((data: SearchResult[]) => {
+    search(normalizedQuery)
+      .then((data) => {
         if (!isMounted) return;
         setResults(data);
         setLoading(false);
@@ -61,9 +95,7 @@ export function GlobalSearch() {
     return () => {
       isMounted = false;
     };
-  }, [debouncedQuery]);
-
-  const hasQuery = debouncedQuery.trim().length > 0;
+  }, [hasQuery, normalizedQuery]);
 
   return (
     <Command className="w-full rounded-2xl border bg-background shadow-sm">
@@ -75,24 +107,15 @@ export function GlobalSearch() {
 
       <CommandList>
         {!hasQuery && (
-          <CommandEmpty>
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <PiEmptyLight />
-                </EmptyMedia>
-                <EmptyTitle>Digite para buscar</EmptyTitle>
-                <EmptyDescription>
-                  Procure por usuários ou projetos pelo nome.
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </CommandEmpty>
+          <EmptySearchState
+            title={EMPTY_SEARCH_MESSAGES.idle.title}
+            description={EMPTY_SEARCH_MESSAGES.idle.description}
+          />
         )}
 
         {loading && hasQuery && (
           <CommandGroup>
-            {skeletonItems.map((item) => (
+            {SEARCH_SKELETON_ITEMS.map((item) => (
               <div key={item} className="flex items-center gap-3 rounded-sm px-2 py-2">
                 <Skeleton className="size-9 rounded-full" />
                 <div className="flex-1 space-y-2">
@@ -105,45 +128,16 @@ export function GlobalSearch() {
         )}
 
         {!loading && hasQuery && results.length === 0 && (
-          <CommandEmpty>
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <PiEmptyLight />
-                </EmptyMedia>
-                <EmptyTitle>Nenhum resultado encontrado</EmptyTitle>
-                <EmptyDescription>
-                  Não encontramos nenhum usuário ou projeto com esse nome.
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </CommandEmpty>
+          <EmptySearchState
+            title={EMPTY_SEARCH_MESSAGES.empty.title}
+            description={EMPTY_SEARCH_MESSAGES.empty.description}
+          />
         )}
 
         {!loading && results.length > 0 && (
           <CommandGroup>
             {results.map((result) => (
-              <CommandItem
-                key={`${result.type}-${result.id}`}
-                value={`${result.type}-${result.name}`}
-                className="flex items-center justify-between gap-3"
-              >
-                <div className="flex items-center gap-3">
-                  {result.type === "USER" && (
-                    <Avatar size="sm">
-                      <AvatarImage src={result.avatarUrl} alt={result.name} />
-                      <AvatarFallback>{result.name.slice(0, 1).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                  ) }
-
-                  <div>
-                    <p className="font-medium">{result.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {result.type === "USER" ? "Usuário" : "Projeto"}
-                    </p>
-                  </div>
-                </div>
-              </CommandItem>
+              <SearchResultItem key={`${result.type}-${result.id}`} result={result} />
             ))}
           </CommandGroup>
         )}

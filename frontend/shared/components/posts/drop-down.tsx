@@ -113,6 +113,18 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
       toast.error("Erro ao excluir o post. Erro: "+ error);
     }
   }
+  async function handlerShare() {
+    const url = `${window.location.origin}/posts/${userID}/${id}`;
+    if(navigator.share) {
+      await navigator.share({
+        title: title,
+        text: `Confira este post: ${title}`,
+        url: url
+      });
+    }
+    await navigator.clipboard.writeText(url);
+    toast.success("Link copiado para a área de transferência!");
+  }
   return (
     <>
       <DropdownMenu>
@@ -136,8 +148,10 @@ export function DropDownPost({ userID, title, content, tags, demoUrl, githubUrl,
 
         <DropdownMenuContent align="end" className="w-48  text-zinc-200">
           <DropdownMenuGroup>
-            <Item text="Compartilhar" icon={<FaShare />} />
-            <Item text="ID" icon={<HiOutlineDotsHorizontal />} />
+            <Item text="Compartilhar" icon={<FaShare />} onClick={() =>{
+              handlerShare();
+            }}/>
+           
             {isOwner && (
               <>
               <Item text="Editar" icon={<FaEdit />} onClick={() =>

@@ -1,93 +1,80 @@
-
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import { CardItem } from "../types/types";
 import { fetchCards } from "../services/fetch-cards";
-import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/shared/context/user";
-import { subscribeToPosts } from "../services/subscribeToPosts";
-import { toast } from "sonner";
+import { cardsRealtime } from "../realtime/cards-realtime";
 
 export function useCards() {
-  const { data: user, isLoading } = useQuery({
+  const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
   });
 
   const [cards, setCards] = useState<CardItem[]>([]);
-  const [loadingA, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
 
-  const loadingRef = useRef(false);
   const pageRef = useRef(0);
-  const subscriptionRef = useRef<(() => void) | null>(null);
+  const loadingRef = useRef(false);
+
   const jwt = user?.jwt;
 
-  const loadCards = useCallback(
-    async (currentPage: number) => {
-      if (!jwt || loadingRef.current) return;
+  const loadCards = useCallback(async () => {
+    if (!jwt || loadingRef.current || !hasMore) {
+      return;
+    }
 
-      loadingRef.current = true;
-      setLoading(true);
+    loadingRef.current = true;
+    setLoading(true);
 
-      try {
-        let newCards = await fetchCards(currentPage, jwt);
-        let NextPageToFetch = currentPage;
-        if (newCards.length === 0) {
-          NextPageToFetch = 0;
-          newCards = await fetchCards(0, jwt);
-        }
+    try {
+      const currentPage = pageRef.current;
 
-        const PAGE_LIMIT = 3;
-        const pageSize = newCards.length;
+      let newCards = await fetchCards(currentPage, jwt);
 
-        setCards((prev) => [...prev, ...newCards]);
-        setHasMore(pageSize > 0);
-        setPage(NextPageToFetch + 1);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        loadingRef.current = false;
-        setLoading(false);
+      
+      if (newCards.length === 0 && currentPage !== 0) {
+        pageRef.current = 0;
+        newCards = await fetchCards(0, jwt);
+
+        setCards(newCards);
+        setHasMore(newCards.length > 0);
+        pageRef.current = 1;
+
+        return;
       }
-    },
-    [hasMore, jwt],
-  );
+
+      if (newCards.length === 0) {
+        setHasMore(false);
+        return;
+      }
+
+      setCards((prev) => [...prev, ...newCards]);
+
+      pageRef.current = currentPage + 1;
+    } catch (err) {
+      console.error("Erro ao carregar cards:", err);
+    } finally {
+      loadingRef.current = false;
+      setLoading(false);
+    }
+  }, [jwt, hasMore]);
+
   useEffect(() => {
     if (!jwt) return;
 
-    if (subscriptionRef.current) {
-      subscriptionRef.current();
-      subscriptionRef.current = null;
-    }
-
-    const unsubscribe = subscribeToPosts((newPost: CardItem) => {
-      setCards((prev) => {
-        if (prev.some((card) => card.id === newPost.id)) {
-          return prev;
-        }
-
-        toast.success("Novo post publicado!");
-        return [newPost, ...prev];
-      });
+    return cardsRealtime({
+      setCards,
     });
-
-    subscriptionRef.current = unsubscribe;
-
-    return () => {
-      unsubscribe();
-
-      if (subscriptionRef.current === unsubscribe) {
-        subscriptionRef.current = null;
-      }
-    };
   }, [jwt]);
 
-  
-
-  useEffect(() => {
-    pageRef.current = page;
-  }, [page]);
-  const loading = isLoading || loadingA;
-  return { cards, loading, loadCards, pageRef, hasMore };
+  return {
+    cards,
+    loading: userLoading || loading,
+    loadCards,
+    pageRef,
+    hasMore,
+  };
 }
