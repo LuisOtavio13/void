@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.devHub.proj.features.event.service.SseEventService;
+import com.devHub.proj.features.like.dto.ReactionCountAndStatus;
 import com.devHub.proj.features.like.service.LikeService;
 import com.devHub.proj.features.like.service.ReactionService;
 import com.devHub.proj.features.post.service.ProjectService;
@@ -38,6 +40,9 @@ class LikeServiceTest {
     @Mock
     private ProjectRepository projectRepo;
 
+    @Mock
+    private SseEventService sseEventService;
+
     @InjectMocks
     private LikeService likeService;
 
@@ -55,6 +60,9 @@ class LikeServiceTest {
         project = new Project();
         project.setId(postId);
         project.setLikes(new HashSet<>());
+
+        when(reactionService.getProjectReactionInfo(any(), any()))
+                .thenReturn(new ReactionCountAndStatus(0L, false, 0L, false));
     }
 
     @Test
