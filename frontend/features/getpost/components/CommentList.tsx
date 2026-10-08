@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { comments } from "../types/comments";
 import { get_comments } from "../services/get-comments";
@@ -29,11 +30,9 @@ export function CommentList({ postId, jwt }: CommentListProps) {
     queryFn: getUser,
   });
 
+  const isGuest = !jwt || jwt === "-1";
 
   useEffect(() => {
-    if (!jwt) {
-      return;
-    }
     commentsRealtime({ setComments });
   }, [jwt])
   useEffect(() => {
@@ -42,8 +41,6 @@ export function CommentList({ postId, jwt }: CommentListProps) {
         setLoading(true);
 
         const data = await get_comments(postId, jwt);
-        console.log(data);
-
         setComments(data);
       } catch (error) {
         toast.error("Erro ao carregar comentários.");
@@ -55,25 +52,32 @@ export function CommentList({ postId, jwt }: CommentListProps) {
     loadComments();
   }, [postId, jwt]);
 
-  async function handleCreateComment(data: CommentFormData) {
+  function requestLogin() {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("auth:login-required"));
+    }
+  }
 
-    if (!jwt) {
-      toast.error("Você precisa estar logado para comentar.");
+  async function handleCreateComment(data: CommentFormData) {
+    if (!jwt || jwt === "-1") {
+      requestLogin();
       return;
     }
 
     try {
-      const newComment = await PostComment(
+      await PostComment(
         data.content,
         postId,
         jwt
       );
 
-
-
       toast.success("Comentário publicado!");
+    } catch (error) {
+      if (error instanceof Error && (error.message.includes("403") || error.message.includes("401"))) {
+        requestLogin();
+        return;
+      }
 
-    } catch {
       toast.error("Erro ao publicar comentário.");
     }
   }
@@ -97,11 +101,41 @@ export function CommentList({ postId, jwt }: CommentListProps) {
     );
   }
 
+  if (isGuest) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3 rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+          <span>Entre para comentar, curtir e ter acesso completo aos recursos.</span>
+          <Link href="/login" className="font-semibold text-amber-200 underline-offset-2 hover:underline">
+            Fazer login
+          </Link>
+        </div>
+
+        {comments.length === 0 ? (
+          <div className="py-8 text-center text-sm text-muted-foreground">
+            Nenhum comentário ainda.
+          </div>
+        ) : (
+          comments.map((comment) => (
+            <Comment
+              jwt={jwt ?? ""}
+              projectId={postId}
+              key={comment.id}
+              comment={comment}
+              userID={user?.id ?? 0}
+            />
+          ))
+        )}
+      </div>
+    );
+  }
+
   if (comments.length === 0) {
     return (
       <>
         <CommentInput
           onSubmit={handleCreateComment}
+          disabled={false}
         />
         <div className="py-8 text-center text-sm text-muted-foreground">
           Nenhum comentário ainda.
@@ -110,12 +144,11 @@ export function CommentList({ postId, jwt }: CommentListProps) {
     );
   }
 
-
-
   return (
     <div>
       <CommentInput
         onSubmit={handleCreateComment}
+        disabled={false}
       />
       {comments.map((comment) => (
         <Comment
@@ -124,7 +157,6 @@ export function CommentList({ postId, jwt }: CommentListProps) {
           key={comment.id}
           comment={comment}
           userID={user?.id ?? 0}
-
         />
       ))}
     </div>

@@ -11,6 +11,7 @@ interface MetaPerfilProps extends UserDTO {
 }
 interface ProfileActionsMenuProps {
     isOwner: boolean;
+    canInteract: boolean;
 }
 export function ProfileHeader({ bannerUrl, avatarUrl, username }: { bannerUrl: string; avatarUrl: string; username: string }) {
     return (
@@ -49,12 +50,12 @@ export function ProfileHeader({ bannerUrl, avatarUrl, username }: { bannerUrl: s
     );
 }
 
-function ProfileActionsMenu({ isOwner }: ProfileActionsMenuProps) {
+function ProfileActionsMenu({ isOwner, canInteract }: ProfileActionsMenuProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
 
-                <Button variant="outline" size="icon">
+                <Button variant="outline" size="icon" disabled={!canInteract && !isOwner}>
                     <FiMenu size={18} />
                 </Button>
             </DropdownMenuTrigger>
@@ -63,7 +64,12 @@ function ProfileActionsMenu({ isOwner }: ProfileActionsMenuProps) {
                 <DropdownMenuGroup>
                     <Item text="Compartilhar" icon={<FaShare />} onClick={() => { }} />
                     {!isOwner && (
-                        <Item text="Denunciar" icon={<FaFlag />} onClick={() => { }} />
+                        <Item
+                            text={canInteract ? "Denunciar" : "Faça login para denunciar"}
+                            icon={<FaFlag />}
+                            onClick={() => { }}
+                            disabled={!canInteract}
+                        />
                     )}
 
                     <Item text="Copiar ID" icon={<FaCopy />} onClick={() => { }} />
@@ -75,6 +81,13 @@ function ProfileActionsMenu({ isOwner }: ProfileActionsMenuProps) {
 
 export function MetaPerfil({ id, name, loggedUserId }: MetaPerfilProps) {
     const isOwner = id === loggedUserId;
+    const canInteract = Boolean(loggedUserId);
+
+    function requestLogin() {
+        if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("auth:login-required"));
+        }
+    }
 
     return (
         <div className="px-6 flex justify-between items-start">
@@ -90,10 +103,18 @@ export function MetaPerfil({ id, name, loggedUserId }: MetaPerfilProps) {
 
 
             <div className="mt-4 flex items-center space-x-2">
-                <Button variant={isOwner ? "outline" : "default"}>
-                    {isOwner ? "Editar Perfil" : "Seguir"}
+                <Button
+                    variant={isOwner ? "outline" : "default"}
+                    title={canInteract || isOwner ? undefined : "Para realizar essa ação você precisa estar logado"}
+                    onClick={() => {
+                        if (!canInteract && !isOwner) {
+                            requestLogin();
+                        }
+                    }}
+                >
+                    {isOwner ? "Editar Perfil" : canInteract ? "Seguir" : "Faça login para seguir"}
                 </Button>
-                <ProfileActionsMenu isOwner={isOwner} />
+                <ProfileActionsMenu isOwner={isOwner} canInteract={canInteract} />
             </div>
         </div>
     );

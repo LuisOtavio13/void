@@ -38,21 +38,22 @@ public class CommentMapper {
                         ReactionCountAndStatus reaction,
                         List<CommentDTO> replies,
                         int nestedRepliesCount) {
+                User viewer = user == null ? guestUser() : user;
                 return new CommentDTO(comment.getId(),
                                 new UserResponse(
-                                                user.getName(),
-                                                user.getId(),
-                                                user.getAvatar_url(),
-                                                user.getBio(),
+                                                viewer.getName(),
+                                                viewer.getId(),
+                                                viewer.getAvatar_url(),
+                                                viewer.getBio(),
                                                 false,
-                                                user.getRole().equals("ADMIN"),
-                                                user.getCreated_at()),
+                                                viewer.getRole().equals("ADMIN"),
+                                                viewer.getCreated_at()),
                                 comment.getContent(),
                                 reaction.likesCount(),
                                 reaction.desLikesCount(),
                                 reaction.isLikedByUser(),
                                 reaction.isDesLikedByUser(),
-                                comment.getUserId().getId().equals(user.getId()),
+                                comment.getUserId().getId().equals(viewer.getId()),
                                 comment.getCreatedAt(),
                                 comment.getUpdatedAt(),
                                 replies,
@@ -62,5 +63,20 @@ public class CommentMapper {
                                                 : null
 
                 );
+        }
+
+        private User guestUser() {
+                User guest = new User();
+                guest.setId(0L);
+                guest.setName("Visitante");
+                guest.setRole("USER");
+                guest.setAvatar_url("");
+                guest.setBio("");
+                guest.setEmail("guest@devhub.local");
+                guest.setPassword("");
+                guest.setCreated_at(java.time.LocalDateTime.now());
+                guest.setUpdated_at(java.time.LocalDateTime.now());
+                guest.setBannerURL("");
+                return guest;
         }
 }

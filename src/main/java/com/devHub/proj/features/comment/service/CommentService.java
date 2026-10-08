@@ -82,6 +82,7 @@ public class CommentService {
                         Long projectId,
                         User user) {
 
+                User viewer = user == null ? guestUser() : user;
                 List<Comment> comments = commentRepository
                                 .findByProjectId_Id(projectId);
 
@@ -102,7 +103,7 @@ public class CommentService {
                                 .map(root -> buildCommentDTO(
                                                 root,
                                                 childrenByParent,
-                                                user))
+                                                viewer))
                                 .toList();
         }
 
@@ -161,9 +162,10 @@ public class CommentService {
                         Map<Long, List<Comment>> childrenByParent,
                         User user) {
 
+                User viewer = user == null ? guestUser() : user;
                 ReactionCountAndStatus reaction = reactionService.getCommentReactionInfo(
                                 comment.getId(),
-                                user.getId());
+                                viewer.getId());
 
                 List<CommentDTO> replies = childrenByParent
                                 .getOrDefault(comment.getId(), List.of())
@@ -171,7 +173,7 @@ public class CommentService {
                                 .map(child -> buildCommentDTO(
                                                 child,
                                                 childrenByParent,
-                                                user))
+                                                viewer))
                                 .toList();
 
                 int nestedRepliesCount = countDescendants(
@@ -180,9 +182,24 @@ public class CommentService {
 
                 return commentMapper.toDto(
                                 comment,
-                                comment.getUserId(),
+                                viewer,
                                 reaction,
                                 replies,
                                 nestedRepliesCount);
+        }
+
+        private User guestUser() {
+                User guest = new User();
+                guest.setId(0L);
+                guest.setName("Visitante");
+                guest.setRole("USER");
+                guest.setAvatar_url("");
+                guest.setBio("");
+                guest.setEmail("guest@devhub.local");
+                guest.setPassword("");
+                guest.setCreated_at(java.time.LocalDateTime.now());
+                guest.setUpdated_at(java.time.LocalDateTime.now());
+                guest.setBannerURL("");
+                return guest;
         }
 }

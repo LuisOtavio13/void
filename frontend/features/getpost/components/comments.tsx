@@ -40,14 +40,20 @@ export function Comment({
 
   const router = useRouter();
   
+  function requestLogin() {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("auth:login-required"));
+    }
+  }
+
   async function handleCreateComment(data: CommentFormData) {
-    if (!jwt) {
-      toast.error("Você precisa estar logado para comentar.");
+    if (!jwt || jwt === "-1") {
+      requestLogin();
       return;
     }
 
     try {
-      const newComment = await PostComment(
+      await PostComment(
         data.content,
         projectId,
         jwt,
@@ -57,7 +63,12 @@ export function Comment({
 
       toast.success("Comentário publicado!");
       router.refresh();
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && (error.message.includes("403") || error.message.includes("401"))) {
+        requestLogin();
+        return;
+      }
+
       toast.error("Erro ao publicar comentário.");
     }
   }

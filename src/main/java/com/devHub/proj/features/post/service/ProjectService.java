@@ -1,5 +1,6 @@
 package com.devHub.proj.features.post.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import com.devHub.proj.global.models.Project;
 import com.devHub.proj.global.models.Tag;
 import com.devHub.proj.global.models.User;
 import com.devHub.proj.global.repository.ProjectRepository;
+import com.devHub.proj.global.repository.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +31,7 @@ public class ProjectService {
 
     private final ProjectRepository projectRepo;
     private final ReactionService reactionService;
+    private final UserRepository userRepository;
     private final TagService tagService;
     private final ProjectValidator validator;
     private final ProjectMapper projectMapper;
@@ -38,9 +41,11 @@ public class ProjectService {
             TagService tagService,
             ReactionService reactionService,
             ProjectValidator validator,
-            ProjectMapper projectMapper) {
+            ProjectMapper projectMapper,
+            UserRepository userRepository) {
         this.projectRepo = projectRepo;
         this.reactionService = reactionService;
+        this.userRepository = userRepository;
         this.tagService = tagService;
         this.validator = validator;
         this.projectMapper = projectMapper;
@@ -79,25 +84,28 @@ public class ProjectService {
                 size,
                 Sort.by("createdAt").descending());
 
+        User viewer = user == null ? guestUser() : user;
+
         return projectRepo.findAll(pageable).map(project -> {
             var reaction = reactionService.getProjectReactionInfo(
                     project.getId(),
-                    user.getId());
+                    viewer.getId());
 
             return projectMapper.toProjectsResponse(
                     reaction,
                     project,
-                    user);
+                    viewer);
         });
     }
 
     public ProjectsResponse getProjectDetails(Long id, User user) {
         Project project = getProjectById(id);
+        User viewer = user == null ? guestUser() : user;
 
         return projectMapper.toProjectsResponse(
-                reactionService.getProjectReactionInfo(project.getId(), user.getId()),
+                reactionService.getProjectReactionInfo(project.getId(), viewer.getId()),
                 project,
-                user);
+                viewer);
     }
 
     @Transactional
@@ -140,6 +148,48 @@ public class ProjectService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<ProjectsResponse> getProjectsByOwnerName(User owner,User currentUser) {
+        User viewer = currentUser == null ? guestUser() : currentUser;
+        List<Project> projects = projectRepo.findByOwner(owner);
+
+        List<ProjectsResponse> projectsResponseList = new ArrayList<>();
+
+        for (Project project : projects) {
+            ReactionCountAndStatus reaction = reactionService.getProjectReactionInfo(
+                    project.getId(),
+                    viewer.getId()
+            );
+
+            ProjectsResponse response = projectMapper.toProjectsResponse(
+                    reaction,
+                    project,
+                    viewer
+            );
+
+            projectsResponseList.add(response);
+        }
+
+        return projectsResponseList;
+    }
+
+    private User guestUser() {
+        User guest = new User();
+        guest.setId(0L);
+        guest.setName("Visitante");
+        guest.setRole("USER");
+        guest.setAvatar_url("");
+        guest.setBio("");
+        guest.setEmail("guest@devhub.local");
+        guest.setPassword("");
+        guest.setCreated_at(java.time.LocalDateTime.now());
+        guest.setUpdated_at(java.time.LocalDateTime.now());
+        guest.setBannerURL("");
+        return guest;
+    }
+    public User getUserById(Long id){
+        return userRepository.findById(id).orElse(null);
+    }
     private List<Tag> findOrCreateTags(CreatePostRequest request) {
         log.debug("Finding or creating tags: tags={}",
                 request.tags().stream()

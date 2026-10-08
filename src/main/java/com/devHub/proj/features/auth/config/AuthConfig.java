@@ -60,6 +60,8 @@ public class AuthConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/posts/{id}")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/posts/user/{userId}")
+                    .permitAll()
                     .requestMatchers(HttpMethod.GET, "/sse/subscribe")
                     .permitAll()
                     .anyRequest()

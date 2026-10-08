@@ -4,8 +4,8 @@ export async function getPost(id: number, jwt : string): Promise<Post | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}posts/${id}`,
-      { cache: "no-cache", headers:{
-        "Authorization":`Bearer ${jwt}`
+      { cache: "no-cache", headers: {
+        ...(jwt && jwt !== "-1" ? { Authorization: `Bearer ${jwt}` } : {}),
       }},
     );
     if (!response.ok) {

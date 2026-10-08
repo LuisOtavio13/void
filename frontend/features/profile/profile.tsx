@@ -28,6 +28,7 @@ export function Profile({ id }: { id: number }) {
     if (isLoading) {
         return <LoadingProfile />
     }
+    console.log(loggedUser?.jwt)
 
     return (
         <div>
@@ -47,7 +48,7 @@ export function Profile({ id }: { id: number }) {
             <div className="px-6 my-4">
                 <Separator />
             </div>
-            <ProfileTabs isOwner={data?.id === loggedUser?.id}/>
+            <ProfileTabs isOwner={data?.id === loggedUser?.id} id={data?.id ?? 0} jwt={loggedUser?.jwt}/>
 
         </div>
     )
