@@ -5,5 +5,8 @@ public record UserDTO(
     String name,
     Long id,
     String photo,
-    String email
+    String email,
+    String bannerURL,
+    boolean isVerified,
+    String biography
 ) {}

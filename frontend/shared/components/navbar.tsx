@@ -4,11 +4,7 @@ import { useState } from "react";
 
 import { FaBell, FaCompass, FaHome } from "react-icons/fa";
 import {
-  Bell,
   ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
   X,
 } from "lucide-react";
 
@@ -40,16 +36,13 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Separator } from "./ui/separator";
 import {
   IoBookmark,
-  IoCard,
   IoLogOut,
   IoPerson,
   IoSettings,
-  IoSparkles,
 } from "react-icons/io5";
-import { usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Dialog, DialogTrigger } from "./ui/dialog";
 import { CreatePost } from "./create-post";
@@ -61,7 +54,6 @@ import {
   createPostService,
   errCreatePost,
 } from "@/shared/services/create-post-service";
-import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { FaTrophy } from "react-icons/fa6";
 import { logout } from "@/lib/cookies/cookie";
@@ -396,7 +388,11 @@ export default function Navbar() {
               <DropdownMenuSeparator className="bg-border" />
 
               <DropdownMenuGroup>
-                <DropdownMenuItem className="gap-2">
+                <DropdownMenuItem className="gap-2" onClick={
+                  () =>{
+                    redirect(`/pages/user/${user?.id}`)
+                  }
+                }>
                   <IoPerson size={16} />
                   Meu Perfil
                 </DropdownMenuItem>

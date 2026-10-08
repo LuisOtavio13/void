@@ -35,6 +35,7 @@ export function useLogin() {
         name: result.name,
         photo: result.photo,
         email: result.email,
+        
       });
 
       toast.success("Login realizado com sucesso");

@@ -18,26 +18,8 @@ import { toast } from "sonner";
 import { deleteComment } from "../services/delete-comment";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { CommentInput } from "./CommentInput";
+import { Item } from "@/shared/components/dropDownItem";
 
-function Item({
-  text,
-  icon,
-  onClick,
-}: {
-  text: string;
-  icon: React.ReactNode;
-  onClick?: () => void;
-}) {
-  return (
-    <DropdownMenuItem
-      className="flex cursor-pointer items-center gap-2"
-      onClick={onClick}
-    >
-      {icon}
-      {text}
-    </DropdownMenuItem>
-  );
-}
 
 export function DropDownPost({
   postId,
