@@ -36,19 +36,15 @@ async function fetchCards(
     `${process.env.NEXT_PUBLIC_API_URL}posts?page=${page}`,
     {
       headers: {
-        ...(jwt && jwt !== "-1" ? { Authorization: `Bearer ${jwt}` } : {}),
+        Authorization: `Bearer ${jwt}`,
       },
     },
   );
 
-  const body = await res.json().catch(() => ({}));
-  const items = Array.isArray(body?.content)
-    ? body.content
-    : Array.isArray(body)
-      ? body
-      : [];
+  const body = await res.json();
+  
 
-  return items.map(mapCardItem);
+  return body.content.map(mapCardItem);
 }
 
 export { fetchCards };

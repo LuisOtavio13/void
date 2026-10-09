@@ -40,15 +40,11 @@ export function Comment({
 
   const router = useRouter();
   
-  function requestLogin() {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("auth:login-required"));
-    }
-  }
+
 
   async function handleCreateComment(data: CommentFormData) {
-    if (!jwt || jwt === "-1") {
-      requestLogin();
+    if (!jwt) {
+      toast.error("Você precisa estar logado para comentar")
       return;
     }
 
@@ -65,7 +61,7 @@ export function Comment({
       router.refresh();
     } catch (error) {
       if (error instanceof Error && (error.message.includes("403") || error.message.includes("401"))) {
-        requestLogin();
+        toast.error("Você precisa estar logado para comentar")
         return;
       }
 

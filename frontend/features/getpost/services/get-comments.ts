@@ -5,7 +5,7 @@ export async function get_comments(id_post: number, jwt: string | undefined): Pr
         {
             method: "GET",
             headers: {
-                ...(jwt && jwt !== "-1" ? { Authorization: `Bearer ${jwt}` } : {}),
+                 "Authorization":`Bearer ${jwt}`
             }
         }
     )

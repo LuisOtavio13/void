@@ -1,18 +1,10 @@
 "use client";
-import { CardTitle } from "@/shared/components/ui/card";
 import {
   CardPost,
-  UserInfo,
-  UserPopover,
 } from "@/features/home/components/card-post";
 import { useCards } from "@/features/home/hooks/use-cards";
 import { useInfiniteScroll } from "@/features/home/hooks/use-infinite-scroll";
-import Link from "next/link";
-import { FaGithub } from "react-icons/fa6";
-import { FiExternalLink } from "react-icons/fi";
-import { CardPostDescription, CardTags } from "./components/client";
 import { HOME_CARD_COLORS, HOME_SKELETON_COUNT } from "./constants";
-import { LikeDislike } from "../getpost/components/like-deslike";
 import { Card } from "./components/card";
 
 export const cores = HOME_CARD_COLORS;

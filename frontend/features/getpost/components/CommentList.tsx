@@ -30,9 +30,10 @@ export function CommentList({ postId, jwt }: CommentListProps) {
     queryFn: getUser,
   });
 
-  const isGuest = !jwt || jwt === "-1";
+  
 
   useEffect(() => {
+    if(!jwt){return ;}
     commentsRealtime({ setComments });
   }, [jwt])
   useEffect(() => {
@@ -52,29 +53,21 @@ export function CommentList({ postId, jwt }: CommentListProps) {
     loadComments();
   }, [postId, jwt]);
 
-  function requestLogin() {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("auth:login-required"));
-    }
-  }
+  
 
   async function handleCreateComment(data: CommentFormData) {
-    if (!jwt || jwt === "-1") {
-      requestLogin();
-      return;
-    }
+    
 
     try {
       await PostComment(
         data.content,
         postId,
-        jwt
+        jwt?? ""
       );
 
       toast.success("Comentário publicado!");
     } catch (error) {
       if (error instanceof Error && (error.message.includes("403") || error.message.includes("401"))) {
-        requestLogin();
         return;
       }
 
@@ -101,34 +94,7 @@ export function CommentList({ postId, jwt }: CommentListProps) {
     );
   }
 
-  if (isGuest) {
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between gap-3 rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-          <span>Entre para comentar, curtir e ter acesso completo aos recursos.</span>
-          <Link href="/login" className="font-semibold text-amber-200 underline-offset-2 hover:underline">
-            Fazer login
-          </Link>
-        </div>
-
-        {comments.length === 0 ? (
-          <div className="py-8 text-center text-sm text-muted-foreground">
-            Nenhum comentário ainda.
-          </div>
-        ) : (
-          comments.map((comment) => (
-            <Comment
-              jwt={jwt ?? ""}
-              projectId={postId}
-              key={comment.id}
-              comment={comment}
-              userID={user?.id ?? 0}
-            />
-          ))
-        )}
-      </div>
-    );
-  }
+ 
 
   if (comments.length === 0) {
     return (

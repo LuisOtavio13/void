@@ -38,7 +38,7 @@ export function LikeDislike({
   });
 
   const currentJwt = jwt ?? user?.jwt;
-  const isGuest = !currentJwt || currentJwt === "-1";
+  
 
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
@@ -52,19 +52,12 @@ export function LikeDislike({
     setDislikes(initialDislikes);
   }, [liked, disliked, initialLikes, initialDislikes]);
 
-  function requestLogin() {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("auth:login-required"));
-    }
-  }
+ 
 
   function handleLike() {
-    if (readOnly) return;
+    if (readOnly || !currentJwt) return;
 
-    if (isGuest) {
-      requestLogin();
-      return;
-    }
+    
 
     if (isDisliked) {
       setDislikes((d) => d - 1);
@@ -76,12 +69,9 @@ export function LikeDislike({
   }
 
   function handleDislike() {
-    if (readOnly) return;
+    if (readOnly || !currentJwt) return;
 
-    if (isGuest) {
-      requestLogin();
-      return;
-    }
+    
 
     if (isLiked) {
       setLikes((l) => l - 1);
@@ -94,14 +84,7 @@ export function LikeDislike({
 
   return (
     <div className="space-y-2">
-      {!readOnly && isGuest && (
-        <div className="flex items-center justify-between gap-3 rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-100">
-          <span>Entre para curtir, avaliar e interagir com os projetos.</span>
-          <Link href="/login" className="font-semibold text-amber-200 underline-offset-2 hover:underline">
-            Fazer login
-          </Link>
-        </div>
-      )}
+      
 
       <div
         className={`flex items-center gap-1 w-fit ${
