@@ -14,25 +14,23 @@ export async function getUser(): Promise<User | null>  {
 
 import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-function notifyLoginRequired() {
-  if (typeof window !== "undefined") {
-    window.dispatchEvent(new CustomEvent("auth:login-required"));
-  }
-}
+
 
 export default function Providers({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const [queryClient] = useState(
     () =>
       new QueryClient({
         queryCache: new QueryCache({
           onError: (error) => {
-            if (error instanceof Error && (error.message === "403" || error.message === "401")) {
-              notifyLoginRequired();
+            if (error instanceof Error && (error.message === "403")) {
+              router.push("/login");
             }
           },
         }),

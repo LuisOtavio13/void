@@ -65,7 +65,7 @@ public class ProjectService {
         List<Tag> tags = findOrCreateTags(projectRequest);
 
         Project project = projectMapper.toProject(projectRequest, tags, user);
-        var emptyReaction = new ReactionCountAndStatus(0L, false,0L, false);
+        var emptyReaction = new ReactionCountAndStatus(0L, false, 0L, false);
 
         projectRepo.save(project);
         log.info(
@@ -84,28 +84,25 @@ public class ProjectService {
                 size,
                 Sort.by("createdAt").descending());
 
-        User viewer = user == null ? guestUser() : user;
-
         return projectRepo.findAll(pageable).map(project -> {
             var reaction = reactionService.getProjectReactionInfo(
                     project.getId(),
-                    viewer.getId());
+                    user.getId());
 
             return projectMapper.toProjectsResponse(
                     reaction,
                     project,
-                    viewer);
+                    user);
         });
     }
 
     public ProjectsResponse getProjectDetails(Long id, User user) {
         Project project = getProjectById(id);
-        User viewer = user == null ? guestUser() : user;
 
         return projectMapper.toProjectsResponse(
-                reactionService.getProjectReactionInfo(project.getId(), viewer.getId()),
+                reactionService.getProjectReactionInfo(project.getId(), user.getId()),
                 project,
-                viewer);
+                user);
     }
 
     @Transactional
@@ -149,8 +146,8 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectsResponse> getProjectsByOwnerName(User owner,User currentUser) {
-        User viewer = currentUser == null ? guestUser() : currentUser;
+    public List<ProjectsResponse> getProjectsByOwnerName(User owner, User currentUser) {
+
         List<Project> projects = projectRepo.findByOwner(owner);
 
         List<ProjectsResponse> projectsResponseList = new ArrayList<>();
@@ -158,14 +155,12 @@ public class ProjectService {
         for (Project project : projects) {
             ReactionCountAndStatus reaction = reactionService.getProjectReactionInfo(
                     project.getId(),
-                    viewer.getId()
-            );
+                    owner.getId());
 
             ProjectsResponse response = projectMapper.toProjectsResponse(
                     reaction,
                     project,
-                    viewer
-            );
+                    owner);
 
             projectsResponseList.add(response);
         }
@@ -173,23 +168,10 @@ public class ProjectService {
         return projectsResponseList;
     }
 
-    private User guestUser() {
-        User guest = new User();
-        guest.setId(0L);
-        guest.setName("Visitante");
-        guest.setRole("USER");
-        guest.setAvatar_url("");
-        guest.setBio("");
-        guest.setEmail("guest@devhub.local");
-        guest.setPassword("");
-        guest.setCreated_at(java.time.LocalDateTime.now());
-        guest.setUpdated_at(java.time.LocalDateTime.now());
-        guest.setBannerURL("");
-        return guest;
-    }
-    public User getUserById(Long id){
+    public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
+
     private List<Tag> findOrCreateTags(CreatePostRequest request) {
         log.debug("Finding or creating tags: tags={}",
                 request.tags().stream()

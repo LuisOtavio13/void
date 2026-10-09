@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = ["/", "/login", "/registro", "/pages/home", "/pages/explore"];
+const publicRoutes = [ "/login", "/registro"];
 
-function isPublicRoute(pathname: string) {
-  if (publicRoutes.includes(pathname)) return true;
-  if (pathname.startsWith("/pages/user/")) return true;
-  if (pathname.startsWith("/posts/")) return true;
-  return false;
-}
 
 export function proxy(request: NextRequest) {
   const jwt = request.cookies.get("jwt")?.value;
 
   const pathname = request.nextUrl.pathname;
-  const publicRoute = isPublicRoute(pathname);
+  const publicRoute = publicRoutes.includes(pathname);
 
-  if (jwt && (pathname === "/login" || pathname === "/registro")) {
+  if (jwt && publicRoute) {
     return NextResponse.redirect(new URL("/pages/home", request.url));
   }
 

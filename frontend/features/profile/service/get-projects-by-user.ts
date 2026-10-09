@@ -12,7 +12,7 @@ export async function getProjectsByUserId({ id, jwt }: props): Promise<CardItem[
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/user/${id}`, {
         headers: {
-            ...(jwt && jwt !== "-1" ? { Authorization: `Bearer ${jwt}` } : {}),
+            Authorization: `Bearer ${jwt}`,
             "Content-Type": "application/json",
         },
     });

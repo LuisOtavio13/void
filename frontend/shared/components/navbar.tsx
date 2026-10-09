@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { FaBell, FaCompass, FaHome } from "react-icons/fa";
 import {
@@ -44,16 +44,7 @@ import {
 } from "react-icons/io5";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
-import { Button } from "./ui/button";
+
 import { CreatePost } from "./create-post";
 import { useForm } from "react-hook-form";
 import { createPostSchema } from "@/shared/schema/create-post";
@@ -68,6 +59,7 @@ import { FaTrophy } from "react-icons/fa6";
 import { logout } from "@/lib/cookies/cookie";
 import { getUser } from "../context/user";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Dialog, DialogTrigger } from "./ui/dialog";
 
 interface HeaderBarItens {
   label: string;
@@ -82,9 +74,8 @@ export default function Navbar() {
   const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
-    retry: false,
   });
-  const isLoggedIn = Boolean(user);
+  
   const {
     register,
     handleSubmit,
@@ -133,20 +124,19 @@ export default function Navbar() {
   async function onSubmit(post: CreatePostSchema) {
     const token = user?.jwt;
     if (!token) {
-      setLoginDialogOpen(true);
+      toast.error("Você precisa estar logado para criar um post.")
       return;
     }
     try {
       const response = await createPostService(post, token);
       if (response.status === 200) {
         toast.success("Post criado com sucesso!");
-        setIsCreateDialogOpen(false);
         router.push("/pages/home");
       }
     } catch (error: unknown) {
       if (error instanceof errCreatePost) {
         if (error.status === 401 || error.status === 403) {
-          setLoginDialogOpen(true);
+          toast.error("Você precisa estar logado para criar um post.")
           return;
         }
         toast.error(error.message);
@@ -154,20 +144,11 @@ export default function Navbar() {
     }
   }
   const [activeCard, setActiveCard] = useState(true);
-  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  useEffect(() => {
-    const handleAuthRequired = () => setLoginDialogOpen(true);
-
-    window.addEventListener("auth:login-required", handleAuthRequired);
-
-    return () => {
-      window.removeEventListener("auth:login-required", handleAuthRequired);
-    };
-  }, []);
+  
+ 
   const logoutCliente = async () => {
     await logout();
 
@@ -263,20 +244,10 @@ export default function Navbar() {
         </SidebarContent>
 
         <SidebarFooter className="p-3">
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog>
             <div className="px-1 py-2">
               <DialogTrigger asChild>
-                <button
-                  type="button"
-                  className="w-full rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 cursor-pointer"
-                  onClick={() => {
-                    if (!isLoggedIn) {
-                      setLoginDialogOpen(true);
-                      return;
-                    }
-                    setIsCreateDialogOpen(true);
-                  }}
-                >
+               <button className="w-full rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 cursor-pointer">
                   Criar Post
                 </button>
               </DialogTrigger>
@@ -291,32 +262,7 @@ export default function Navbar() {
             </div>
           </Dialog>
 
-          <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Entre para continuar</DialogTitle>
-                <DialogDescription>
-                  Para realizar essa ação você precisa estar logado.
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-3 pt-2">
-                <Link href="/login" className="block">
-                  <Button className="w-full">Fazer login</Button>
-                </Link>
-
-                <Link href="/registro" className="block">
-                  <Button variant="outline" className="w-full">Criar conta</Button>
-                </Link>
-              </div>
-
-              <DialogFooter>
-                <p className="text-xs text-muted-foreground">
-                  Você ainda pode navegar e visualizar os projetos sem login.
-                </p>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+         
 
           {activeCard && (
             <Card
@@ -390,7 +336,7 @@ export default function Navbar() {
             </Card>
           )}
 
-          {isLoggedIn ? (
+          
             <DropdownMenu>
               <DropdownMenuTrigger asChild id="sidebar-user-dropdown-trigger">
                 <SidebarMenuButton
@@ -489,43 +435,7 @@ export default function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          ) : (
-            <Dialog>
-              <DialogTrigger asChild>
-                <button
-                  type="button"
-                  className="w-full rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer"
-                >
-                  Entrar
-                </button>
-              </DialogTrigger>
-
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Entre para continuar</DialogTitle>
-                  <DialogDescription>
-                    Faça login para curtir, comentar, criar posts e acessar todos os recursos.
-                  </DialogDescription>
-                </DialogHeader>
-
-                <div className="space-y-3 pt-2">
-                  <Link href="/login" className="block">
-                    <Button className="w-full">Fazer login</Button>
-                  </Link>
-
-                  <Link href="/registro" className="block">
-                    <Button variant="outline" className="w-full">Criar conta</Button>
-                  </Link>
-                </div>
-
-                <DialogFooter>
-                  <p className="text-xs text-muted-foreground">
-                    Você ainda pode navegar e visualizar os projetos sem login.
-                  </p>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          )}
+          
         </SidebarFooter>
       </Sidebar>
     </>
