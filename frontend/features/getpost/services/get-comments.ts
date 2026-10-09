@@ -4,8 +4,8 @@ export async function get_comments(id_post: number, jwt: string | undefined): Pr
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}comments/project/${id_post}`,
         {
             method: "GET",
-            headers:{
-                "Authorization":`Bearer ${jwt}`
+            headers: {
+                 "Authorization":`Bearer ${jwt}`
             }
         }
     )

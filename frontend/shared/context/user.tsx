@@ -1,18 +1,22 @@
 "use client";
 import React from "react";
 import { User } from "@/shared/types/UserType";
-export async function getUser()  {
-      
+export async function getUser(): Promise<User | null>  {
       const res = await fetch("/api/auth/getuser");
       if (!res.ok) {
-        throw new Error(""+ res.status)
-      };
-      return res.json() as Promise<User>;
+        if (res.status === 401) {
+          return null;
+        }
+        throw new Error(String(res.status));
+      }
+      return (await res.json()) as User;
 };
 
 import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+
+
 
 export default function Providers({
   children,
@@ -20,13 +24,12 @@ export default function Providers({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-
   const [queryClient] = useState(
     () =>
       new QueryClient({
         queryCache: new QueryCache({
           onError: (error) => {
-            if (error instanceof Error && error.message === "403") {
+            if (error instanceof Error && (error.message === "403")) {
               router.push("/login");
             }
           },

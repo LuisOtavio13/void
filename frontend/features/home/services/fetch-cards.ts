@@ -42,6 +42,8 @@ async function fetchCards(
   );
 
   const body = await res.json();
+  
+
   return body.content.map(mapCardItem);
 }
 

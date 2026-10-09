@@ -40,14 +40,16 @@ export function Comment({
 
   const router = useRouter();
   
+
+
   async function handleCreateComment(data: CommentFormData) {
     if (!jwt) {
-      toast.error("Você precisa estar logado para comentar.");
+      toast.error("Você precisa estar logado para comentar")
       return;
     }
 
     try {
-      const newComment = await PostComment(
+      await PostComment(
         data.content,
         projectId,
         jwt,
@@ -57,7 +59,12 @@ export function Comment({
 
       toast.success("Comentário publicado!");
       router.refresh();
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && (error.message.includes("403") || error.message.includes("401"))) {
+        toast.error("Você precisa estar logado para comentar")
+        return;
+      }
+
       toast.error("Erro ao publicar comentário.");
     }
   }

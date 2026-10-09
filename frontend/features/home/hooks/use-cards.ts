@@ -22,7 +22,7 @@ export function useCards() {
   const jwt = user?.jwt;
 
   const loadCards = useCallback(async () => {
-    if (!jwt || loadingRef.current || !hasMore) {
+    if (!jwt||loadingRef.current || !hasMore) {
       return;
     }
 
@@ -63,8 +63,7 @@ export function useCards() {
   }, [jwt, hasMore]);
 
   useEffect(() => {
-    if (!jwt) return;
-
+    if(!jwt){return}
     return cardsRealtime({
       setCards,
     });

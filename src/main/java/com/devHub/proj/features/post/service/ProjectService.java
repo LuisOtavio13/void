@@ -1,5 +1,6 @@
 package com.devHub.proj.features.post.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import com.devHub.proj.global.models.Project;
 import com.devHub.proj.global.models.Tag;
 import com.devHub.proj.global.models.User;
 import com.devHub.proj.global.repository.ProjectRepository;
+import com.devHub.proj.global.repository.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +31,7 @@ public class ProjectService {
 
     private final ProjectRepository projectRepo;
     private final ReactionService reactionService;
+    private final UserRepository userRepository;
     private final TagService tagService;
     private final ProjectValidator validator;
     private final ProjectMapper projectMapper;
@@ -38,9 +41,11 @@ public class ProjectService {
             TagService tagService,
             ReactionService reactionService,
             ProjectValidator validator,
-            ProjectMapper projectMapper) {
+            ProjectMapper projectMapper,
+            UserRepository userRepository) {
         this.projectRepo = projectRepo;
         this.reactionService = reactionService;
+        this.userRepository = userRepository;
         this.tagService = tagService;
         this.validator = validator;
         this.projectMapper = projectMapper;
@@ -60,7 +65,7 @@ public class ProjectService {
         List<Tag> tags = findOrCreateTags(projectRequest);
 
         Project project = projectMapper.toProject(projectRequest, tags, user);
-        var emptyReaction = new ReactionCountAndStatus(0L, false,0L, false);
+        var emptyReaction = new ReactionCountAndStatus(0L, false, 0L, false);
 
         projectRepo.save(project);
         log.info(
@@ -138,6 +143,33 @@ public class ProjectService {
                 user.getId(),
                 project.getName());
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectsResponse> getProjectsByOwnerName(User owner, User currentUser) {
+
+        List<Project> projects = projectRepo.findByOwner(owner);
+
+        List<ProjectsResponse> projectsResponseList = new ArrayList<>();
+
+        for (Project project : projects) {
+            ReactionCountAndStatus reaction = reactionService.getProjectReactionInfo(
+                    project.getId(),
+                    owner.getId());
+
+            ProjectsResponse response = projectMapper.toProjectsResponse(
+                    reaction,
+                    project,
+                    owner);
+
+            projectsResponseList.add(response);
+        }
+
+        return projectsResponseList;
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     private List<Tag> findOrCreateTags(CreatePostRequest request) {

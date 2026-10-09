@@ -4,11 +4,7 @@ import { useState } from "react";
 
 import { FaBell, FaCompass, FaHome } from "react-icons/fa";
 import {
-  Bell,
   ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
   X,
 } from "lucide-react";
 
@@ -40,18 +36,15 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Separator } from "./ui/separator";
 import {
   IoBookmark,
-  IoCard,
   IoLogOut,
   IoPerson,
   IoSettings,
-  IoSparkles,
 } from "react-icons/io5";
-import { usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Dialog, DialogTrigger } from "./ui/dialog";
+
 import { CreatePost } from "./create-post";
 import { useForm } from "react-hook-form";
 import { createPostSchema } from "@/shared/schema/create-post";
@@ -61,12 +54,12 @@ import {
   createPostService,
   errCreatePost,
 } from "@/shared/services/create-post-service";
-import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { FaTrophy } from "react-icons/fa6";
 import { logout } from "@/lib/cookies/cookie";
 import { getUser } from "../context/user";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Dialog, DialogTrigger } from "./ui/dialog";
 
 interface HeaderBarItens {
   label: string;
@@ -82,6 +75,7 @@ export default function Navbar() {
     queryKey: ["user"],
     queryFn: getUser,
   });
+  
   const {
     register,
     handleSubmit,
@@ -130,7 +124,7 @@ export default function Navbar() {
   async function onSubmit(post: CreatePostSchema) {
     const token = user?.jwt;
     if (!token) {
-      toast.error("Você precisa estar logado para criar um post.");
+      toast.error("Você precisa estar logado para criar um post.")
       return;
     }
     try {
@@ -140,12 +134,21 @@ export default function Navbar() {
         router.push("/pages/home");
       }
     } catch (error: unknown) {
-      if (error instanceof errCreatePost) toast.error(error.message);
+      if (error instanceof errCreatePost) {
+        if (error.status === 401 || error.status === 403) {
+          toast.error("Você precisa estar logado para criar um post.")
+          return;
+        }
+        toast.error(error.message);
+      }
     }
   }
   const [activeCard, setActiveCard] = useState(true);
   const queryClient = useQueryClient();
   const router = useRouter();
+
+  
+ 
   const logoutCliente = async () => {
     await logout();
 
@@ -244,7 +247,7 @@ export default function Navbar() {
           <Dialog>
             <div className="px-1 py-2">
               <DialogTrigger asChild>
-                <button className="w-full rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 cursor-pointer">
+               <button className="w-full rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 cursor-pointer">
                   Criar Post
                 </button>
               </DialogTrigger>
@@ -258,6 +261,8 @@ export default function Navbar() {
               />
             </div>
           </Dialog>
+
+         
 
           {activeCard && (
             <Card
@@ -331,98 +336,106 @@ export default function Navbar() {
             </Card>
           )}
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild id="sidebar-user-dropdown-trigger">
-              <SidebarMenuButton
-                className="
-                h-14 rounded-2xl
-                hover:bg-sidebar-accent
-              "
-              >
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={user?.avatar_url} />
-
-                  <AvatarFallback>
-                    {user?.name.substring(0, 2).toUpperCase()}
-                  </AvatarFallback>
-
-                  <AvatarBadge className="bg-primary" />
-                </Avatar>
-
-                <div className="grid flex-1 text-left leading-tight">
-                  <span className="truncate text-sm font-medium">
-                    {user?.name}
-                  </span>
-
-                  <span className="truncate text-xs text-muted-foreground">
-                    {user?.email}
-                  </span>
-                </div>
-
-                <ChevronsUpDown className="size-4 text-muted-foreground" />
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent
-              className="
-              w-64 rounded-2xl
-              border-border
-              bg-popover
-              text-popover-foreground
-            "
-              align="end"
-              sideOffset={8}
-            >
-              <DropdownMenuLabel className="p-3">
-                <div className="flex items-center gap-3">
+          
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild id="sidebar-user-dropdown-trigger">
+                <SidebarMenuButton
+                  className="
+                  h-14 rounded-2xl
+                  hover:bg-sidebar-accent
+                "
+                >
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={user?.avatar_url} />
 
                     <AvatarFallback>
-                      {user?.name.substring(0, 2).toUpperCase()}
+                      {user?.name?.substring(0, 2)?.toUpperCase() ?? "US"}
                     </AvatarFallback>
+
+                    <AvatarBadge className="bg-primary" />
                   </Avatar>
 
-                  <div>
-                    <p className="text-sm font-medium">{user?.name}</p>
+                  <div className="grid flex-1 text-left leading-tight">
+                    <span className="truncate text-sm font-medium">
+                      {user?.name}
+                    </span>
 
-                    <p className="text-xs text-muted-foreground">
+                    <span className="truncate text-xs text-muted-foreground">
                       {user?.email}
-                    </p>
+                    </span>
                   </div>
-                </div>
-              </DropdownMenuLabel>
 
-              <DropdownMenuSeparator className="bg-border" />
+                  <ChevronsUpDown className="size-4 text-muted-foreground" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
 
-              <DropdownMenuGroup>
-                <DropdownMenuItem className="gap-2">
-                  <IoPerson size={16} />
-                  Meu Perfil
-                </DropdownMenuItem>
-
-                <DropdownMenuItem className="gap-2">
-                  <IoSettings size={16} />
-                  Configurações
-                </DropdownMenuItem>
-
-                <DropdownMenuItem className="gap-2">
-                  <IoBookmark size={16} />
-                  Salvos
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-border" />
-
-              <DropdownMenuItem
-                onClick={logoutCliente}
-                className="gap-2 text-destructive flex items-center"
+              <DropdownMenuContent
+                className="
+                w-64 rounded-2xl
+                border-border
+                bg-popover
+                text-popover-foreground
+              "
+                align="end"
+                sideOffset={8}
               >
-                <IoLogOut size={16} />
-                sair
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuLabel className="p-3">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={user?.avatar_url} />
+
+                      <AvatarFallback>
+                        {user?.name?.substring(0, 2)?.toUpperCase() ?? "US"}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <div>
+                      <p className="text-sm font-medium">{user?.name}</p>
+
+                      <p className="text-xs text-muted-foreground">
+                        {user?.email}
+                      </p>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+
+                <DropdownMenuSeparator className="bg-border" />
+
+                <DropdownMenuGroup>
+                  <DropdownMenuItem className="gap-2" onClick={
+                    () => {
+                      if (user?.id) {
+                        redirect(`/pages/user/${user.id}`);
+                      }
+                    }
+                  }>
+                    <IoPerson size={16} />
+                    Meu Perfil
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem className="gap-2">
+                    <IoSettings size={16} />
+                    Configurações
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem className="gap-2">
+                    <IoBookmark size={16} />
+                    Salvos
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator className="bg-border" />
+
+                <DropdownMenuItem
+                  onClick={logoutCliente}
+                  className="gap-2 text-destructive flex items-center"
+                >
+                  <IoLogOut size={16} />
+                  sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          
         </SidebarFooter>
       </Sidebar>
     </>

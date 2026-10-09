@@ -36,6 +36,7 @@ public class User implements UserDetails {
         this.bio = "";
         this.role = "USER";
         this.avatar_url = "";
+        this.bannerURL = "";
     }
     public User(String name, String password, String email, Long id) {
         this.name = name;
@@ -45,6 +46,7 @@ public class User implements UserDetails {
         this.id = id;
         this.role = "USER";
         this.avatar_url = "";
+        this.bannerURL = "";
     }
 
     @Column(nullable = false, name = "username")
@@ -75,6 +77,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "userId")
     private List<Comment> comments;
+
+    @Column(nullable = false)
+    private String bannerURL;
 
     @PrePersist
     protected void onCreate() {

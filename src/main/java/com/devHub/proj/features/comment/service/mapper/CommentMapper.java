@@ -38,6 +38,7 @@ public class CommentMapper {
                         ReactionCountAndStatus reaction,
                         List<CommentDTO> replies,
                         int nestedRepliesCount) {
+                
                 return new CommentDTO(comment.getId(),
                                 new UserResponse(
                                                 user.getName(),
@@ -63,4 +64,6 @@ public class CommentMapper {
 
                 );
         }
+
+        
 }

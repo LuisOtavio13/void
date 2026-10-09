@@ -94,7 +94,10 @@ public class AuthController {
                 user.getName(),
                 user.getId(),
                 user.getAvatar_url(),
-                user.getUsername()
+                user.getUsername(),
+                user.getBannerURL(),
+                true,
+                user.getBio()
             )
         );
     }
@@ -111,7 +114,10 @@ public class AuthController {
                 foundUser.getName(),
                 foundUser.getId(),
                 foundUser.getAvatar_url(),
-                foundUser.getUsername()
+                foundUser.getUsername(),
+                foundUser.getBannerURL(),
+                true,
+                foundUser.getBio()
             )
         );
     }

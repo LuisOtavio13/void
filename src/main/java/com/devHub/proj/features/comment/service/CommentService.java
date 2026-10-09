@@ -82,6 +82,7 @@ public class CommentService {
                         Long projectId,
                         User user) {
 
+                
                 List<Comment> comments = commentRepository
                                 .findByProjectId_Id(projectId);
 
@@ -161,6 +162,7 @@ public class CommentService {
                         Map<Long, List<Comment>> childrenByParent,
                         User user) {
 
+               
                 ReactionCountAndStatus reaction = reactionService.getCommentReactionInfo(
                                 comment.getId(),
                                 user.getId());
@@ -180,9 +182,11 @@ public class CommentService {
 
                 return commentMapper.toDto(
                                 comment,
-                                comment.getUserId(),
+                                user,
                                 reaction,
                                 replies,
                                 nestedRepliesCount);
         }
+
+        
 }

@@ -2,6 +2,8 @@ package com.devHub.proj.features.post.controller;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -77,5 +79,17 @@ public class PostController {
         proPostService.sendEvent(EventType.POST_UPDATED, updatedPost);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ProjectsResponse>> getProjectsByUserId(
+        @PathVariable Long userId,
+        @AuthenticationPrincipal  User user
+    ){
+        User user2 = servicesPosts.getUserById(userId);
+        if(user2 == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(servicesPosts.getProjectsByOwnerName(user2, user));
     }
 }
